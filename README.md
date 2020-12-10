@@ -1,5 +1,7 @@
 # bind
 
+[![pipeline status](https://gitlab.com/kenyon/puppet-bind/badges/main/pipeline.svg)](https://gitlab.com/kenyon/puppet-bind/-/commits/main)
+
 Welcome to your new module. A short overview of the generated parts can be found
 in the [PDK documentation][1].
 
