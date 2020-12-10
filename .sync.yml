@@ -1,0 +1,4 @@
+---
+
+spec/spec_helper.rb:
+  mock_with: ':rspec'
