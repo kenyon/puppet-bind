@@ -30,7 +30,7 @@ is what they want.
 
 ## Setup
 
-### What bind affects **OPTIONAL**
+### What bind affects
 
 If it's obvious what your module touches, you can skip this section. For
 example, folks can probably figure out that your mysql_instance module affects
@@ -44,7 +44,7 @@ mention:
 * Dependencies that your module automatically installs.
 * Warnings or other important notices.
 
-### Setup Requirements **OPTIONAL**
+### Setup requirements
 
 If your module requires anything extra before setting up (pluginsync enabled,
 another module, etc.), mention it here.
