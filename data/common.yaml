@@ -1,1 +1,6 @@
---- {}
+---
+bind::manage_package: true
+bind::manage_service: true
+bind::package_ensure: installed
+bind::service_enable: true
+bind::service_ensure: running

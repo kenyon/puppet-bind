@@ -7,7 +7,14 @@
   "source": "https://gitlab.com/kenyon/puppet-bind/",
   "issues_url": "https://gitlab.com/kenyon/puppet-bind/-/issues",
   "dependencies": [
-
+    {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 7.7.0 < 8.0.0"
+    },
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 6.5.0 < 7.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
@@ -20,7 +27,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 7.0.0"
+      "version_requirement": ">= 6.0.0 < 8.0.0"
     }
   ],
   "pdk-version": "1.18.1",

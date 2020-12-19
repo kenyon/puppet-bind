@@ -6,9 +6,9 @@
 
 1. [Description](#description)
 1. [Setup - The basics of getting started with bind](#setup)
-    * [What bind affects](#what-bind-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with bind](#beginning-with-bind)
+   - [What bind affects](#what-bind-affects)
+   - [Setup requirements](#setup-requirements)
+   - [Beginning with bind](#beginning-with-bind)
 1. [Usage - Configuration options and additional functionality](#usage)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
@@ -16,41 +16,26 @@
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module
-is what they want.
+This module manages the BIND DNS server and associated DNS zones.
 
 ## Setup
 
 ### What bind affects
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+- the BIND package, service, and configuration files
 
-If there's more that they should know about, though, this is the place to
-mention:
-
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+If configured to install the backported package, also affects APT sources by ensuring that
+backports are available.
 
 ### Setup requirements
 
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+See [metadata.json](metadata.json) for Puppet module dependencies.
 
 ### Beginning with bind
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+```puppet
+include bind
+```
 
 ## Usage
 
@@ -62,17 +47,27 @@ tasks that involve different types, classes, and functions working in tandem.
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+Downgrading the package by setting `package_backport => false` (after it had been `true`) is not
+supported by this module, but you can of course do this downgrade manually.
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
+### Running tests
+
+```console
+pdk validate --parallel \
+&& pdk test unit --parallel \
+&& pdk bundle exec rake litmus:tear_down \
+&& pdk bundle exec rake 'litmus:provision_list[default]' \
+&& pdk bundle exec rake litmus:install_agent \
+&& pdk bundle exec rake litmus:install_module \
+&& pdk bundle exec rake litmus:acceptance:parallel \
+&& pdk bundle exec rake litmus:tear_down
+```
 
 ## License
 
-Copyright ⓒ 2020  Kenyon Ralph
+Copyright ⓒ 2020 Kenyon Ralph
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -81,8 +76,8 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+along with this program. If not, see <https://www.gnu.org/licenses/>.
