@@ -16,7 +16,8 @@
 
 ## Description
 
-This module manages the BIND DNS server and associated DNS zones.
+This module manages the [BIND](https://www.isc.org/bind/) DNS server and associated [DNS
+zones](https://en.wikipedia.org/wiki/DNS_zone).
 
 ## Setup
 
@@ -24,12 +25,13 @@ This module manages the BIND DNS server and associated DNS zones.
 
 - the BIND package, service, and configuration files
 
-If configured to install the backported package, also affects APT sources by ensuring that
-backports are available.
+If configured to install the backported package, also affects
+[APT](https://tracker.debian.org/pkg/apt) sources by ensuring that backports are available.
 
 ### Setup requirements
 
-See [metadata.json](metadata.json) for Puppet module dependencies.
+See [`metadata.json`](metadata.json) for supported operating systems, supported Puppet versions,
+and Puppet module dependencies.
 
 ### Beginning with bind
 
@@ -39,13 +41,21 @@ include bind
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+This module is designed to use the [default Debian `bind9` package
+configuration](https://salsa.debian.org/dns-team/bind9/-/tree/debian/main/debian/extras/etc) as a
+basis.
+
+See also:
+
+- [Reference](REFERENCE.md)
+
+For parameter defaults, see the [`data`](data) directory, which is organized according to
+[`hiera.yaml`](hiera.yaml).
 
 ## Limitations
+
+See [`metadata.json`](metadata.json) for supported operating systems, supported Puppet versions,
+and Puppet module dependencies.
 
 Downgrading the package by setting `package_backport => false` (after it had been `true`) is not
 supported by this module, but you can of course do this downgrade manually.
@@ -64,6 +74,24 @@ pdk validate --parallel \
 && pdk bundle exec rake litmus:acceptance:parallel \
 && pdk bundle exec rake litmus:tear_down
 ```
+
+See also:
+
+- [Puppet Development Kit](https://puppet.com/docs/puppet/latest/pdk_overview.html)
+
+### Generating documentation
+
+```console
+pdk bundle exec rake strings:generate:reference
+```
+
+See also:
+
+- [Puppet Strings](https://puppet.com/docs/puppet/latest/puppet_strings.html)
+
+## Alternatives
+
+[Other BIND modules on Puppet Forge](https://forge.puppet.com/modules?q=bind)
 
 ## License
 

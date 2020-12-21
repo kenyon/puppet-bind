@@ -1,9 +1,34 @@
 # @summary Manage the BIND name server and DNS zones
 #
-# This class manages the BIND name server and DNS zones.
+# This class manages the BIND domain name server and DNS zones.
 #
 # @example
 #   include bind
+#
+# @param manage_package
+#   Whether to have this module manage the BIND package.
+#
+# @param manage_service
+#   Whether to have this module manage the BIND service.
+#
+# @param package_backport
+#   Whether to install the BIND package from Debian backports.
+#
+# @param package_name
+#   The name of the BIND package.
+#
+# @param package_ensure
+#   The `ensure` parameter for the BIND package.
+#
+# @param service_enable
+#   The `enable` parameter for the BIND service.
+#
+# @param service_ensure
+#   The `ensure` parameter for the BIND service.
+#
+# @param service_name
+#   The name of the BIND service.
+#
 class bind (
   Boolean $manage_package,
   Boolean $manage_service,
