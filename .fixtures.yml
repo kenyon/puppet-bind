@@ -4,6 +4,7 @@
 fixtures:
   forge_modules:
     apt: puppetlabs/apt
+    extlib: puppet/extlib
     stdlib: puppetlabs/stdlib
   repositories:
     facts: https://github.com/puppetlabs/puppetlabs-facts.git

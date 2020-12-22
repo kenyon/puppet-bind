@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+config_dir = File.join('/etc', 'bind')
 package_name = 'bind9'
 
 describe 'bind' do
@@ -26,6 +27,7 @@ describe 'bind' do
             require: "Package[#{package_name}]",
           )
         end
+        it { is_expected.to contain_file(File.join(config_dir, 'named.conf.options')) }
       end
 
       context 'with a custom package name' do

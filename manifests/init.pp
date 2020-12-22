@@ -5,6 +5,9 @@
 # @example
 #   include bind
 #
+# @param config_dir
+#   Directory for BIND configuration files.
+#
 # @param manage_package
 #   Whether to have this module manage the BIND package.
 #
@@ -30,6 +33,7 @@
 #   The name of the BIND service.
 #
 class bind (
+  Stdlib::Absolutepath $config_dir,
   Boolean $manage_package,
   Boolean $manage_service,
   Boolean $package_backport,
@@ -77,5 +81,10 @@ class bind (
       ensure => stopped,
       enable => false,
     }
+  }
+
+  file { extlib::path_join([$config_dir, 'named.conf.options']):
+    ensure  => file,
+    content => epp("${module_name}/${config_dir}/named.conf.options"),
   }
 }
