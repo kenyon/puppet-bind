@@ -35,6 +35,8 @@ and Puppet module dependencies.
 
 ### Beginning with bind
 
+For a default configuration that provides recursive name resolution service:
+
 ```puppet
 include bind
 ```

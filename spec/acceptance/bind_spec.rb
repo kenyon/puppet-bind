@@ -28,6 +28,17 @@ describe 'bind' do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
+
+    it 'resolves names' do
+      host_install = <<-MANIFEST
+        package { 'bind9-host':
+          ensure => installed,
+        }
+      MANIFEST
+
+      apply_manifest(host_install)
+      run_shell('host dns.google localhost')
+    end
   end
 
   context 'when stopping the service' do
