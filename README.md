@@ -12,6 +12,10 @@
 1. [Usage - Configuration options and additional functionality](#usage)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
+   - [Running tests](#running-tests)
+   - [Generating documentation](#generating-documentation)
+1. [Alternatives](#alternatives)
+1. [BIND documentation](#bind-documentation)
 1. [License](#license)
 
 ## Description
@@ -94,6 +98,10 @@ See also:
 ## Alternatives
 
 [Other BIND modules on Puppet Forge](https://forge.puppet.com/modules?q=bind)
+
+## BIND documentation
+
+- [BIND Administrator Reference Manual](https://bind9.readthedocs.io/)
 
 ## License
 
