@@ -29,6 +29,11 @@ describe 'bind' do
       it { is_expected.to be_running }
     end
 
+    describe port(53) do
+      it { is_expected.to be_listening.with('tcp') }
+      it { is_expected.to be_listening.with('udp') }
+    end
+
     it 'resolves names' do
       host_install = <<-MANIFEST
         package { 'bind9-host':
@@ -100,7 +105,7 @@ describe 'bind' do
     end
   end
 
-  context 'when using backported package', if: os[:family] == 'debian' do
+  context 'with package_backport => true', if: os[:family] == 'debian' do
     # workaround for https://github.com/puppetlabs/puppetlabs-apt/pull/964
     before(:context) do
       lsb_release_install = <<-MANIFEST
@@ -138,6 +143,22 @@ describe 'bind' do
     describe service('named') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
+    end
+
+    describe port(53) do
+      it { is_expected.to be_listening.with('tcp') }
+      it { is_expected.to be_listening.with('udp') }
+    end
+
+    it 'resolves names' do
+      host_install = <<-MANIFEST
+        package { 'bind9-host':
+          ensure => installed,
+        }
+      MANIFEST
+
+      apply_manifest(host_install)
+      run_shell('host dns.google localhost')
     end
   end
 end
