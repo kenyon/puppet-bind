@@ -55,11 +55,15 @@ Data type: `Boolean`
 
 Whether to have this module manage the BIND package.
 
+Default value: ``true``
+
 ##### `service_manage`
 
 Data type: `Boolean`
 
 Whether to have this module manage the BIND service.
+
+Default value: ``true``
 
 ##### `package_backport`
 
@@ -78,6 +82,8 @@ The name of the BIND package.
 Data type: `String[1]`
 
 The `ensure` parameter for the BIND package.
+
+Default value: `installed`
 
 ##### `resolvconf_package_name`
 
@@ -98,11 +104,15 @@ Data type: `Variant[Boolean, String[1]]`
 
 The `enable` parameter for the BIND service.
 
+Default value: ``true``
+
 ##### `service_ensure`
 
 Data type: `Stdlib::Ensure::Service`
 
 The `ensure` parameter for the BIND service.
+
+Default value: `running`
 
 ##### `service_name`
 

@@ -8,7 +8,10 @@ service_name =
     'named'
   end
 
-# FIXME: split up tests using tags, change command line
+# FIXME: split up tests using rspec tags, change command line. use ruby to run the tests.
+# add images to provision.yaml
+# run certain tests on separate images.
+# use the existing puppet_litmus and maybe puppetlabs/provision utility functions.
 
 shared_examples 'a DNS server' do
   describe port(53) do

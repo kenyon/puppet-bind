@@ -40,15 +40,15 @@
 class bind (
   Stdlib::Absolutepath $config_dir,
   Boolean $package_backport,
-  Boolean $package_manage,
   String[1] $package_name,
-  String[1] $package_ensure,
   String[1] $resolvconf_package_name,
   Boolean $resolvconf_service_enable,
-  Variant[Boolean, String[1]] $service_enable,
-  Stdlib::Ensure::Service $service_ensure,
-  Boolean $service_manage,
   String[1] $service_name,
+  String[1] $package_ensure = installed,
+  Boolean $package_manage = true,
+  Variant[Boolean, String[1]] $service_enable = true,
+  Stdlib::Ensure::Service $service_ensure = running,
+  Boolean $service_manage = true,
 ) {
   contain bind::install
   contain bind::config

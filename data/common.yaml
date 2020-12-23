@@ -1,6 +1,3 @@
 ---
-bind::package_ensure: installed
-bind::package_manage: true
-bind::service_enable: true
-bind::service_ensure: running
-bind::service_manage: true
+# common defaults go in init.pp so they can be included in the generated REFERENCE.md
+{}
