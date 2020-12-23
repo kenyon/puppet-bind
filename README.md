@@ -28,6 +28,10 @@ zones](https://en.wikipedia.org/wiki/DNS_zone).
 ### What bind affects
 
 - the BIND package, service, and configuration files
+- a [resolvconf](https://en.wikipedia.org/wiki/Resolvconf) package, by default
+  [openresolv](https://roy.marples.name/projects/openresolv/), is installed if
+  `resolvconf_service_enable` is `true`. This causes the localhost's BIND to be used in
+  `/etc/resolv.conf`.
 
 If configured to install the backported package, also affects
 [APT](https://tracker.debian.org/pkg/apt) sources by ensuring that backports are available.
@@ -70,6 +74,9 @@ supported by this module, but you can of course do this downgrade manually.
 
 ### Running tests
 
+Must have [PDK](https://puppet.com/docs/puppet/latest/pdk_overview.html) and
+[Docker](http://docker.com/) installed and working.
+
 ```console
 pdk validate --parallel \
 && pdk test unit --parallel \
@@ -80,10 +87,6 @@ pdk validate --parallel \
 && pdk bundle exec rake litmus:acceptance:parallel \
 && pdk bundle exec rake litmus:tear_down
 ```
-
-See also:
-
-- [Puppet Development Kit](https://puppet.com/docs/puppet/latest/pdk_overview.html)
 
 ### Generating documentation
 

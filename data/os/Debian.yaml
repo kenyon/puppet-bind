@@ -1,4 +1,7 @@
 ---
+bind::config_dir: /etc/bind
 bind::package_backport: false
 bind::package_name: bind9
+bind::resolvconf_package_name: openresolv
+bind::resolvconf_service_enable: false
 bind::service_name: named

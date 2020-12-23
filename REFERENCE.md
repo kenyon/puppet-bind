@@ -6,13 +6,30 @@
 
 ### Classes
 
-* [`bind`](#bind): Manage the BIND name server and DNS zones
+#### Public Classes
+
+* [`bind`](#bind): Manage the BIND domain name server and DNS zones
+
+#### Private Classes
+
+* `bind::config`: Manage BIND configuration
+* `bind::install`: Manage BIND installation
+* `bind::service`: Manage BIND service
+
+### Functions
+
+#### Public Functions
+
+
+#### Private Functions
+
+* `bind::service_name`
 
 ## Classes
 
 ### `bind`
 
-This class manages the BIND domain name server and DNS zones.
+Manage the BIND domain name server and DNS zones
 
 #### Examples
 
@@ -26,13 +43,19 @@ include bind
 
 The following parameters are available in the `bind` class.
 
-##### `manage_package`
+##### `config_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+Directory for BIND configuration files.
+
+##### `package_manage`
 
 Data type: `Boolean`
 
 Whether to have this module manage the BIND package.
 
-##### `manage_service`
+##### `service_manage`
 
 Data type: `Boolean`
 
@@ -56,6 +79,19 @@ Data type: `String[1]`
 
 The `ensure` parameter for the BIND package.
 
+##### `resolvconf_package_name`
+
+Data type: `String[1]`
+
+The name of the resolvconf package to use if `resolvconf_service_enable` is `true`.
+
+##### `resolvconf_service_enable`
+
+Data type: `Boolean`
+
+Whether to enable the named-resolvconf service so that localhost's BIND resolver is used in
+`/etc/resolv.conf`.
+
 ##### `service_enable`
 
 Data type: `Variant[Boolean, String[1]]`
@@ -73,4 +109,6 @@ The `ensure` parameter for the BIND service.
 Data type: `String[1]`
 
 The name of the BIND service.
+
+## Functions
 

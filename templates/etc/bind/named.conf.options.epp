@@ -1,5 +1,6 @@
 // Managed by Puppet
 
+// TODO: template and test this
 options {
 	directory "/var/cache/bind";
 

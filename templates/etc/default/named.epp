@@ -1,0 +1,10 @@
+# run resolvconf?
+<% if $bind::resolvconf_service_enable { -%>
+RESOLVCONF=yes
+<% } else { -%>
+RESOLVCONF=no
+<% } -%>
+
+# TODO: make configurable
+# startup options for the server
+OPTIONS="-u bind"
