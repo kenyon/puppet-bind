@@ -56,10 +56,27 @@ describe 'bind' do
           )
         end
 
-        # TODO: add a test for custom resolvconf_package_name
+        context 'with a custom resolvconf_package_name' do
+          let(:params) do
+            super().merge(resolvconf_package_name: 'myresolvconf')
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_package('myresolvconf').that_comes_before("Package[#{package_name}]") }
+          it { is_expected.to contain_service("#{service_name}-resolvconf").with_require('Package[myresolvconf]') }
+        end
       end
 
-      # TODO: add a test for custom config_dir
+      context 'with a custom config_dir' do
+        let(:params) do
+          {
+            config_dir: File.join('/etc', 'blag'),
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file(File.join('/etc', 'blag', 'named.conf.options')) }
+      end
 
       context 'with a custom package name' do
         let(:params) do
@@ -106,12 +123,32 @@ describe 'bind' do
           }
         end
 
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.not_to contain_package(package_name) }
         it { is_expected.to contain_service(service_name) }
       end
 
-      # TODO: add test for service_enable => false
-      # TODO: add test for service_ensure => false
+      context 'when service_enable => false' do
+        let(:params) do
+          {
+            service_enable: false,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_service(service_name).with_enable(false) }
+      end
+
+      context 'when service_ensure => stopped' do
+        let(:params) do
+          {
+            service_ensure: 'stopped',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_service(service_name).with_ensure('stopped') }
+      end
 
       context 'when service_manage => false' do
         let(:params) do
@@ -120,6 +157,7 @@ describe 'bind' do
           }
         end
 
+        it { is_expected.to compile.with_all_deps }
         it { is_expected.not_to contain_service(service_name) }
       end
 
