@@ -1,4 +1,10 @@
 ---
+common:
+  disable_legacy_facts: true
 
 spec/spec_helper.rb:
   mock_with: ':rspec'
+  strict_level: ':error'
+
+.travis.yml:
+  dist: focal
