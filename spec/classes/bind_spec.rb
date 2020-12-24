@@ -55,7 +55,11 @@ describe 'bind' do
             require: 'Package[openresolv]',
           )
         end
+
+        # TODO: add a test for custom resolvconf_package_name
       end
+
+      # TODO: add a test for custom config_dir
 
       context 'with a custom package name' do
         let(:params) do
@@ -103,8 +107,11 @@ describe 'bind' do
         end
 
         it { is_expected.not_to contain_package(package_name) }
-        it { is_expected.to contain_service(service_name).without_require }
+        it { is_expected.to contain_service(service_name) }
       end
+
+      # TODO: add test for service_enable => false
+      # TODO: add test for service_ensure => false
 
       context 'when service_manage => false' do
         let(:params) do
@@ -116,7 +123,7 @@ describe 'bind' do
         it { is_expected.not_to contain_service(service_name) }
       end
 
-      context 'when uninstalled' do
+      context 'when uninstalling' do
         let(:params) do
           {
             package_ensure: 'absent',

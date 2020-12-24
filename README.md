@@ -74,18 +74,12 @@ supported by this module, but you can of course do this downgrade manually.
 
 ### Running tests
 
-Must have [PDK](https://puppet.com/docs/puppet/latest/pdk_overview.html) and
-[Docker](http://docker.com/) installed and working.
+[GNU Parallel](https://tracker.debian.org/pkg/parallel),
+[PDK](https://puppet.com/docs/puppet/latest/pdk_install.html), and
+[Docker](https://docs.docker.com/engine/) must be installed and working.
 
 ```console
-pdk validate --parallel \
-&& pdk test unit --parallel \
-&& pdk bundle exec rake litmus:tear_down \
-&& pdk bundle exec rake 'litmus:provision_list[default]' \
-&& pdk bundle exec rake litmus:install_agent \
-&& pdk bundle exec rake litmus:install_module \
-&& pdk bundle exec rake litmus:acceptance:parallel \
-&& pdk bundle exec rake litmus:tear_down
+./run_tests
 ```
 
 ### Generating documentation

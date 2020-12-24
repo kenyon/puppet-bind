@@ -1,0 +1,14 @@
+#!/bin/sh
+
+pdk validate --parallel &&
+pdk test unit --parallel &&
+{
+    pdk bundle exec rake litmus:tear_down
+    pdk bundle exec rake 'litmus:provision_list[default]' &&
+    pdk bundle exec rake litmus:install_agent &&
+    pdk bundle exec rake litmus:install_module &&
+    parallel \
+    'TARGET_HOST=localhost:222{1} pdk bundle exec rspec spec/acceptance/bind_{2}spec.rb' \
+    ::: 2 3 4 :::+ '' backport_ resolvconf_service_ &&
+    pdk bundle exec rake litmus:tear_down
+}
