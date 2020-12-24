@@ -12,6 +12,6 @@ class bind::config {
 
   file { extlib::path_join([$bind::config_dir, 'named.conf.options']):
     ensure  => file,
-    content => epp("${module_name}/${bind::config_dir}/named.conf.options.epp"),
+    content => epp("${module_name}/etc/bind/named.conf.options.epp"),
   }
 }
