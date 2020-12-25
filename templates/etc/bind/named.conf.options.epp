@@ -1,14 +1,7 @@
-// Managed by Puppet
+# Managed by Puppet
 
-// TODO: template and test this
 options {
-	directory "/var/cache/bind";
-
-	//========================================================================
-	// If BIND logs error messages about the root key being expired,
-	// you will need to update your keys.  See https://www.isc.org/bind-keys
-	//========================================================================
-	dnssec-validation auto;
-
-	listen-on-v6 { any; };
+	<%- $bind::options.each |$key, $value| { -%>
+    <%= $key %> "<%= $value %>";
+  <%- } -%>
 };

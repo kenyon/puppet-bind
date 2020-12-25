@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+CONFIG_DIR = File.join('/etc', 'bind')
 PACKAGE_NAME = 'bind9'.freeze
 SERVICE_NAME =
   if os[:family] == 'debian' && os[:release].to_i == 10

@@ -21,9 +21,20 @@ describe 'bind' do
       it { is_expected.to be_running }
     end
 
-    describe file("/etc/default/#{SERVICE_NAME}") do
-      its(:content) { is_expected.to match %r{RESOLVCONF=no} }
-      its(:content) { is_expected.to match %r{OPTIONS="-u bind"} }
+    if os[:family] == 'debian'
+      describe file(File.join('/etc', 'default', SERVICE_NAME)) do
+        it { is_expected.to be_file }
+        its(:content) { is_expected.to match %r{RESOLVCONF=no} }
+        its(:content) { is_expected.to match %r{OPTIONS="-u bind"} }
+      end
+    end
+
+    describe file(File.join(CONFIG_DIR, 'named.conf.options')) do
+      it { is_expected.to be_file }
+
+      if os[:family] == 'debian'
+        its(:content) { is_expected.to match %r{directory "/var/cache/bind";} }
+      end
     end
 
     it_behaves_like 'a DNS server'

@@ -1,5 +1,7 @@
 ---
 bind::config_dir: /etc/bind
+bind::options:
+  directory: /var/cache/bind
 bind::package_backport: false
 bind::package_name: bind9
 bind::resolvconf_package_name: openresolv

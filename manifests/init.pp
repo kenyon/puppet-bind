@@ -6,6 +6,10 @@
 # @param config_dir
 #   Directory for BIND configuration files.
 #
+# @param options
+#   Configuration of the [options
+#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar).
+#
 # @param package_manage
 #   Whether to have this module manage the BIND package.
 #
@@ -44,6 +48,7 @@
 #
 class bind (
   Stdlib::Absolutepath $config_dir,
+  Hash $options,
   Boolean $package_backport,
   String[1] $package_name,
   String[1] $resolvconf_package_name,

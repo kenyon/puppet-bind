@@ -49,6 +49,13 @@ Data type: `Stdlib::Absolutepath`
 
 Directory for BIND configuration files.
 
+##### `options`
+
+Data type: `Hash`
+
+Configuration of the [options
+statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar).
+
 ##### `package_manage`
 
 Data type: `Boolean`

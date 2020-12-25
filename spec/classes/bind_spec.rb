@@ -32,11 +32,35 @@ describe 'bind' do
             enable: true,
           )
         end
-        it { is_expected.to contain_file(File.join(config_dir, 'named.conf.options')) }
+        it { is_expected.to contain_file(File.join(config_dir, 'named.conf.options')).with_content(%r{# Managed by Puppet}) }
+
+        if os_facts[:os]['family'] == 'Debian'
+          it do
+            is_expected.to contain_file(File.join(config_dir, 'named.conf.options')).with_content(%r{directory "/var/cache/bind";})
+          end
+        end
 
         if os_facts[:os]['family'] == 'Debian'
           it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{RESOLVCONF=no}) }
           it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{OPTIONS="-u bind"}) }
+        end
+      end
+
+      context 'with custom options' do
+        let(:params) do
+          {
+            options: {
+              directory: '/meh',
+            },
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it do
+          is_expected.to contain_file(
+            File.join(config_dir, 'named.conf.options'),
+          ).with_content(%r{directory "/meh";})
         end
       end
 
