@@ -26,23 +26,40 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::install').that_comes_before('Class[bind::config]') }
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
+
         it do
           is_expected.to contain_service(service_name).with(
             ensure: 'running',
             enable: true,
           )
         end
-        it { is_expected.to contain_file(File.join(config_dir, 'named.conf.options')).with_content(%r{# Managed by Puppet}) }
+
+        it do
+          is_expected.to contain_file(
+            File.join(config_dir, 'named.conf.options'),
+          ).with_content(%r{# Managed by Puppet})
+        end
 
         if os_facts[:os]['family'] == 'Debian'
           it do
-            is_expected.to contain_file(File.join(config_dir, 'named.conf.options')).with_content(%r{directory "/var/cache/bind";})
+            is_expected.to contain_file(
+              File.join(config_dir, 'named.conf.options'),
+            ).with_content(%r{directory "/var/cache/bind";})
           end
         end
 
         if os_facts[:os]['family'] == 'Debian'
-          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{RESOLVCONF=no}) }
-          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{OPTIONS="-u bind"}) }
+          it do
+            is_expected.to contain_file(
+              File.join('/etc', 'default', service_name),
+            ).with_content(%r{RESOLVCONF=no})
+          end
+
+          it do
+            is_expected.to contain_file(
+              File.join('/etc', 'default', service_name),
+            ).with_content(%r{OPTIONS="-u bind"})
+          end
         end
       end
 
@@ -75,7 +92,11 @@ describe 'bind' do
         it { is_expected.to compile.with_all_deps }
 
         if os_facts[:os]['family'] == 'Debian'
-          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{OPTIONS="#{custom_service_options}"}) }
+          it do
+            is_expected.to contain_file(
+              File.join('/etc', 'default', service_name),
+            ).with_content(%r{OPTIONS="#{custom_service_options}"})
+          end
         end
       end
 
@@ -87,10 +108,19 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
+
         it do
-          is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{RESOLVCONF=yes})
+          is_expected.to contain_file(
+            File.join('/etc', 'default', service_name),
+          ).with_content(%r{RESOLVCONF=yes})
         end
-        it { is_expected.to contain_package('openresolv').that_comes_before("Package[#{package_name}]") }
+
+        it do
+          is_expected.to contain_package(
+            'openresolv',
+          ).that_comes_before("Package[#{package_name}]")
+        end
+
         it do
           is_expected.to contain_service("#{service_name}-resolvconf").with(
             ensure: 'running',
@@ -106,8 +136,18 @@ describe 'bind' do
           end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_package(custom_resolvconf_package_name).that_comes_before("Package[#{package_name}]") }
-          it { is_expected.to contain_service("#{service_name}-resolvconf").with_require("Package[#{custom_resolvconf_package_name}]") }
+
+          it do
+            is_expected.to contain_package(
+              custom_resolvconf_package_name,
+            ).that_comes_before("Package[#{package_name}]")
+          end
+
+          it do
+            is_expected.to contain_service(
+              "#{service_name}-resolvconf",
+            ).with_require("Package[#{custom_resolvconf_package_name}]")
+          end
         end
       end
 
@@ -155,9 +195,17 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('apt::backports').that_comes_before('Class[bind::install]') }
+
         it do
-          is_expected.to contain_package(package_name).with_install_options(
+          is_expected.to contain_class(
+            'apt::backports',
+          ).that_comes_before('Class[bind::install]')
+        end
+
+        it do
+          is_expected.to contain_package(
+            package_name,
+          ).with_install_options(
             ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
           )
         end
