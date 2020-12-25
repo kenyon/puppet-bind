@@ -62,6 +62,8 @@ See also:
 For parameter defaults, see the [`data`](data) directory, which is organized according to
 [`hiera.yaml`](hiera.yaml).
 
+The test suite in the [`spec`](spec) directory is a good source for usage examples.
+
 ## Limitations
 
 See [`metadata.json`](metadata.json) for supported operating systems, supported Puppet versions,
