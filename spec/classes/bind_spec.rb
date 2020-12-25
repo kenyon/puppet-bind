@@ -67,7 +67,13 @@ describe 'bind' do
         let(:params) do
           {
             options: {
-              directory: '"/meh"',
+              'allow-query' => [
+                'localhost',
+                'localnets',
+                '2001:db8::/32',
+                '192.0.2.0/24',
+              ],
+              'directory' => '"/meh"',
               # PDK's super old rubocop fails to parse this using newer hash syntax :(
               'zone-statistics' => 'full',
             },
@@ -81,6 +87,12 @@ describe 'bind' do
             File.join(config_dir, 'named.conf.options'),
           ).with_content(%r{directory "/meh";})
             .with_content(%r{zone-statistics full;})
+            .with_content(%r<allow-query \{
+        localhost;
+        localnets;
+        2001:db8::/32;
+        192\.0\.2\.0/24;
+    \};>)
         end
       end
 
