@@ -55,7 +55,7 @@ describe 'bind' do
         end
       end
 
-      context 'with resolvconf_service_enable => true', if: os_facts[:os]['name'] == 'Debian' do
+      context 'with resolvconf_service_enable => true', if: os_facts[:os]['family'] == 'Debian' do
         let(:params) do
           {
             resolvconf_service_enable: true,
@@ -76,47 +76,51 @@ describe 'bind' do
         end
 
         context 'with a custom resolvconf_package_name' do
+          custom_resolvconf_package_name = 'myresolvconf'
           let(:params) do
-            super().merge(resolvconf_package_name: 'myresolvconf')
+            super().merge(resolvconf_package_name: custom_resolvconf_package_name)
           end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_package('myresolvconf').that_comes_before("Package[#{package_name}]") }
-          it { is_expected.to contain_service("#{service_name}-resolvconf").with_require('Package[myresolvconf]') }
+          it { is_expected.to contain_package(custom_resolvconf_package_name).that_comes_before("Package[#{package_name}]") }
+          it { is_expected.to contain_service("#{service_name}-resolvconf").with_require("Package[#{custom_resolvconf_package_name}]") }
         end
       end
 
       context 'with a custom config_dir' do
+        custom_config_dir = File.join('/etc', 'blag')
         let(:params) do
           {
-            config_dir: File.join('/etc', 'blag'),
+            config_dir: custom_config_dir,
           }
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file(File.join('/etc', 'blag', 'named.conf.options')) }
+        it { is_expected.to contain_file(File.join(custom_config_dir, 'named.conf.options')) }
       end
 
-      context 'with a custom package name' do
+      context 'with a custom package_name' do
+        custom_package_name = 'quux'
         let(:params) do
           {
-            package_name: 'quux',
+            package_name: custom_package_name,
           }
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_package('quux') }
+        it { is_expected.to contain_package(custom_package_name) }
       end
 
-      context 'with a custom service name' do
+      context 'with a custom service_name' do
+        custom_service_name = 'quuz'
         let(:params) do
           {
-            service_name: 'quuz',
+            service_name: custom_service_name,
           }
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_service('quuz') }
+        it { is_expected.to contain_service(custom_service_name) }
       end
 
       context 'with package_backport => true', if: os_facts[:os]['name'] == 'Debian' do
