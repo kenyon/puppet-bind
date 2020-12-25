@@ -37,6 +37,11 @@
 # @param service_name
 #   The name of the BIND service.
 #
+# @param service_options
+#   [Command line
+#   options](https://bind9.readthedocs.io/en/latest/manpages.html#named-internet-domain-name-server)
+#   for the BIND service.
+#
 class bind (
   Stdlib::Absolutepath $config_dir,
   Boolean $package_backport,
@@ -44,6 +49,7 @@ class bind (
   String[1] $resolvconf_package_name,
   Boolean $resolvconf_service_enable,
   String[1] $service_name,
+  String[1] $service_options,
   String[1] $package_ensure = installed,
   Boolean $package_manage = true,
   Variant[Boolean, String[1]] $service_enable = true,

@@ -33,7 +33,26 @@ describe 'bind' do
           )
         end
         it { is_expected.to contain_file(File.join(config_dir, 'named.conf.options')) }
-        it { is_expected.to contain_file(File.join('/etc', 'default', service_name)) }
+
+        if os_facts[:os]['family'] == 'Debian'
+          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{RESOLVCONF=no}) }
+          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{OPTIONS="-u bind"}) }
+        end
+      end
+
+      context 'with custom service_options' do
+        custom_service_options = '-6 -u zaphod'
+        let(:params) do
+          {
+            service_options: custom_service_options,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        if os_facts[:os]['family'] == 'Debian'
+          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_content(%r{OPTIONS="#{custom_service_options}"}) }
+        end
       end
 
       context 'with resolvconf_service_enable => true', if: os_facts[:os]['name'] == 'Debian' do

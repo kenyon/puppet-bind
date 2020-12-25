@@ -120,5 +120,13 @@ Data type: `String[1]`
 
 The name of the BIND service.
 
+##### `service_options`
+
+Data type: `String[1]`
+
+[Command line
+options](https://bind9.readthedocs.io/en/latest/manpages.html#named-internet-domain-name-server)
+for the BIND service.
+
 ## Functions
 

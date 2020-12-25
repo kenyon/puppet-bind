@@ -5,6 +5,5 @@ RESOLVCONF=yes
 RESOLVCONF=no
 <% } -%>
 
-# TODO: make configurable
 # startup options for the server
-OPTIONS="-u bind"
+OPTIONS="<%= $bind::service_options %>"
