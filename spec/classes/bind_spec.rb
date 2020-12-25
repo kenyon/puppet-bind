@@ -67,7 +67,9 @@ describe 'bind' do
         let(:params) do
           {
             options: {
-              directory: '/meh',
+              directory: '"/meh"',
+              # PDK's super old rubocop fails to parse this using newer hash syntax :(
+              'zone-statistics' => 'full',
             },
           }
         end
@@ -78,6 +80,7 @@ describe 'bind' do
           is_expected.to contain_file(
             File.join(config_dir, 'named.conf.options'),
           ).with_content(%r{directory "/meh";})
+            .with_content(%r{zone-statistics full;})
         end
       end
 

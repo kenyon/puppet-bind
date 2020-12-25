@@ -2,6 +2,6 @@
 
 options {
 	<%- $bind::options.each |$key, $value| { -%>
-    <%= $key %> "<%= $value %>";
+    <%= $key %> <%= $value %>;
   <%- } -%>
 };

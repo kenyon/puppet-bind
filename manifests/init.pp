@@ -8,7 +8,8 @@
 #
 # @param options
 #   Configuration of the [options
-#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar).
+#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). You
+#   need to provide the quotation marks for `quoted_string` types.
 #
 # @param package_manage
 #   Whether to have this module manage the BIND package.

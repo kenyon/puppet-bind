@@ -54,7 +54,8 @@ Directory for BIND configuration files.
 Data type: `Hash`
 
 Configuration of the [options
-statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar).
+statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). You
+need to provide the quotation marks for `quoted_string` types.
 
 ##### `package_manage`
 
