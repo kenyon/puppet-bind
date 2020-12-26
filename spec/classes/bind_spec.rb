@@ -3,6 +3,8 @@
 require 'spec_helper'
 
 config_dir = File.join('/etc', 'bind')
+config_filename = 'named.conf'
+config_file = File.join(config_dir, config_filename)
 default_zones = %r<zone "." \{
     type hint;
     file "/usr/share/dns/root\.hints";
@@ -67,17 +69,14 @@ describe 'bind' do
         end
 
         it do
-          is_expected.to contain_file(
-            File.join(config_dir, 'named.conf'),
-          ).with_content(%r{# Managed by Puppet})
+          is_expected.to contain_file(config_file)
+            .with_content(%r{# Managed by Puppet})
             .with_content(default_zones)
         end
 
         if os_facts[:os]['family'] == 'Debian'
           it do
-            is_expected.to contain_file(
-              File.join(config_dir, 'named.conf'),
-            ).with_content(%r{directory "/var/cache/bind";})
+            is_expected.to contain_file(config_file).with_content(%r{directory "/var/cache/bind";})
           end
 
           it do
@@ -109,9 +108,8 @@ describe 'bind' do
         it { is_expected.to compile.with_all_deps }
 
         it do
-          is_expected.to contain_file(
-            File.join(config_dir, 'named.conf'),
-          ).with_content(%r{directory "/meh";})
+          is_expected.to contain_file(config_file)
+            .with_content(%r{directory "/meh";})
             .with_content(%r{zone-statistics full;})
             .with_content(%r<allow-query \{
         localhost;
@@ -201,7 +199,7 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file(File.join(custom_config_dir, 'named.conf')) }
+        it { is_expected.to contain_file(File.join(custom_config_dir, config_filename)) }
       end
 
       context 'with a custom package_name' do
