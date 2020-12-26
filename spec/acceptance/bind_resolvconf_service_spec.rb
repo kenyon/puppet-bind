@@ -9,9 +9,7 @@ describe 'bind with resolvconf_service_enable => true', if: os[:family] == 'debi
     MANIFEST
   end
 
-  it 'applies idempotently' do
-    idempotent_apply(pp)
-  end
+  it_behaves_like 'an idempotent resource after the initial run'
 
   describe file(File.join('/etc', 'default', SERVICE_NAME)) do
     its(:content) { is_expected.to match %r{RESOLVCONF=yes} }

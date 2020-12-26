@@ -15,3 +15,22 @@ shared_examples 'a DNS server' do
     it { is_expected.to be_listening.with 'udp' }
   end
 end
+
+# The initial installation can't be idempotent because the named.conf.* files don't exist until
+# after the package is installed, so Puppet can't see that it needs to remove them with the tidy
+# resource until the second run. Subsequent runs should be idempotent though.
+shared_examples 'an idempotent resource after the initial run' do
+  it 'applies initially' do
+    apply_manifest(pp)
+  end
+
+  it 'applies idempotently' do
+    idempotent_apply(pp)
+  end
+end
+
+shared_examples 'an idempotent resource' do
+  it 'applies idempotently' do
+    idempotent_apply(pp)
+  end
+end

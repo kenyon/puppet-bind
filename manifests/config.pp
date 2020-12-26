@@ -10,8 +10,13 @@ class bind::config {
     content => epp("${module_name}/etc/default/named.epp"),
   }
 
-  file { extlib::path_join([$bind::config_dir, 'named.conf.options']):
+  file { extlib::path_join([$bind::config_dir, 'named.conf']):
     ensure  => file,
-    content => epp("${module_name}/etc/bind/named.conf.options.epp"),
+    content => epp("${module_name}/etc/bind/named.conf.epp"),
+  }
+
+  tidy { $bind::config_dir:
+    matches => 'named.conf.*',
+    recurse => true,
   }
 }

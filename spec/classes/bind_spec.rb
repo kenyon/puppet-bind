@@ -3,6 +3,31 @@
 require 'spec_helper'
 
 config_dir = File.join('/etc', 'bind')
+default_zones = %r<zone "." \{
+    type hint;
+    file "/usr/share/dns/root\.hints";
+\};
+
+zone "localhost" \{
+    type master;
+    file "/etc/bind/db\.local";
+\};
+
+zone "127\.in-addr\.arpa" \{
+    type master;
+    file "/etc/bind/db\.127";
+\};
+
+zone "0\.in-addr\.arpa" \{
+    type master;
+    file "/etc/bind/db\.0";
+\};
+
+zone "255\.in-addr\.arpa" \{
+    type master;
+    file "/etc/bind/db\.255";
+\};
+>
 package_name = 'bind9'
 
 describe 'bind' do
@@ -35,30 +60,31 @@ describe 'bind' do
         end
 
         it do
+          is_expected.to contain_tidy(config_dir).with(
+            matches: 'named.conf.*',
+            recurse: true,
+          )
+        end
+
+        it do
           is_expected.to contain_file(
-            File.join(config_dir, 'named.conf.options'),
+            File.join(config_dir, 'named.conf'),
           ).with_content(%r{# Managed by Puppet})
+            .with_content(default_zones)
         end
 
         if os_facts[:os]['family'] == 'Debian'
           it do
             is_expected.to contain_file(
-              File.join(config_dir, 'named.conf.options'),
+              File.join(config_dir, 'named.conf'),
             ).with_content(%r{directory "/var/cache/bind";})
           end
-        end
 
-        if os_facts[:os]['family'] == 'Debian'
           it do
             is_expected.to contain_file(
               File.join('/etc', 'default', service_name),
             ).with_content(%r{RESOLVCONF=no})
-          end
-
-          it do
-            is_expected.to contain_file(
-              File.join('/etc', 'default', service_name),
-            ).with_content(%r{OPTIONS="-u bind"})
+              .with_content(%r{OPTIONS="-u bind"})
           end
         end
       end
@@ -84,7 +110,7 @@ describe 'bind' do
 
         it do
           is_expected.to contain_file(
-            File.join(config_dir, 'named.conf.options'),
+            File.join(config_dir, 'named.conf'),
           ).with_content(%r{directory "/meh";})
             .with_content(%r{zone-statistics full;})
             .with_content(%r<allow-query \{
@@ -175,7 +201,7 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file(File.join(custom_config_dir, 'named.conf.options')) }
+        it { is_expected.to contain_file(File.join(custom_config_dir, 'named.conf')) }
       end
 
       context 'with a custom package_name' do

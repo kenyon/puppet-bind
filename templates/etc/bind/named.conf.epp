@@ -1,0 +1,44 @@
+# Managed by Puppet
+
+options {
+<%-
+  $bind::options.each |$key, $value| {
+    if $value =~ Array {
+-%>
+    <%= $key %> {
+      <%- $value.each |$item| { -%>
+        <%= $item %>;
+      <%- } -%>
+    };
+<%- } else { -%>
+    <%= $key %> <%= $value %>;
+<%-
+    }
+  }
+-%>
+};
+
+zone "." {
+    type hint;
+    file "/usr/share/dns/root.hints";
+};
+
+zone "localhost" {
+    type master;
+    file "<%= extlib::path_join([$bind::config_dir, 'db.local']) %>";
+};
+
+zone "127.in-addr.arpa" {
+    type master;
+    file "<%= extlib::path_join([$bind::config_dir, 'db.127']) %>";
+};
+
+zone "0.in-addr.arpa" {
+    type master;
+    file "<%= extlib::path_join([$bind::config_dir, 'db.0']) %>";
+};
+
+zone "255.in-addr.arpa" {
+    type master;
+    file "<%= extlib::path_join([$bind::config_dir, 'db.255']) %>";
+};

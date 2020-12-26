@@ -8,9 +8,7 @@ describe 'bind' do
       MANIFEST
     end
 
-    it 'applies idempotently' do
-      idempotent_apply(pp)
-    end
+    it_behaves_like 'an idempotent resource after the initial run'
 
     describe package(PACKAGE_NAME) do
       it { is_expected.to be_installed }
@@ -29,7 +27,7 @@ describe 'bind' do
       end
     end
 
-    describe file(File.join(CONFIG_DIR, 'named.conf.options')) do
+    describe file(File.join(CONFIG_DIR, 'named.conf')) do
       it { is_expected.to be_file }
 
       if os[:family] == 'debian'
@@ -49,9 +47,7 @@ describe 'bind' do
       MANIFEST
     end
 
-    it 'applies idempotently' do
-      idempotent_apply(pp)
-    end
+    it_behaves_like 'an idempotent resource'
 
     describe service(SERVICE_NAME) do
       it { is_expected.not_to be_running }
@@ -67,9 +63,7 @@ describe 'bind' do
       MANIFEST
     end
 
-    it 'applies idempotently' do
-      idempotent_apply(pp)
-    end
+    it_behaves_like 'an idempotent resource'
 
     describe service(SERVICE_NAME) do
       it { is_expected.not_to be_enabled }
@@ -85,9 +79,7 @@ describe 'bind' do
       MANIFEST
     end
 
-    it 'applies idempotently' do
-      idempotent_apply(pp)
-    end
+    it_behaves_like 'an idempotent resource'
 
     describe package(PACKAGE_NAME) do
       it { is_expected.not_to be_installed }
