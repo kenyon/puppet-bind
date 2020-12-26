@@ -51,13 +51,7 @@ include bind
 
 ## Usage
 
-This module is designed to use the [default Debian `bind9` package
-configuration](https://salsa.debian.org/dns-team/bind9/-/tree/debian/main/debian/extras/etc) as a
-basis.
-
-See also:
-
-- [Reference](REFERENCE.md)
+See the [reference](REFERENCE.md) for available class parameters.
 
 For parameter defaults, see the [`data`](data) directory, which is organized according to
 [`hiera.yaml`](hiera.yaml).
