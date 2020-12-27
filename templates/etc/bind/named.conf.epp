@@ -30,6 +30,7 @@ options {
 -%>
 };
 
+<% if $bind::default_zones { %>
 zone "." {
     type hint;
     file "/usr/share/dns/root.hints";
@@ -54,3 +55,4 @@ zone "255.in-addr.arpa" {
     type master;
     file "<%= extlib::path_join([$bind::config_dir, 'db.255']) %>";
 };
+<% } -%>

@@ -49,6 +49,14 @@ Data type: `Stdlib::Absolutepath`
 
 Directory for BIND configuration files.
 
+##### `default_zones`
+
+Data type: `Boolean`
+
+Whether to include the default zones in the BIND configuration.
+
+Default value: ``true``
+
 ##### `includes`
 
 Data type: `Optional[Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]]]`

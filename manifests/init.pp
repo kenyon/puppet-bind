@@ -6,6 +6,9 @@
 # @param config_dir
 #   Directory for BIND configuration files.
 #
+# @param default_zones
+#   Whether to include the default zones in the BIND configuration.
+#
 # @param includes
 #   Additional configuration files to include in the BIND configuration using the
 #   [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
@@ -68,6 +71,7 @@ class bind (
   Boolean $resolvconf_service_enable,
   String[1] $service_name,
   String[1] $service_user,
+  Boolean $default_zones = true,
   Optional[Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]]] $includes = undef,
   String[1] $package_ensure = installed,
   Boolean $package_manage = true,

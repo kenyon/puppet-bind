@@ -92,6 +92,17 @@ describe 'bind' do
         end
       end
 
+      context 'without default zones' do
+        let(:params) do
+          {
+            default_zones: false,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file(config_file).without_content(default_zones) }
+      end
+
       context 'with custom includes' do
         context 'single file' do
           custom_includes_file = File.join('/etc', 'bind', 'whatever')
