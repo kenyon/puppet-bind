@@ -70,9 +70,10 @@ supported by this module, but you can of course do this downgrade manually.
 
 ### Running tests
 
-[GNU Parallel](https://tracker.debian.org/pkg/parallel),
-[PDK](https://puppet.com/docs/puppet/latest/pdk_install.html), and
+[PDK](https://puppet.com/docs/puppet/latest/pdk_install.html) and
 [Docker](https://docs.docker.com/engine/) must be installed and working.
+[GNU Parallel](https://tracker.debian.org/pkg/parallel) is used to run acceptance tests in
+parallel by default. This can be disabled with the `--no-parallel` option.
 
 ```console
 ./run_tests
