@@ -6,6 +6,7 @@
 - manage the entire `/etc/bind` directory
   - replicate the default `db.*` files and associated `zone` statements
 - DNSSEC setup support
+- implement option for local root zone support: https://tools.ietf.org/html/rfc8806
 
 ## Zones
 
