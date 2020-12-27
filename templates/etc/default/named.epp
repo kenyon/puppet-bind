@@ -6,4 +6,4 @@ RESOLVCONF=no
 <% } -%>
 
 # startup options for the server
-OPTIONS="<%= $bind::service_options %>"
+OPTIONS="-u '<%= $bind::service_user %>' -c '<%= $bind::service_config_file %>' <%= $bind::service_options %>"

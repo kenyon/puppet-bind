@@ -7,4 +7,4 @@ bind::package_name: bind9
 bind::resolvconf_package_name: openresolv
 bind::resolvconf_service_enable: false
 bind::service_name: named
-bind::service_options: -u bind
+bind::service_user: bind

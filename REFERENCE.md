@@ -106,6 +106,14 @@ Data type: `Boolean`
 Whether to enable the named-resolvconf service so that localhost's BIND resolver is used in
 `/etc/resolv.conf`.
 
+##### `service_config_file`
+
+Data type: `Stdlib::Absolutepath`
+
+The path to the BIND config file.
+
+Default value: `extlib::path_join([$config_dir, 'named.conf'])`
+
 ##### `service_enable`
 
 Data type: `Variant[Boolean, String[1]]`
@@ -128,13 +136,21 @@ Data type: `String[1]`
 
 The name of the BIND service.
 
-##### `service_options`
+##### `service_user`
 
 Data type: `String[1]`
+
+The user to run BIND as (for the `-u` command line option).
+
+##### `service_options`
+
+Data type: `Optional[String[1]]`
 
 [Command line
 options](https://bind9.readthedocs.io/en/latest/manpages.html#named-internet-domain-name-server)
 for the BIND service.
+
+Default value: ``undef``
 
 ## Functions
 

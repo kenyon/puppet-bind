@@ -10,7 +10,7 @@ class bind::config {
     content => epp("${module_name}/etc/default/named.epp"),
   }
 
-  file { extlib::path_join([$bind::config_dir, 'named.conf']):
+  file { $bind::service_config_file:
     ensure  => file,
     content => epp("${module_name}/etc/bind/named.conf.epp"),
   }

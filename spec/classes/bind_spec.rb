@@ -31,6 +31,7 @@ zone "255\.in-addr\.arpa" \{
 \};
 >
 package_name = 'bind9'
+user = 'bind'
 
 describe 'bind' do
   on_supported_os.each do |os, os_facts|
@@ -83,7 +84,7 @@ describe 'bind' do
             is_expected.to contain_file(
               File.join('/etc', 'default', service_name),
             ).with_content(%r{RESOLVCONF=no})
-              .with_content(%r{OPTIONS="-u bind"})
+              .with_content(%r{OPTIONS="-u '#{user}' -c '#{config_file}' "})
           end
         end
       end
@@ -121,7 +122,7 @@ describe 'bind' do
       end
 
       context 'with custom service_options' do
-        custom_service_options = '-6 -u zaphod'
+        custom_service_options = '-6 -s'
         let(:params) do
           {
             service_options: custom_service_options,
@@ -134,7 +135,7 @@ describe 'bind' do
           it do
             is_expected.to contain_file(
               File.join('/etc', 'default', service_name),
-            ).with_content(%r{OPTIONS="#{custom_service_options}"})
+            ).with_content(%r{OPTIONS="-u '#{user}' -c '#{config_file}' #{custom_service_options}"})
           end
         end
       end
@@ -200,6 +201,45 @@ describe 'bind' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_file(File.join(custom_config_dir, config_filename)) }
+      end
+
+      context 'with a custom service_config_file' do
+        custom_service_config_file = '/myconfig'
+        let(:params) do
+          {
+            service_config_file: custom_service_config_file,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_file(custom_service_config_file) }
+
+        if os_facts[:os]['family'] == 'Debian'
+          it do
+            is_expected.to contain_file(
+              File.join('/etc', 'default', service_name),
+            ).with_content(%r{OPTIONS="-u '#{user}' -c '#{custom_service_config_file}' "})
+          end
+        end
+      end
+
+      context 'with a custom service_user' do
+        custom_service_user = 'zaphod'
+        let(:params) do
+          {
+            service_user: custom_service_user,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        if os_facts[:os]['family'] == 'Debian'
+          it do
+            is_expected.to contain_file(
+              File.join('/etc', 'default', service_name),
+            ).with_content(%r{OPTIONS="-u '#{custom_service_user}' -c '#{config_file}' "})
+          end
+        end
       end
 
       context 'with a custom package_name' do
