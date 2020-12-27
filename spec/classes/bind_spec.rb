@@ -62,6 +62,11 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
         it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(root_key) }
+        it { is_expected.to contain_file(File.join(config_dir, 'db.0')) }
+        it { is_expected.to contain_file(File.join(config_dir, 'db.127')) }
+        it { is_expected.to contain_file(File.join(config_dir, 'db.255')) }
+        it { is_expected.to contain_file(File.join(config_dir, 'db.empty')) }
+        it { is_expected.to contain_file(File.join(config_dir, 'db.local')) }
 
         it do
           is_expected.to contain_service(service_name).with(
@@ -120,6 +125,11 @@ describe 'bind' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_file(config_file).without_content(default_zones) }
+        it { is_expected.not_to contain_file(File.join(config_dir, 'db.0')) }
+        it { is_expected.not_to contain_file(File.join(config_dir, 'db.127')) }
+        it { is_expected.not_to contain_file(File.join(config_dir, 'db.255')) }
+        it { is_expected.not_to contain_file(File.join(config_dir, 'db.empty')) }
+        it { is_expected.not_to contain_file(File.join(config_dir, 'db.local')) }
       end
 
       context 'with custom includes' do

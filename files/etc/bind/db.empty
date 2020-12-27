@@ -1,0 +1,19 @@
+; Managed by Puppet
+;
+; SPDX-License-Identifier: MPL-2.0
+;
+; This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy
+; of the MPL was not distributed with this file, You can obtain one at
+; https://mozilla.org/MPL/2.0/.
+;
+; BIND reverse data file for empty rfc1918 zone
+;
+$TTL	86400
+@	IN	SOA	localhost. root.localhost. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			  86400 )	; Negative Cache TTL
+;
+@	IN	NS	localhost.

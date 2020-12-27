@@ -20,6 +20,15 @@ class bind::config {
     content => file("${module_name}/etc/bind/bind.keys"),
   }
 
+  if $bind::default_zones {
+    ['db.0', 'db.127', 'db.255', 'db.empty', 'db.local'].each |$file| {
+      file { extlib::path_join([$bind::config_dir, $file]):
+        ensure  => file,
+        content => file("${module_name}/etc/bind/${file}"),
+      }
+    }
+  }
+
   tidy { $bind::config_dir:
     matches => 'named.conf.*',
     recurse => true,
