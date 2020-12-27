@@ -7,7 +7,7 @@
 # @api private
 #
 function bind::service_name() >> String[1] {
-  if $bind::package_backport and $facts['os']['release']['major'] == '10' {
+  if $bind::package_backport and $facts['os']['name'] == 'Debian' and $facts['os']['release']['major'] == '10' {
     'named'
   } else {
     $bind::service_name
