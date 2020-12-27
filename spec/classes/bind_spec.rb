@@ -64,6 +64,17 @@ describe 'bind' do
 
         context 'named configuration' do
           it do
+            pending 'TODO: implement management of everything'
+            is_expected.to contain_file(config_dir).with(
+              ensure: 'directory',
+              force: true,
+              owner: user,
+              purge: true,
+              recurse: true,
+            )
+          end
+
+          it do
             is_expected.to contain_tidy(config_dir).with(
               matches: 'named.conf.*',
               recurse: true,
