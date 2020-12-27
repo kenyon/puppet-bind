@@ -1,5 +1,17 @@
 # Managed by Puppet
 
+<%
+  case $bind::includes {
+    Array: {
+      $bind::includes.each |$filename| { -%>include "<%= $filename %>";
+  <%- }
+    }
+    String: { -%>include "<%= $bind::includes %>";<% }
+    undef: {}
+    default: { fail('unsupported type for $bind::includes') }
+  }
+%>
+
 options {
 <%-
   $bind::options.each |$key, $value| {

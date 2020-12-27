@@ -49,13 +49,24 @@ Data type: `Stdlib::Absolutepath`
 
 Directory for BIND configuration files.
 
+##### `includes`
+
+Data type: `Optional[Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]]]`
+
+Additional configuration files to include in the BIND configuration using the
+[include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
+statement.
+
+Default value: ``undef``
+
 ##### `options`
 
 Data type: `Hash`
 
 Configuration of the [options
-statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). You
-need to provide the quotation marks for `quoted_string` types.
+statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
+least the `directory` option must be specified. You need to provide the quotation marks for
+`quoted_string` types.
 
 ##### `package_manage`
 

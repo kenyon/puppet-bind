@@ -6,10 +6,16 @@
 # @param config_dir
 #   Directory for BIND configuration files.
 #
+# @param includes
+#   Additional configuration files to include in the BIND configuration using the
+#   [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
+#   statement.
+#
 # @param options
 #   Configuration of the [options
-#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). You
-#   need to provide the quotation marks for `quoted_string` types.
+#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
+#   least the `directory` option must be specified. You need to provide the quotation marks for
+#   `quoted_string` types.
 #
 # @param package_manage
 #   Whether to have this module manage the BIND package.
@@ -62,6 +68,7 @@ class bind (
   Boolean $resolvconf_service_enable,
   String[1] $service_name,
   String[1] $service_user,
+  Optional[Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]]] $includes = undef,
   String[1] $package_ensure = installed,
   Boolean $package_manage = true,
   Stdlib::Absolutepath $service_config_file = extlib::path_join([$config_dir, 'named.conf']),

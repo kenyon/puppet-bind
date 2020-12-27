@@ -74,6 +74,7 @@ describe 'bind' do
             is_expected.to contain_file(config_file)
               .with_content(%r{# Managed by Puppet})
               .with_content(default_zones)
+              .without_content(%r{include ".*";})
           end
         end
 
@@ -87,6 +88,44 @@ describe 'bind' do
               File.join('/etc', 'default', service_name),
             ).with_content(%r{RESOLVCONF=no})
               .with_content(%r{OPTIONS="-u '#{user}' -c '#{config_file}' "})
+          end
+        end
+      end
+
+      context 'with custom includes' do
+        context 'single file' do
+          custom_includes_file = File.join('/etc', 'bind', 'whatever')
+          let(:params) do
+            {
+              includes: custom_includes_file,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file)
+              .with_content(%r{include "#{custom_includes_file}";})
+          end
+        end
+
+        context 'array' do
+          custom_includes_array = [
+            File.join('/etc', 'bind', 'whatever'),
+            File.join('/etc', 'bind', 'another'),
+          ]
+          let(:params) do
+            {
+              includes: custom_includes_array,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file)
+              .with_content(%r{include "#{custom_includes_array[0]}";})
+              .with_content(%r{include "#{custom_includes_array[1]}";})
           end
         end
       end
