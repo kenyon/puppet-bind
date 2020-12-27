@@ -31,6 +31,13 @@ zone "255\.in-addr\.arpa" \{
 \};
 >
 package_name = 'bind9'
+root_key = %r{AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTOiW1vkIbzxeF3
+                \+/4RgWOq7HrxRixHlFlExOLAJr5emLvN7SWXgnLh4\+B5xQlNVz8Og8kv
+                ArMtNROxVQuCaSnIDdD5LKyWbRd2n9WGe2R8PzgCmr3EgVLrjyBxWezF
+                0jLHwVN8efS3rCj/EWgvIWgb9tarpVUDK/b58Da\+sqqls3eNbuv7pr\+e
+                oZG\+SrDK6nWeL3c6H5Apxz7LjVc1uTIdsIXxuOLYA4/ilBmSVIzuDWfd
+                RUfhHdY6\+cn8HFRm\+2hM8AnXGXws9555KrUB5qihylGa8subX2Nn6UwN
+                R1AkUTV74bU=}
 user = 'bind'
 
 describe 'bind' do
@@ -54,6 +61,7 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::install').that_comes_before('Class[bind::config]') }
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
+        it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(root_key) }
 
         it do
           is_expected.to contain_service(service_name).with(

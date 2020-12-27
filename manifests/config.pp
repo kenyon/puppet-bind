@@ -15,6 +15,11 @@ class bind::config {
     content => epp("${module_name}/etc/bind/named.conf.epp"),
   }
 
+  file { extlib::path_join([$bind::config_dir, 'bind.keys']):
+    ensure  => file,
+    content => file("${module_name}/etc/bind/bind.keys"),
+  }
+
   tidy { $bind::config_dir:
     matches => 'named.conf.*',
     recurse => true,
