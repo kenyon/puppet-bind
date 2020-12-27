@@ -62,17 +62,19 @@ describe 'bind' do
           )
         end
 
-        it do
-          is_expected.to contain_tidy(config_dir).with(
-            matches: 'named.conf.*',
-            recurse: true,
-          )
-        end
+        context 'named configuration' do
+          it do
+            is_expected.to contain_tidy(config_dir).with(
+              matches: 'named.conf.*',
+              recurse: true,
+            )
+          end
 
-        it do
-          is_expected.to contain_file(config_file)
-            .with_content(%r{# Managed by Puppet})
-            .with_content(default_zones)
+          it do
+            is_expected.to contain_file(config_file)
+              .with_content(%r{# Managed by Puppet})
+              .with_content(default_zones)
+          end
         end
 
         if os_facts[:os]['family'] == 'Debian'
