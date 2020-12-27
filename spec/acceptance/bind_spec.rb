@@ -24,6 +24,15 @@ describe 'bind' do
     end
 
     it_behaves_like 'a DNS server'
+
+    describe 'the default zones' do
+      it 'are valid' do
+        run_shell('named-checkzone localhost /etc/bind/db.local')
+        run_shell('named-checkzone 127.in-addr.arpa /etc/bind/db.127')
+        run_shell('named-checkzone 0.in-addr.arpa /etc/bind/db.0')
+        run_shell('named-checkzone 255.in-addr.arpa /etc/bind/db.255')
+      end
+    end
   end
 
   context 'when stopping the service' do
