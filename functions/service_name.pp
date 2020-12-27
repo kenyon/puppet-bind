@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# @summary Determines the name of the BIND service
+#
 # @return [String[1]] the name of the BIND service
 #
 # @api private

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # @summary Manage the BIND domain name server and DNS zones
 #
 # @example

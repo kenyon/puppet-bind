@@ -23,7 +23,7 @@
 
 #### Private Functions
 
-* `bind::service_name`
+* `bind::service_name`: Determines the name of the BIND service
 
 ## Classes
 

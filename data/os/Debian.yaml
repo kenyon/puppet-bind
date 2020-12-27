@@ -1,4 +1,6 @@
 ---
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 bind::config_dir: /etc/bind
 bind::options:
   directory: '"/var/cache/bind"'

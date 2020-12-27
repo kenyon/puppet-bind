@@ -1,3 +1,7 @@
+# Managed by Puppet
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # run resolvconf?
 <% if $bind::resolvconf_service_enable { -%>
 RESOLVCONF=yes

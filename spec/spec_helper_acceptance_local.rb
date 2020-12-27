@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 CONFIG_DIR = File.join('/etc', 'bind')
 PACKAGE_NAME = 'bind9'.freeze
 SERVICE_NAME =

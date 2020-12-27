@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 require 'spec_helper_acceptance'
 
 describe 'bind with package_backport => true', if: os[:family] == 'debian' do

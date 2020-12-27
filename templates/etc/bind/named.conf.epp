@@ -1,4 +1,6 @@
 # Managed by Puppet
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 <%
   case $bind::includes {
