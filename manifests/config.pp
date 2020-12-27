@@ -19,7 +19,7 @@ class bind::config {
 
   file { extlib::path_join([$bind::config_dir, 'bind.keys']):
     ensure  => file,
-    content => file("${module_name}/etc/bind/bind.keys"),
+    content => epp("${module_name}/etc/bind/bind.keys.epp"),
   }
 
   if $bind::default_zones {

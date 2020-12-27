@@ -33,6 +33,7 @@ zone "255\.in-addr\.arpa" \{
 \};
 >
 package_name = 'bind9'
+# key 20326
 root_key = %r{AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTOiW1vkIbzxeF3
                 \+/4RgWOq7HrxRixHlFlExOLAJr5emLvN7SWXgnLh4\+B5xQlNVz8Og8kv
                 ArMtNROxVQuCaSnIDdD5LKyWbRd2n9WGe2R8PzgCmr3EgVLrjyBxWezF
@@ -69,6 +70,12 @@ describe 'bind' do
         it { is_expected.to contain_file(File.join(config_dir, 'db.255')) }
         it { is_expected.to contain_file(File.join(config_dir, 'db.empty')) }
         it { is_expected.to contain_file(File.join(config_dir, 'db.local')) }
+
+        if os_facts[:os]['name'] == 'Debian' && os_facts[:os]['release']['major'] == '10'
+          it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{managed-keys}) }
+        else
+          it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{trust-anchors}) }
+        end
 
         it do
           is_expected.to contain_service(service_name).with(
@@ -371,6 +378,8 @@ describe 'bind' do
             ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
           )
         end
+
+        it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{trust-anchors}) }
       end
 
       context 'when package_manage => false' do
