@@ -32,6 +32,7 @@ zone "255\.in-addr\.arpa" \{
     file "/etc/bind/db\.255";
 \};
 >
+group = 'bind'
 package_name = 'bind9'
 # key 20326
 root_key = %r{AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTOiW1vkIbzxeF3
@@ -90,7 +91,9 @@ describe 'bind' do
             is_expected.to contain_file(config_dir).with(
               ensure: 'directory',
               force: true,
-              owner: user,
+              owner: 'root',
+              group: group,
+              mode: '2755',
               purge: true,
               recurse: true,
             )
