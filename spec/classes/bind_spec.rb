@@ -43,6 +43,7 @@ root_key = %r{AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTOiW1vkIbzxeF3
                 RUfhHdY6\+cn8HFRm\+2hM8AnXGXws9555KrUB5qihylGa8subX2Nn6UwN
                 R1AkUTV74bU=}
 user = 'bind'
+working_dir = File.join('/var', 'cache', 'bind')
 
 describe 'bind' do
   on_supported_os.each do |os, os_facts|
@@ -76,6 +77,15 @@ describe 'bind' do
           it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{managed-keys}) }
         else
           it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{trust-anchors}) }
+        end
+
+        it do
+          is_expected.to contain_file(working_dir).with(
+            ensure: 'directory',
+            owner: 'root',
+            group: group,
+            mode: '0775',
+          )
         end
 
         it do
@@ -116,7 +126,7 @@ describe 'bind' do
 
         if os_facts[:os]['family'] == 'Debian'
           it do
-            is_expected.to contain_file(config_file).with_content(%r{directory "/var/cache/bind";})
+            is_expected.to contain_file(config_file).with_content(%r{directory "#{working_dir}";})
           end
 
           it do
@@ -316,11 +326,13 @@ describe 'bind' do
         end
       end
 
-      context 'with a custom service_user' do
+      context 'with custom service_user and service_group' do
         custom_service_user = 'zaphod'
+        custom_service_group = 'hitchhikers'
         let(:params) do
           {
             service_user: custom_service_user,
+            service_group: custom_service_group,
           }
         end
 
@@ -332,6 +344,15 @@ describe 'bind' do
               File.join('/etc', 'default', service_name),
             ).with_content(%r{OPTIONS="-u '#{custom_service_user}' -c '#{config_file}' "})
           end
+        end
+
+        it do
+          is_expected.to contain_file(working_dir).with(
+            ensure: 'directory',
+            owner: 'root',
+            group: custom_service_group,
+            mode: '0775',
+          )
         end
       end
 

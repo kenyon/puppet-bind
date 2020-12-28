@@ -153,6 +153,14 @@ The `ensure` parameter for the BIND service.
 
 Default value: `running`
 
+##### `service_group`
+
+Data type: `String[1]`
+
+The primary group of `$service_user`. Used for directory permissions.
+
+Default value: `$service_user`
+
 ##### `service_name`
 
 Data type: `String[1]`

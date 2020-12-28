@@ -52,6 +52,9 @@
 # @param service_ensure
 #   The `ensure` parameter for the BIND service.
 #
+# @param service_group
+#   The primary group of `$service_user`. Used for directory permissions.
+#
 # @param service_name
 #   The name of the BIND service.
 #
@@ -79,6 +82,7 @@ class bind (
   Stdlib::Absolutepath $service_config_file = extlib::path_join([$config_dir, 'named.conf']),
   Variant[Boolean, String[1]] $service_enable = true,
   Stdlib::Ensure::Service $service_ensure = running,
+  String[1] $service_group = $service_user,
   Boolean $service_manage = true,
   Optional[String[1]] $service_options = undef,
 ) {

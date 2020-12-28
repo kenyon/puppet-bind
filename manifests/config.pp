@@ -35,4 +35,12 @@ class bind::config {
     matches => 'named.conf.*',
     recurse => true,
   }
+
+  # BIND's working directory.
+  file { $bind::options['directory']:
+    ensure => directory,
+    owner  => root,
+    group  => $bind::service_group,
+    mode   => '0775',
+  }
 }
