@@ -4,9 +4,33 @@
 
 require 'spec_helper'
 
+checkconf_cmd = '/usr/sbin/named-checkconf %'
+
+def checkzone_cmd(zone_name)
+  "/usr/sbin/named-checkzone #{zone_name} %"
+end
+
 config_dir = File.join('/etc', 'bind')
 config_filename = 'named.conf'
 config_file = File.join(config_dir, config_filename)
+default_zone_names = [
+  {
+    'filename' => 'db.0',
+    'zonename' => '0.in-addr.arpa',
+  },
+  {
+    'filename' => 'db.127',
+    'zonename' => '127.in-addr.arpa',
+  },
+  {
+    'filename' => 'db.255',
+    'zonename' => '255.in-addr.arpa',
+  },
+  {
+    'filename' => 'db.local',
+    'zonename' => 'localhost',
+  },
+]
 default_zones = %r<zone "." \{
     type hint;
     file "/usr/share/dns/root\.hints";
@@ -66,17 +90,40 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::install').that_comes_before('Class[bind::config]') }
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
-        it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(root_key) }
-        it { is_expected.to contain_file(File.join(config_dir, 'db.0')) }
-        it { is_expected.to contain_file(File.join(config_dir, 'db.127')) }
-        it { is_expected.to contain_file(File.join(config_dir, 'db.255')) }
-        it { is_expected.to contain_file(File.join(config_dir, 'db.empty')) }
-        it { is_expected.to contain_file(File.join(config_dir, 'db.local')) }
+
+        it do
+          is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
+            ensure: 'file',
+            content: root_key,
+            validate_cmd: checkconf_cmd,
+          )
+        end
+
+        default_zone_names.each do |names|
+          it do
+            is_expected.to contain_file(File.join(config_dir, names['filename'])).with(
+              ensure: 'file',
+              validate_cmd: checkzone_cmd(names['zonename']),
+            )
+          end
+        end
 
         if os_facts[:os]['name'] == 'Debian' && os_facts[:os]['release']['major'] == '10'
-          it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{managed-keys}) }
+          it do
+            is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
+              ensure: 'file',
+              content: %r{managed-keys},
+              validate_cmd: checkconf_cmd,
+            )
+          end
         else
-          it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{trust-anchors}) }
+          it do
+            is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
+              ensure: 'file',
+              content: %r{trust-anchors},
+              validate_cmd: checkconf_cmd,
+            )
+          end
         end
 
         it do
@@ -97,7 +144,6 @@ describe 'bind' do
 
         context 'named configuration' do
           it do
-            pending 'TODO: implement management of everything'
             is_expected.to contain_file(config_dir).with(
               ensure: 'directory',
               force: true,
@@ -110,17 +156,27 @@ describe 'bind' do
           end
 
           it do
-            is_expected.to contain_tidy(config_dir).with(
-              matches: 'named.conf.*',
-              recurse: true,
+            is_expected.to contain_file(config_file)
+              .with_ensure('file')
+              .with_content(%r{# Managed by Puppet})
+              .with_content(default_zones)
+              .without_content(%r{include ".*";})
+              .with_validate_cmd(checkconf_cmd)
+          end
+
+          it do
+            is_expected.to contain_file(File.join(config_dir, 'rndc.key')).with(
+              ensure: 'file',
+              owner: 'root',
+              group: group,
+              mode: '0600',
+              validate_cmd: checkconf_cmd,
             )
           end
 
           it do
-            is_expected.to contain_file(config_file)
-              .with_content(%r{# Managed by Puppet})
-              .with_content(default_zones)
-              .without_content(%r{include ".*";})
+            is_expected.to contain_exec('/usr/sbin/rndc-confgen -a')
+              .with_creates(File.join(config_dir, 'rndc.key'))
           end
         end
 
@@ -130,9 +186,9 @@ describe 'bind' do
           end
 
           it do
-            is_expected.to contain_file(
-              File.join('/etc', 'default', service_name),
-            ).with_content(%r{RESOLVCONF=no})
+            is_expected.to contain_file(File.join('/etc', 'default', service_name))
+              .with_ensure('file')
+              .with_content(%r{RESOLVCONF=no})
               .with_content(%r{OPTIONS="-u '#{user}' -c '#{config_file}' "})
           end
         end
@@ -150,7 +206,6 @@ describe 'bind' do
         it { is_expected.not_to contain_file(File.join(config_dir, 'db.0')) }
         it { is_expected.not_to contain_file(File.join(config_dir, 'db.127')) }
         it { is_expected.not_to contain_file(File.join(config_dir, 'db.255')) }
-        it { is_expected.not_to contain_file(File.join(config_dir, 'db.empty')) }
         it { is_expected.not_to contain_file(File.join(config_dir, 'db.local')) }
       end
 

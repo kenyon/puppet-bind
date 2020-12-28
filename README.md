@@ -107,7 +107,6 @@ licensed under the [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/).
 - [`files/etc/bind/db.0`](files/etc/bind/db.0)
 - [`files/etc/bind/db.127`](files/etc/bind/db.127)
 - [`files/etc/bind/db.255`](files/etc/bind/db.255)
-- [`files/etc/bind/db.empty`](files/etc/bind/db.empty)
 - [`files/etc/bind/db.local`](files/etc/bind/db.local)
 
 ## License

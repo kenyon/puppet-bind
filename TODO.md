@@ -5,8 +5,6 @@
 ## General
 
 - `git grep -E 'TODO|FIXME'`
-- manage the entire `/etc/bind` directory
-  - replicate the default `db.*` files and associated `zone` statements
 - DNSSEC setup support
 
 ## Zones
@@ -15,10 +13,10 @@
   - use [dnsruby](https://rubygems.org/gems/dnsruby) to do zone updates
     - types and providers with the Resource API
   - use `named-checkzone` to validate the zone
+    - use validate_cmd with file resources
 
 ## Config
 
-- use `named-checkconf` to validate the resulting config
 - create structs and type aliases for named.conf statements.
   - keys
   - views
