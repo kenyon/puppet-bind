@@ -29,6 +29,7 @@
 
 * [`Bind::Include`](#bindinclude): Type definition for BIND's `include` statement
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
+* [`Bind::Zone`](#bindzone): Type definition for BIND's `zone` statement
 
 ## Classes
 
@@ -183,6 +184,16 @@ for the BIND service.
 
 Default value: ``undef``
 
+##### `zones`
+
+Data type: `Optional[Array[Bind::Zone]]`
+
+[Zone
+configuration](https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar)
+statements.
+
+Default value: ``undef``
+
 ## Functions
 
 ## Data types
@@ -201,5 +212,31 @@ Alias of `Struct[{
   directory => Stdlib::Absolutepath,
   Optional['allow-query'] => Array[String[1]],
   Optional['zone-statistics'] => Variant[Boolean, Enum['yes', 'no', 'full', 'terse', 'none']],
+}]`
+
+### `Bind::Zone`
+
+Type definition for BIND's `zone` statement
+
+Alias of `Struct[{
+  name => String[1],
+  Optional['class'] => Enum['IN', 'HS', 'hesiod', 'CHAOS'],
+  Optional['in-view'] => String[1],
+  Optional['type'] => Enum[
+    'primary',
+    'master',
+    'secondary',
+    'slave',
+    'mirror',
+    'hint',
+    'stub',
+    'static-stub',
+    'forward',
+    'redirect',
+    'delegation-only'
+  ],
+  Optional['file'] => Stdlib::Absolutepath,
+  Optional['forward'] => Enum['first', 'only'],
+  Optional['forwarders'] => Array[Stdlib::Host],
 }]`
 

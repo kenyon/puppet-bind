@@ -54,3 +54,36 @@ zone "255.in-addr.arpa" {
     file "<%= extlib::path_join([$bind::config_dir, 'db.255']) %>";
 };
 <% } -%>
+
+<%
+  if $bind::zones {
+    $bind::zones.each |$zone| {
+      if $zone['class'] { -%>
+zone "<%= $zone['name'] %>" <%= $zone['class'] %> {
+  <%- } else { -%>
+zone "<%= $zone['name'] %>" {
+  <%- } -%>
+  <%- if $zone['type'] { -%>
+    type <%= $zone['type'] %>;
+  <%- } -%>
+  <%- if $zone['in-view'] { -%>
+    in-view "<%= $zone['in-view'] %>";
+  <%- } -%>
+  <%- if $zone['file'] { -%>
+    file "<%= $zone['file'] %>";
+  <%- } -%>
+  <%- if $zone['forward'] { -%>
+    forward <%= $zone['forward'] %>;
+  <%- } -%>
+  <%- if $zone['forwarders'] { -%>
+    forwarders {
+      <%- $zone['forwarders'].each |$forwarder| { -%>
+        <%= $forwarder %>;
+      <%- } -%>
+    };
+  <%- } -%>
+};
+
+<%  }
+  }
+-%>

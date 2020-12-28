@@ -213,6 +213,68 @@ describe 'bind' do
         end
       end
 
+      context 'with custom zones' do
+        context 'undef (and without default zones to make test easier)' do
+          let(:params) do
+            {
+              default_zones: false,
+              zones: :undef,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_file(config_file).without_content(%r{^zone}) }
+        end
+
+        context 'invalid type' do
+          let(:params) do
+            {
+              zones: 'strings are invalid',
+            }
+          end
+
+          it { is_expected.not_to compile }
+        end
+
+        context 'array of zones' do
+          let(:params) do
+            {
+              zones: [
+                { name: '.', type: 'mirror' },
+                { name: 'example.com', type: 'primary', file: '/example' },
+                {
+                  name: 'example.net',
+                  type: 'secondary',
+                  forward: 'only',
+                  forwarders: ['192.0.2.3', '192.0.2.4'],
+                },
+                { name: 'example.org', class: 'IN', 'in-view' => 'view0' },
+              ],
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file).with_content(%r<zone "\." \{
+    type mirror;
+\};>).with_content(%r<zone "example\.com" \{
+    type primary;
+    file "/example";
+\};>).with_content(%r<zone "example\.net" \{
+    type secondary;
+    forward only;
+    forwarders \{
+        192\.0\.2\.3;
+        192\.0\.2\.4;
+    \};
+\};>).with_content(%r<zone "example\.org" IN \{
+    in-view "view0";
+\};>)
+          end
+        end
+      end
+
       context 'with custom options' do
         let(:params) do
           {

@@ -66,6 +66,11 @@
 #   options](https://bind9.readthedocs.io/en/latest/manpages.html#named-internet-domain-name-server)
 #   for the BIND service.
 #
+# @param zones
+#   [Zone
+#   configuration](https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar)
+#   statements.
+#
 class bind (
   Stdlib::Absolutepath $config_dir,
   Bind::Options $options,
@@ -85,6 +90,7 @@ class bind (
   String[1] $service_group = $service_user,
   Boolean $service_manage = true,
   Optional[String[1]] $service_options = undef,
+  Optional[Array[Bind::Zone]] $zones = undef,
 ) {
   contain bind::install
   contain bind::config
