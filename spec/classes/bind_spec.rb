@@ -155,6 +155,27 @@ describe 'bind' do
       end
 
       context 'with custom includes' do
+        context 'undef' do
+          let(:params) do
+            {
+              includes: :undef,
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_file(config_file).without_content(%r{include}) }
+        end
+
+        context 'invalid type' do
+          let(:params) do
+            {
+              includes: 'not_an_absolute_path',
+            }
+          end
+
+          it { is_expected.not_to compile }
+        end
+
         context 'single file' do
           custom_includes_file = File.join('/etc', 'bind', 'whatever')
           let(:params) do
