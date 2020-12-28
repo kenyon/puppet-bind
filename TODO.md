@@ -21,11 +21,9 @@
 
 - use `named-checkconf` to validate the resulting config
 - create structs and type aliases for named.conf statements.
-  - includes
   - keys
   - views
   - zones
   - logging
-  - options
   - ...
 - manage `rndc.conf`

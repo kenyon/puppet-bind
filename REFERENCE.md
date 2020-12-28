@@ -25,6 +25,11 @@
 
 * `bind::service_name`: Determines the name of the BIND service
 
+### Data types
+
+* [`Bind::Include`](#bindinclude): Type definition for BIND's `include` statement
+* [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
+
 ## Classes
 
 ### `bind`
@@ -59,7 +64,7 @@ Default value: ``true``
 
 ##### `includes`
 
-Data type: `Optional[Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]]]`
+Data type: `Optional[Variant[Array[Bind::Include], Bind::Include]]`
 
 Additional configuration files to include in the BIND configuration using the
 [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
@@ -69,12 +74,11 @@ Default value: ``undef``
 
 ##### `options`
 
-Data type: `Hash`
+Data type: `Bind::Options`
 
 Configuration of the [options
 statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
-least the `directory` option must be specified. You need to provide the quotation marks for
-`quoted_string` types.
+least the `directory` option must be specified.
 
 ##### `package_manage`
 
@@ -172,4 +176,22 @@ for the BIND service.
 Default value: ``undef``
 
 ## Functions
+
+## Data types
+
+### `Bind::Include`
+
+Type definition for BIND's `include` statement
+
+Alias of `Stdlib::Absolutepath`
+
+### `Bind::Options`
+
+Type definition for BIND's `options` statement
+
+Alias of `Struct[{
+  directory => Stdlib::Absolutepath,
+  Optional['allow-query'] => Array[String[1]],
+  Optional['zone-statistics'] => Variant[Boolean, Enum['yes', 'no', 'full', 'terse', 'none']],
+}]`
 

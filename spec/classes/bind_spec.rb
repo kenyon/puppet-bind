@@ -192,7 +192,7 @@ describe 'bind' do
                 '2001:db8::/32',
                 '192.0.2.0/24',
               ],
-              'directory' => '"/meh"',
+              'directory' => '/meh',
               # PDK's super old rubocop fails to parse this using newer hash syntax :(
               'zone-statistics' => 'full',
             },

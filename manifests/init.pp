@@ -19,8 +19,7 @@
 # @param options
 #   Configuration of the [options
 #   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
-#   least the `directory` option must be specified. You need to provide the quotation marks for
-#   `quoted_string` types.
+#   least the `directory` option must be specified.
 #
 # @param package_manage
 #   Whether to have this module manage the BIND package.
@@ -66,7 +65,7 @@
 #
 class bind (
   Stdlib::Absolutepath $config_dir,
-  Hash $options,
+  Bind::Options $options,
   Boolean $package_backport,
   String[1] $package_name,
   String[1] $resolvconf_package_name,
@@ -74,7 +73,7 @@ class bind (
   String[1] $service_name,
   String[1] $service_user,
   Boolean $default_zones = true,
-  Optional[Variant[Stdlib::Absolutepath, Array[Stdlib::Absolutepath]]] $includes = undef,
+  Optional[Variant[Array[Bind::Include], Bind::Include]] $includes = undef,
   String[1] $package_ensure = installed,
   Boolean $package_manage = true,
   Stdlib::Absolutepath $service_config_file = extlib::path_join([$config_dir, 'named.conf']),
