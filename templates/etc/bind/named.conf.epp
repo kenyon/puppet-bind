@@ -4,13 +4,12 @@
 
 <%
   case $bind::includes {
-    Array: {
+    Array[Bind::Include]: {
       $bind::includes.each |$filename| { -%>include "<%= $filename %>";
   <%- }
     }
-    String: { -%>include "<%= $bind::includes %>";<% }
+    Bind::Include: { -%>include "<%= $bind::includes %>";<% }
     undef: {}
-    default: { fail('unsupported type for $bind::includes') }
   }
 %>
 
