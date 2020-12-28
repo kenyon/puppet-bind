@@ -14,15 +14,16 @@
 %>
 
 options {
+    directory "<%= $bind::options['directory'] %>";
   <%- if $bind::options['allow-query'] { -%>
     allow-query {
     <%- $bind::options['allow-query'].each |$address_match_list_element| { -%>
         <%= $address_match_list_element -%>;
     <%- } -%>
     };
-  <%- } -%>
-    directory "<%= $bind::options['directory'] %>";
-  <%- if $bind::options['zone-statistics'] { -%>
+  <%- }
+
+      if $bind::options['zone-statistics'] { -%>
     zone-statistics <%= $bind::options['zone-statistics'] %>;
   <%- } -%>
 };
