@@ -28,7 +28,13 @@
 ### Data types
 
 * [`Bind::Include`](#bindinclude): Type definition for BIND's `include` statement
+* [`Bind::Logging`](#bindlogging): Type definition for BIND's `logging` statement
+* [`Bind::Logging::Category`](#bindloggingcategory): Type definition for BIND's logging categories
+* [`Bind::Logging::CategoryPhrase`](#bindloggingcategoryphrase): Type definition for BIND's logging category phrase
+* [`Bind::Logging::ChannelName`](#bindloggingchannelname): Type definition for BIND's logging channel names
+* [`Bind::Logging::ChannelPhrase`](#bindloggingchannelphrase): Type definition for BIND's logging channel phrase
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
+* [`Bind::Size`](#bindsize): Type definition for BIND's file size specification
 * [`Bind::Zone`](#bindzone): Type definition for BIND's `zone` statement
 
 ## Classes
@@ -204,6 +210,54 @@ Type definition for BIND's `include` statement
 
 Alias of `Stdlib::Absolutepath`
 
+### `Bind::Logging`
+
+Type definition for BIND's `logging` statement
+
+Alias of `Struct[{
+  Optional['channels'] => Hash[Bind::Logging::ChannelName, Bind::Logging::ChannelPhrase],
+  Optional['categories'] => Hash[Bind::Logging::Category, Bind::Logging::CategoryPhrase],
+}]`
+
+### `Bind::Logging::Category`
+
+Type definition for BIND's logging categories
+
+Alias of `Enum['client', 'cname', 'config', 'database', 'default', 'delegation-only', 'dispatch', 'dnssec', 'dnstap', 'edns-disabled', 'general', 'lame-servers', 'network', 'notify', 'nsid', 'queries', 'query-errors', 'rate-limit', 'resolver', 'rpz', 'rpz-passthru', 'security', 'serve-stale', 'spill', 'trust-anchor-telemetry', 'unmatched', 'update', 'update-security', 'xfer-in', 'xfer-out', 'zoneload']`
+
+### `Bind::Logging::CategoryPhrase`
+
+Type definition for BIND's logging category phrase
+
+Alias of `Struct[{
+  Optional['channels'] => Array[String[1]],
+}]`
+
+### `Bind::Logging::ChannelName`
+
+Type definition for BIND's logging channel names
+
+Alias of `Pattern[/\A\w+\Z/]`
+
+### `Bind::Logging::ChannelPhrase`
+
+Type definition for BIND's logging channel phrase
+
+Alias of `Variant[Enum['null', 'stderr', 'syslog'], Struct[{
+  Optional['buffered'] => Boolean,
+  Optional['file'] => Struct[{
+    'name' => String[1],
+    Optional['versions'] => Variant[Enum['unlimited'], Integer],
+    Optional['size'] => Bind::Size,
+    Optional['suffix'] => Enum['increment', 'timestamp'],
+  }],
+  Optional['print-category'] => Boolean,
+  Optional['print-severity'] => Boolean,
+  Optional['print-time'] => Variant[Boolean, Stdlib::Yes_no, Enum['iso8601', 'iso8601-utc', 'local']],
+  Optional['severity'] => String[1],
+  Optional['syslog'] => Stdlib::Syslogfacility,
+}]]`
+
 ### `Bind::Options`
 
 Type definition for BIND's `options` statement
@@ -213,6 +267,12 @@ Alias of `Struct[{
   Optional['allow-query'] => Array[String[1]],
   Optional['zone-statistics'] => Variant[Boolean, Stdlib::Yes_no, Enum['full', 'terse', 'none']],
 }]`
+
+### `Bind::Size`
+
+Type definition for BIND's file size specification
+
+Alias of `Variant[Enum['unlimited', 'default'], Integer[0], Pattern[/\A\d+(?i:k|m|g)\Z/]]`
 
 ### `Bind::Zone`
 
