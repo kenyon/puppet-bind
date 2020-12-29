@@ -5,7 +5,7 @@
 require 'spec_helper'
 
 describe 'Bind::Zone' do
-  it { is_expected.not_to allow_value(:undef) }
+  it { is_expected.not_to allow_value(:undef, 12, 'string') }
   it { is_expected.not_to allow_value(name: 'example.meh', file: 'not_absolute') }
   it { is_expected.to allow_value(name: 'example.com', class: 'IN', 'in-view' => 'view1') }
   it { is_expected.to allow_value(name: 'example.net', class: 'HS', 'in-view' => 'view2') }

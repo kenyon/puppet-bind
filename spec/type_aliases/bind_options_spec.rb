@@ -5,6 +5,7 @@
 require 'spec_helper'
 
 describe 'Bind::Options' do
+  it { is_expected.not_to allow_value(:undef, 12, 'string') }
   it { is_expected.not_to allow_value(directory: 'not_absolute') }
   it { is_expected.not_to allow_value('zone-statistics' => 'invalid') }
   it { is_expected.not_to allow_value('allow-query' => 'not_an_array') }
