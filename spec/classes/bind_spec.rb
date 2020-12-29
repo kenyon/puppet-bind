@@ -188,8 +188,8 @@ describe 'bind' do
           it do
             is_expected.to contain_file(File.join('/etc', 'default', service_name))
               .with_ensure('file')
-              .with_content(%r{RESOLVCONF=no})
-              .with_content(%r{OPTIONS="-u '#{user}' -c '#{config_file}' "})
+              .with_content(%r{^RESOLVCONF=no$})
+              .with_content(%r{^OPTIONS="-u '#{user}' -c '#{config_file}' "$})
           end
         end
       end
@@ -243,7 +243,7 @@ describe 'bind' do
 
           it do
             is_expected.to contain_file(config_file)
-              .with_content(%r{include "#{custom_includes_file}";})
+              .with_content(%r{^include "#{custom_includes_file}";$})
           end
         end
 
@@ -262,8 +262,8 @@ describe 'bind' do
 
           it do
             is_expected.to contain_file(config_file)
-              .with_content(%r{include "#{custom_includes_array[0]}";})
-              .with_content(%r{include "#{custom_includes_array[1]}";})
+              .with_content(%r{^include "#{custom_includes_array[0]}";$})
+              .with_content(%r{^include "#{custom_includes_array[1]}";$})
           end
         end
       end
@@ -311,21 +311,21 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file).with_content(%r<zone "\." \{
+            is_expected.to contain_file(config_file).with_content(%r<^zone "\." \{
     type mirror;
-\};>).with_content(%r<zone "example\.com" \{
+\};$>).with_content(%r<^zone "example\.com" \{
     type primary;
     file "/example";
-\};>).with_content(%r<zone "example\.net" \{
+\};$>).with_content(%r<^zone "example\.net" \{
     type secondary;
     forward only;
     forwarders \{
         192\.0\.2\.3;
         192\.0\.2\.4;
     \};
-\};>).with_content(%r<zone "example\.org" IN \{
+\};$>).with_content(%r<^zone "example\.org" IN \{
     in-view "view0";
-\};>)
+\};$>)
           end
         end
       end
@@ -376,7 +376,7 @@ describe 'bind' do
           it do
             is_expected.to contain_file(
               File.join('/etc', 'default', service_name),
-            ).with_content(%r{OPTIONS="-u '#{user}' -c '#{config_file}' #{custom_service_options}"})
+            ).with_content(%r{^OPTIONS="-u '#{user}' -c '#{config_file}' #{custom_service_options}"$})
           end
         end
       end
@@ -393,7 +393,7 @@ describe 'bind' do
         it do
           is_expected.to contain_file(
             File.join('/etc', 'default', service_name),
-          ).with_content(%r{RESOLVCONF=yes})
+          ).with_content(%r{^RESOLVCONF=yes$})
         end
 
         it do
@@ -459,7 +459,7 @@ describe 'bind' do
           it do
             is_expected.to contain_file(
               File.join('/etc', 'default', service_name),
-            ).with_content(%r{OPTIONS="-u '#{user}' -c '#{custom_service_config_file}' "})
+            ).with_content(%r{^OPTIONS="-u '#{user}' -c '#{custom_service_config_file}' "$})
           end
         end
       end
@@ -480,7 +480,7 @@ describe 'bind' do
           it do
             is_expected.to contain_file(
               File.join('/etc', 'default', service_name),
-            ).with_content(%r{OPTIONS="-u '#{custom_service_user}' -c '#{config_file}' "})
+            ).with_content(%r{^OPTIONS="-u '#{custom_service_user}' -c '#{config_file}' "$})
           end
         end
 
