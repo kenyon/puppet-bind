@@ -211,7 +211,7 @@ Type definition for BIND's `options` statement
 Alias of `Struct[{
   directory => Stdlib::Absolutepath,
   Optional['allow-query'] => Array[String[1]],
-  Optional['zone-statistics'] => Variant[Boolean, Enum['yes', 'no', 'full', 'terse', 'none']],
+  Optional['zone-statistics'] => Variant[Boolean, Stdlib::Yes_no, Enum['full', 'terse', 'none']],
 }]`
 
 ### `Bind::Zone`
