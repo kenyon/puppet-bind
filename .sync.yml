@@ -8,3 +8,6 @@ spec/spec_helper.rb:
 
 .travis.yml:
   dist: focal
+
+.vscode/extensions.json:
+  delete: true
