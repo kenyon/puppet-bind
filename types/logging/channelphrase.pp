@@ -1,4 +1,7 @@
-# @summary Type definition for BIND's logging channel phrase
+# @summary Type definition for BIND's `logging` `channel` phrase
+#
+# Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-channel-phrase
+#
 type Bind::Logging::ChannelPhrase = Variant[Enum['null', 'stderr', 'syslog'], Struct[{
   Optional['buffered'] => Boolean,
   Optional['file'] => Struct[{

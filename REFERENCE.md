@@ -29,10 +29,10 @@
 
 * [`Bind::Include`](#bindinclude): Type definition for BIND's `include` statement
 * [`Bind::Logging`](#bindlogging): Type definition for BIND's `logging` statement
-* [`Bind::Logging::Category`](#bindloggingcategory): Type definition for BIND's logging categories
-* [`Bind::Logging::CategoryPhrase`](#bindloggingcategoryphrase): Type definition for BIND's logging category phrase
-* [`Bind::Logging::ChannelName`](#bindloggingchannelname): Type definition for BIND's logging channel names
-* [`Bind::Logging::ChannelPhrase`](#bindloggingchannelphrase): Type definition for BIND's logging channel phrase
+* [`Bind::Logging::Category`](#bindloggingcategory): Type definition for BIND's `logging` categories
+* [`Bind::Logging::CategoryPhrase`](#bindloggingcategoryphrase): Type definition for BIND's `logging` `category` phrase
+* [`Bind::Logging::ChannelName`](#bindloggingchannelname): Type definition for BIND's `logging` `channel` names
+* [`Bind::Logging::ChannelPhrase`](#bindloggingchannelphrase): Type definition for BIND's `logging` `channel` phrase
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
 * [`Bind::Size`](#bindsize): Type definition for BIND's file size specification
 * [`Bind::Zone`](#bindzone): Type definition for BIND's `zone` statement
@@ -230,13 +230,13 @@ Alias of `Struct[{
 
 ### `Bind::Logging::Category`
 
-Type definition for BIND's logging categories
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-category-phrase
 
 Alias of `Enum['client', 'cname', 'config', 'database', 'default', 'delegation-only', 'dispatch', 'dnssec', 'dnstap', 'edns-disabled', 'general', 'lame-servers', 'network', 'notify', 'nsid', 'queries', 'query-errors', 'rate-limit', 'resolver', 'rpz', 'rpz-passthru', 'security', 'serve-stale', 'spill', 'trust-anchor-telemetry', 'unmatched', 'update', 'update-security', 'xfer-in', 'xfer-out', 'zoneload']`
 
 ### `Bind::Logging::CategoryPhrase`
 
-Type definition for BIND's logging category phrase
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-category-phrase
 
 Alias of `Struct[{
   Optional['channels'] => Array[String[1]],
@@ -244,13 +244,13 @@ Alias of `Struct[{
 
 ### `Bind::Logging::ChannelName`
 
-Type definition for BIND's logging channel names
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-channel-phrase
 
 Alias of `Pattern[/\A\w+\Z/]`
 
 ### `Bind::Logging::ChannelPhrase`
 
-Type definition for BIND's logging channel phrase
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-channel-phrase
 
 Alias of `Variant[Enum['null', 'stderr', 'syslog'], Struct[{
   Optional['buffered'] => Boolean,

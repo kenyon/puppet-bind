@@ -1,4 +1,7 @@
-# @summary Type definition for BIND's logging categories
+# @summary Type definition for BIND's `logging` categories
+#
+# Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-category-phrase
+#
 type Bind::Logging::Category = Enum[
   'client',
   'cname',
