@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 bind::config_dir: /etc/bind
-bind::options:
+bind::default_options:
   directory: /var/cache/bind
 bind::package_backport: false
 bind::package_name: bind9

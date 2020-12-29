@@ -496,6 +496,22 @@ describe 'bind' do
         192\.0\.2\.0/24;
     \};>)
         end
+
+        context 'directory not specified in params, should be provided by defaults' do
+          let(:params) do
+            {
+              options: { 'zone-statistics' => 'full' },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file)
+              .with_content(%r{directory "#{working_dir}"})
+              .with_content(%r{zone-statistics full;})
+          end
+        end
       end
 
       context 'with custom service_options' do

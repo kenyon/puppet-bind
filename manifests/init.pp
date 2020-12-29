@@ -8,6 +8,12 @@
 # @param config_dir
 #   Directory for BIND configuration files.
 #
+# @param default_options
+#   Default BIND
+#   [options](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar) loaded
+#   from Hiera data in this module's `data` directory. Merged with, and overridden by, the `options`
+#   parameter.
+#
 # @param default_zones
 #   Whether to include the default zones in the BIND configuration.
 #
@@ -22,8 +28,8 @@
 #
 # @param options
 #   Configuration of the [options
-#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
-#   least the `directory` option must be specified.
+#   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar).
+#   Merged with, and overrides, the `default_options` parameter.
 #
 # @param package_manage
 #   Whether to have this module manage the BIND package.
@@ -77,7 +83,7 @@
 #
 class bind (
   Stdlib::Absolutepath $config_dir,
-  Bind::Options $options,
+  Bind::Options $default_options,
   Boolean $package_backport,
   String[1] $package_name,
   String[1] $resolvconf_package_name,
@@ -87,6 +93,7 @@ class bind (
   Boolean $default_zones = true,
   Optional[Variant[Array[Bind::Include], Bind::Include]] $includes = undef,
   Optional[Bind::Logging] $logging = undef,
+  Optional[Bind::Options] $options = undef,
   String[1] $package_ensure = installed,
   Boolean $package_manage = true,
   Stdlib::Absolutepath $service_config_file = extlib::path_join([$config_dir, 'named.conf']),

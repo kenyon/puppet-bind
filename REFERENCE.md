@@ -61,6 +61,15 @@ Data type: `Stdlib::Absolutepath`
 
 Directory for BIND configuration files.
 
+##### `default_options`
+
+Data type: `Bind::Options`
+
+Default BIND
+[options](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar) loaded
+from Hiera data in this module's `data` directory. Merged with, and overridden by, the `options`
+parameter.
+
 ##### `default_zones`
 
 Data type: `Boolean`
@@ -90,11 +99,13 @@ Default value: ``undef``
 
 ##### `options`
 
-Data type: `Bind::Options`
+Data type: `Optional[Bind::Options]`
 
 Configuration of the [options
-statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
-least the `directory` option must be specified.
+statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar).
+Merged with, and overrides, the `default_options` parameter.
+
+Default value: ``undef``
 
 ##### `package_manage`
 
@@ -272,7 +283,7 @@ Alias of `Variant[Enum['null', 'stderr', 'syslog'], Struct[{
 Type definition for BIND's `options` statement
 
 Alias of `Struct[{
-  directory => Stdlib::Absolutepath,
+  Optional['directory'] => Stdlib::Absolutepath,
   Optional['allow-query'] => Array[String[1]],
   Optional['zone-statistics'] => Variant[Boolean, Stdlib::Yes_no, Enum['full', 'terse', 'none']],
 }]`

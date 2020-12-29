@@ -1,6 +1,8 @@
+<%- | Optional[Bind::Options] $options = undef | -%>
+
+<%# SPDX-License-Identifier: GPL-3.0-or-later -%>
+
 # Managed by Puppet
-#
-# SPDX-License-Identifier: GPL-3.0-or-later
 
 <%
   case $bind::includes {
@@ -56,20 +58,23 @@ logging {
 };
 <%- } -%>
 
+<%- if $options { -%>
 options {
-    directory "<%= $bind::options['directory'] %>";
-  <%- if $bind::options['allow-query'] { -%>
+  <%- if $options['directory'] { -%>
+    directory "<%= $options['directory'] %>";
+  <%- } -%>
+  <%- if $options['allow-query'] { -%>
     allow-query {
-    <%- $bind::options['allow-query'].each |$address_match_list_element| { -%>
+    <%- $options['allow-query'].each |$address_match_list_element| { -%>
         <%= $address_match_list_element -%>;
     <%- } -%>
     };
-  <%- }
-
-      if $bind::options['zone-statistics'] { -%>
-    zone-statistics <%= $bind::options['zone-statistics'] %>;
+  <%- } -%>
+  <%- if $options['zone-statistics'] { -%>
+    zone-statistics <%= $options['zone-statistics'] %>;
   <%- } -%>
 };
+<%- } -%>
 
 <% if $bind::default_zones { %>
 zone "." {

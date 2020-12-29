@@ -7,6 +7,12 @@
 class bind::config {
   assert_private()
 
+  if $bind::options {
+    $merged_options = $bind::default_options + $bind::options
+  } else {
+    $merged_options = $bind::default_options
+  }
+
   file { extlib::path_join(['/etc', 'default', bind::service_name()]):
     ensure  => file,
     content => epp("${module_name}/etc/default/named.epp"),
@@ -24,7 +30,8 @@ class bind::config {
 
   file { $bind::service_config_file:
     ensure       => file,
-    content      => epp("${module_name}/etc/bind/named.conf.epp"),
+    content      => epp("${module_name}/etc/bind/named.conf.epp",
+                        {'options' => $merged_options}),
     validate_cmd => '/usr/sbin/named-checkconf %',
   }
 
@@ -76,7 +83,7 @@ class bind::config {
   }
 
   # BIND's working directory.
-  file { $bind::options['directory']:
+  file { $merged_options['directory']:
     ensure => directory,
     owner  => root,
     group  => $bind::service_group,
