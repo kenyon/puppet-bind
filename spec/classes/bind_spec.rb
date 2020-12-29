@@ -330,6 +330,142 @@ describe 'bind' do
         end
       end
 
+      context 'with custom logging' do
+        context 'only categories defined' do
+          let(:params) do
+            {
+              logging: {
+                categories: {
+                  security: {
+                    channels: ['my_security_channel', 'default_syslog'],
+                  },
+                  notify: {
+                    channels: ['null'],
+                  },
+                },
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file).with_content(%r<^logging \{
+    category security \{
+        my_security_channel;
+        default_syslog;
+    \};
+    category notify \{
+        null;
+    \};
+\};>)
+          end
+        end
+
+        context 'only channels defined' do
+          let(:params) do
+            {
+              logging: {
+                channels: {
+                  chan1: 'null',
+                  chan2: {
+                    file: {
+                      name: 'log',
+                    },
+                  },
+                },
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file).with_content(%r<^logging \{
+    channel chan1 \{
+        null;
+    \};
+    channel chan2 \{
+        file "log"\s*;
+    \};
+\};>)
+          end
+        end
+
+        context 'channels and categories defined' do
+          let(:params) do
+            {
+              logging: {
+                categories: {
+                  rpz: {},
+                  queries: {
+                    channels: [
+                      'my_query_channel',
+                      'default_syslog',
+                    ],
+                  },
+                  'query-errors' => {
+                    channels: ['null'],
+                  },
+                },
+                channels: {
+                  an_example_channel: {
+                    buffered: true,
+                    file: {
+                      name: 'example.log',
+                      versions: 'unlimited',
+                      size: '100M',
+                      suffix: 'timestamp',
+                    },
+                    'print-category' => true,
+                    'print-time' => 'iso8601-utc',
+                    severity: 'debug 3',
+                  },
+                  my_query_channel: {
+                    file: {
+                      name: 'query.log',
+                      versions: 2,
+                      size: '1m',
+                    },
+                    'print-time' => true,
+                    severity: 'info',
+                  },
+                },
+              },
+            }
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it do
+            is_expected.to contain_file(config_file)
+              .with_content(%r<^logging \{
+    category rpz \{
+    \};
+    category queries \{
+        my_query_channel;
+        default_syslog;
+    \};
+    category query-errors \{
+        null;
+    \};
+    channel an_example_channel \{
+        buffered yes;
+        file "example\.log" versions unlimited size 100M suffix timestamp;
+        print-category yes;
+        print-time iso8601-utc;
+        severity debug 3;
+    \};
+    channel my_query_channel \{
+        file "query\.log" versions 2 size 1m;
+        print-time true;
+        severity info;
+    \};
+\};>)
+          end
+        end
+      end
+
       context 'with custom options' do
         let(:params) do
           {

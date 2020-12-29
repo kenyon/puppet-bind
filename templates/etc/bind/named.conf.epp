@@ -13,6 +13,49 @@
   }
 %>
 
+<%# TODO: not every possibility has been templated yet. -%>
+<%- if $bind::logging { -%>
+logging {
+  <%- if $bind::logging['categories'] { -%>
+    <%- $bind::logging['categories'].each |$category, $chanlist| { -%>
+    category <%= $category %> {
+      <%- if $chanlist['channels'] { -%>
+        <%- $chanlist['channels'].each |$channel| { -%>
+        <%= $channel %>;
+        <%- } -%>
+      <%- } -%>
+    };
+    <%- } -%>
+  <%- } -%>
+  <%- if $bind::logging['channels'] { -%>
+    <%- $bind::logging['channels'].each |$channel, $channel_config| { -%>
+    channel <%= $channel %> {
+      <%- case $channel_config {
+            String: { -%>
+        <%= $channel_config %>;
+        <%- }
+            Hash: {
+              if $channel_config['buffered'] { -%>
+        buffered yes;
+          <%- } if $channel_config['file'] { -%>
+        file "<%= $channel_config['file']['name'] %>"<% if $channel_config['file']['versions'] { %> versions <%= $channel_config['file']['versions'] %><% } %><% if $channel_config['file']['size'] { %> size <%= $channel_config['file']['size'] %><% } %><% if $channel_config['file']['suffix'] { %> suffix <%= $channel_config['file']['suffix'] %><% } %>;
+          <%- } if $channel_config['print-category'] { -%>
+        print-category yes;
+          <%- } if $channel_config['print-severity'] { -%>
+        print-severity yes;
+          <%- } if $channel_config['print-time'] { -%>
+        print-time <%= $channel_config['print-time'] %>;
+          <%- } if $channel_config['severity'] { -%>
+        severity <%= $channel_config['severity'] %>;
+          <%- } -%>
+        <%- } -%>
+      <%- } -%>
+    };
+    <%- } -%>
+  <%- } -%>
+};
+<%- } -%>
+
 options {
     directory "<%= $bind::options['directory'] %>";
   <%- if $bind::options['allow-query'] { -%>

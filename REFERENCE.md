@@ -79,6 +79,15 @@ statement.
 
 Default value: ``undef``
 
+##### `logging`
+
+Data type: `Optional[Bind::Logging]`
+
+Configuration of the [logging
+statement](https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar).
+
+Default value: ``undef``
+
 ##### `options`
 
 Data type: `Bind::Options`

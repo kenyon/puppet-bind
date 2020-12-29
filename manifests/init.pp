@@ -16,6 +16,10 @@
 #   [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
 #   statement.
 #
+# @param logging
+#   Configuration of the [logging
+#   statement](https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar).
+#
 # @param options
 #   Configuration of the [options
 #   statement](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar). At
@@ -82,6 +86,7 @@ class bind (
   String[1] $service_user,
   Boolean $default_zones = true,
   Optional[Variant[Array[Bind::Include], Bind::Include]] $includes = undef,
+  Optional[Bind::Logging] $logging = undef,
   String[1] $package_ensure = installed,
   Boolean $package_manage = true,
   Stdlib::Absolutepath $service_config_file = extlib::path_join([$config_dir, 'named.conf']),
