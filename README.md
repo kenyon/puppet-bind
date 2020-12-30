@@ -70,6 +70,13 @@ supported by this module, but you can of course do this downgrade manually.
 
 ## Development
 
+The development of this module attempts to be
+[test-driven](https://en.wikipedia.org/wiki/Test-driven_development) as much as possible.
+Therefore, changes should generally be accompanied by tests. The test suite is located in the
+[`spec`](spec) directory. Acceptance tests (in the [`acceptance`](spec/acceptance) directory) use
+[Serverspec](https://serverspec.org/), while unit tests (everything else) use
+[rspec-puppet](https://rspec-puppet.com/).
+
 ### Running tests
 
 [PDK](https://puppet.com/docs/puppet/latest/pdk_install.html) and
