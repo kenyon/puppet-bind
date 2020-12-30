@@ -63,9 +63,23 @@ options {
   <%- if $options['directory'] { -%>
     directory "<%= $options['directory'] %>";
   <%- } -%>
+  <%- if $options['allow-transfer'] { -%>
+    allow-transfer {
+    <%- $options['allow-transfer'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
   <%- if $options['allow-query'] { -%>
     allow-query {
     <%- $options['allow-query'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
+  <%- if $options['also-notify'] { -%>
+    also-notify {
+    <%- $options['also-notify'].each |$address_match_list_element| { -%>
         <%= $address_match_list_element -%>;
     <%- } -%>
     };
@@ -128,6 +142,20 @@ zone "<%= $zone['name'] %>" {
   <%- } -%>
   <%- if $zone['file'] { -%>
     file "<%= $zone['file'] %>";
+  <%- } -%>
+  <%- if $zone['allow-transfer'] { -%>
+    allow-transfer {
+    <%- $zone['allow-transfer'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
+  <%- if $zone['also-notify'] { -%>
+    also-notify {
+    <%- $zone['also-notify'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
   <%- } -%>
   <%- if $zone['auto-dnssec'] { -%>
     auto-dnssec <%= $zone['auto-dnssec'] %>;

@@ -300,6 +300,8 @@ describe 'bind' do
                   name: 'example.com',
                   type: 'primary',
                   file: '/example',
+                  'allow-transfer' => ['2001:db8::/64'],
+                  'also-notify' => ['2001:db8:1::/64'],
                   'auto-dnssec' => 'maintain',
                   'inline-signing' => true,
                   'key-directory' => '/example',
@@ -329,6 +331,12 @@ describe 'bind' do
 \};$>).with_content(%r<^zone "example\.com" \{
     type primary;
     file "/example";
+    allow-transfer \{
+        2001:db8::/64;
+    \};
+    also-notify \{
+        2001:db8:1::/64;
+    \};
     auto-dnssec maintain;
     inline-signing true;
     key-directory "/example";
@@ -492,12 +500,14 @@ describe 'bind' do
         let(:params) do
           {
             options: {
+              'allow-transfer' => ['2001:db8::/64'],
               'allow-query' => [
                 'localhost',
                 'localnets',
                 '2001:db8::/32',
                 '192.0.2.0/24',
               ],
+              'also-notify' => ['2001:db8:1::/64'],
               # PDK's super old rubocop fails to parse this using newer hash syntax :(
               'auto-dnssec' => 'maintain',
               'directory' => '/meh',
@@ -522,6 +532,10 @@ describe 'bind' do
         localnets;
         2001:db8::/32;
         192\.0\.2\.0/24;
+    \};>).with_content(%r<allow-transfer \{
+        2001:db8::/64;
+    \};>).with_content(%r<also-notify \{
+        2001:db8:1::/64;
     \};>)
         end
 

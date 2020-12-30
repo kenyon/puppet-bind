@@ -25,6 +25,8 @@ describe 'Bind::Zone' do
   it { is_expected.to allow_value(name: 'example.xxx', type: 'secondary', file: '/xxx', primaries: ['2001:db8::2']) }
   it { is_expected.to allow_value(name: 'example.xxx', type: 'slave', file: '/xxx', masters: ['2001:db8::2']) }
   it { is_expected.to allow_value('name' => 'example.com', 'key-directory' => '/absolute-dir') }
+  it { is_expected.to allow_value('name' => 'example.com', 'allow-transfer' => ['2001:db8::/64']) }
+  it { is_expected.to allow_value('name' => 'example.com', 'also-notify' => ['2001:db8:1::/64']) }
 
   it do
     is_expected.to allow_value(
