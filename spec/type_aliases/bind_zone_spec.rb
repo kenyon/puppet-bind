@@ -11,7 +11,6 @@ describe 'Bind::Zone' do
   it { is_expected.to allow_value(name: 'example.net', class: 'HS', 'in-view' => 'view2') }
   it { is_expected.to allow_value(name: 'example.org', class: 'CHAOS', 'in-view' => 'view3') }
   it { is_expected.to allow_value(name: 'example.us', class: 'IN', type: 'primary') }
-  it { is_expected.to allow_value(name: 'example.uk', type: 'master', file: '/z') }
   it { is_expected.to allow_value(name: 'example.google', type: 'secondary') }
   it { is_expected.to allow_value(name: 'example.jp', type: 'slave') }
   it { is_expected.to allow_value(name: '.', type: 'mirror') }
@@ -24,4 +23,14 @@ describe 'Bind::Zone' do
   it { is_expected.to allow_value(name: 'example.zero', type: 'delegation-only') }
   it { is_expected.to allow_value(name: 'example.xxx', type: 'secondary', file: '/xxx', primaries: ['2001:db8::2']) }
   it { is_expected.to allow_value(name: 'example.xxx', type: 'slave', file: '/xxx', masters: ['2001:db8::2']) }
+
+  it do
+    is_expected.to allow_value(
+      name: 'example.uk',
+      type: 'master',
+      file: '/z',
+      'auto-dnssec' => 'maintain',
+      'inline-signing' => true,
+    )
+  end
 end

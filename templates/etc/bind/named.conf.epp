@@ -70,6 +70,12 @@ options {
     <%- } -%>
     };
   <%- } -%>
+  <%- if $options['auto-dnssec'] { -%>
+    auto-dnssec <%= $options['auto-dnssec'] %>;
+  <%- } -%>
+  <%- if $options['inline-signing'] { -%>
+    inline-signing <%= $options['inline-signing'] %>;
+  <%- } -%>
   <%- if $options['zone-statistics'] { -%>
     zone-statistics <%= $options['zone-statistics'] %>;
   <%- } -%>
@@ -119,6 +125,12 @@ zone "<%= $zone['name'] %>" {
   <%- } -%>
   <%- if $zone['file'] { -%>
     file "<%= $zone['file'] %>";
+  <%- } -%>
+  <%- if $zone['auto-dnssec'] { -%>
+    auto-dnssec <%= $zone['auto-dnssec'] %>;
+  <%- } -%>
+  <%- if $zone['inline-signing'] { -%>
+    inline-signing <%= $zone['inline-signing'] %>;
   <%- } -%>
   <%- if $zone['forward'] { -%>
     forward <%= $zone['forward'] %>;

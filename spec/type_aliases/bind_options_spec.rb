@@ -22,4 +22,6 @@ describe 'Bind::Options' do
       'zone-statistics' => 'full',
     )
   end
+
+  it { is_expected.to allow_value('auto-dnssec' => 'maintain', 'inline-signing' => true) }
 end

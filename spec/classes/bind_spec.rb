@@ -296,7 +296,13 @@ describe 'bind' do
             {
               zones: [
                 { name: '.', type: 'mirror' },
-                { name: 'example.com', type: 'primary', file: '/example' },
+                {
+                  name: 'example.com',
+                  type: 'primary',
+                  file: '/example',
+                  'auto-dnssec' => 'maintain',
+                  'inline-signing' => true,
+                },
                 {
                   name: 'example.net',
                   type: 'secondary',
@@ -322,6 +328,8 @@ describe 'bind' do
 \};$>).with_content(%r<^zone "example\.com" \{
     type primary;
     file "/example";
+    auto-dnssec maintain;
+    inline-signing true;
 \};$>).with_content(%r<^zone "example\.net" \{
     type secondary;
     forward only;
@@ -490,6 +498,8 @@ describe 'bind' do
               ],
               'directory' => '/meh',
               # PDK's super old rubocop fails to parse this using newer hash syntax :(
+              'auto-dnssec' => 'maintain',
+              'inline-signing' => true,
               'zone-statistics' => 'full',
             },
           }
@@ -500,6 +510,8 @@ describe 'bind' do
         it do
           is_expected.to contain_file(config_file)
             .with_content(%r{directory "/meh";})
+            .with_content(%r{auto-dnssec maintain;})
+            .with_content(%r{inline-signing true;})
             .with_content(%r{zone-statistics full;})
             .with_content(%r<allow-query \{
         localhost;
