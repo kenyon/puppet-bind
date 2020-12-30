@@ -7,6 +7,7 @@ require 'spec_helper'
 describe 'Bind::Zone' do
   it { is_expected.not_to allow_value(:undef, 12, 'string') }
   it { is_expected.not_to allow_value(name: 'example.meh', file: 'not_absolute') }
+  it { is_expected.not_to allow_value('name' => 'example.com', 'key-directory' => 'not-absolute-dir') }
   it { is_expected.to allow_value(name: 'example.com', class: 'IN', 'in-view' => 'view1') }
   it { is_expected.to allow_value(name: 'example.net', class: 'HS', 'in-view' => 'view2') }
   it { is_expected.to allow_value(name: 'example.org', class: 'CHAOS', 'in-view' => 'view3') }
@@ -23,6 +24,7 @@ describe 'Bind::Zone' do
   it { is_expected.to allow_value(name: 'example.zero', type: 'delegation-only') }
   it { is_expected.to allow_value(name: 'example.xxx', type: 'secondary', file: '/xxx', primaries: ['2001:db8::2']) }
   it { is_expected.to allow_value(name: 'example.xxx', type: 'slave', file: '/xxx', masters: ['2001:db8::2']) }
+  it { is_expected.to allow_value('name' => 'example.com', 'key-directory' => '/absolute-dir') }
 
   it do
     is_expected.to allow_value(

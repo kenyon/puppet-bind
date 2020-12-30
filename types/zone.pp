@@ -9,6 +9,7 @@ type Bind::Zone = Struct[{
   Optional['forwarders'] => Array[Stdlib::Host],
   Optional['in-view'] => String[1],
   Optional['inline-signing'] => Variant[Boolean, Stdlib::Yes_no],
+  Optional['key-directory'] => Stdlib::Absolutepath,
   Optional['masters'] => Array[Stdlib::Host],
   Optional['primaries'] => Array[Stdlib::Host],
   Optional['type'] => Enum[

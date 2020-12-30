@@ -302,6 +302,7 @@ describe 'bind' do
                   file: '/example',
                   'auto-dnssec' => 'maintain',
                   'inline-signing' => true,
+                  'key-directory' => '/example',
                 },
                 {
                   name: 'example.net',
@@ -330,6 +331,7 @@ describe 'bind' do
     file "/example";
     auto-dnssec maintain;
     inline-signing true;
+    key-directory "/example";
 \};$>).with_content(%r<^zone "example\.net" \{
     type secondary;
     forward only;
@@ -496,10 +498,11 @@ describe 'bind' do
                 '2001:db8::/32',
                 '192.0.2.0/24',
               ],
-              'directory' => '/meh',
               # PDK's super old rubocop fails to parse this using newer hash syntax :(
               'auto-dnssec' => 'maintain',
+              'directory' => '/meh',
               'inline-signing' => true,
+              'key-directory' => '/example',
               'zone-statistics' => 'full',
             },
           }
@@ -512,6 +515,7 @@ describe 'bind' do
             .with_content(%r{directory "/meh";})
             .with_content(%r{auto-dnssec maintain;})
             .with_content(%r{inline-signing true;})
+            .with_content(%r{key-directory "/example";})
             .with_content(%r{zone-statistics full;})
             .with_content(%r<allow-query \{
         localhost;

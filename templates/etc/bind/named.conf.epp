@@ -76,6 +76,9 @@ options {
   <%- if $options['inline-signing'] { -%>
     inline-signing <%= $options['inline-signing'] %>;
   <%- } -%>
+  <%- if $options['key-directory'] { -%>
+    key-directory "<%= $options['key-directory'] %>";
+  <%- } -%>
   <%- if $options['zone-statistics'] { -%>
     zone-statistics <%= $options['zone-statistics'] %>;
   <%- } -%>
@@ -131,6 +134,9 @@ zone "<%= $zone['name'] %>" {
   <%- } -%>
   <%- if $zone['inline-signing'] { -%>
     inline-signing <%= $zone['inline-signing'] %>;
+  <%- } -%>
+  <%- if $zone['key-directory'] { -%>
+    key-directory "<%= $zone['key-directory'] %>";
   <%- } -%>
   <%- if $zone['forward'] { -%>
     forward <%= $zone['forward'] %>;
