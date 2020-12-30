@@ -301,6 +301,7 @@ describe 'bind' do
                   type: 'primary',
                   file: '/example',
                   'allow-transfer' => ['2001:db8::/64'],
+                  'allow-update' => ['2001:db8:2::/64'],
                   'also-notify' => ['2001:db8:1::/64'],
                   'auto-dnssec' => 'maintain',
                   'inline-signing' => true,
@@ -333,6 +334,9 @@ describe 'bind' do
     file "/example";
     allow-transfer \{
         2001:db8::/64;
+    \};
+    allow-update \{
+        2001:db8:2::/64;
     \};
     also-notify \{
         2001:db8:1::/64;
@@ -501,6 +505,7 @@ describe 'bind' do
           {
             options: {
               'allow-transfer' => ['2001:db8::/64'],
+              'allow-update' => ['2001:db8:2::/64'],
               'allow-query' => [
                 'localhost',
                 'localnets',
@@ -534,6 +539,8 @@ describe 'bind' do
         192\.0\.2\.0/24;
     \};>).with_content(%r<allow-transfer \{
         2001:db8::/64;
+    \};>).with_content(%r<allow-update \{
+        2001:db8:2::/64;
     \};>).with_content(%r<also-notify \{
         2001:db8:1::/64;
     \};>)

@@ -70,6 +70,13 @@ options {
     <%- } -%>
     };
   <%- } -%>
+  <%- if $options['allow-update'] { -%>
+    allow-update {
+    <%- $options['allow-update'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
   <%- if $options['allow-query'] { -%>
     allow-query {
     <%- $options['allow-query'].each |$address_match_list_element| { -%>
@@ -146,6 +153,13 @@ zone "<%= $zone['name'] %>" {
   <%- if $zone['allow-transfer'] { -%>
     allow-transfer {
     <%- $zone['allow-transfer'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
+  <%- if $zone['allow-update'] { -%>
+    allow-update {
+    <%- $zone['allow-update'].each |$address_match_list_element| { -%>
         <%= $address_match_list_element -%>;
     <%- } -%>
     };

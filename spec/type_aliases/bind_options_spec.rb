@@ -12,6 +12,7 @@ describe 'Bind::Options' do
   it { is_expected.not_to allow_value('allow-query' => 'not_an_array') }
 
   it { is_expected.to allow_value('allow-transfer' => ['2001:db8::/64']) }
+  it { is_expected.to allow_value('allow-update' => ['2001:db8:2::/64']) }
   it { is_expected.to allow_value('also-notify' => ['2001:db8:1::/64']) }
 
   it do

@@ -1,6 +1,7 @@
 # @summary Type definition for BIND's `options` statement
 type Bind::Options = Struct[{
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
+  Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-query'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['also-notify'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['auto-dnssec'] => Enum['allow', 'maintain', 'off'],

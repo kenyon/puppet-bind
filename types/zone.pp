@@ -2,6 +2,7 @@
 type Bind::Zone = Struct[{
   name => String[1],
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
+  Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['also-notify'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['auto-dnssec'] => Enum['allow', 'maintain', 'off'],
   Optional['class'] => Enum['IN', 'HS', 'hesiod', 'CHAOS'],
