@@ -22,4 +22,6 @@ describe 'Bind::Zone' do
   it { is_expected.to allow_value(name: 'example.xzy', type: 'forward', forward: 'first', forwarders: ['192.0.2.1']) }
   it { is_expected.to allow_value(name: 'example.biz', type: 'redirect') }
   it { is_expected.to allow_value(name: 'example.zero', type: 'delegation-only') }
+  it { is_expected.to allow_value(name: 'example.xxx', type: 'secondary', file: '/xxx', primaries: ['2001:db8::2']) }
+  it { is_expected.to allow_value(name: 'example.xxx', type: 'slave', file: '/xxx', masters: ['2001:db8::2']) }
 end

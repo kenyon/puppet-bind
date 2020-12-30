@@ -304,6 +304,12 @@ describe 'bind' do
                   forwarders: ['192.0.2.3', '192.0.2.4'],
                 },
                 { name: 'example.org', class: 'IN', 'in-view' => 'view0' },
+                {
+                  name: 'example.xyz',
+                  type: 'secondary',
+                  file: '/var/cache/bind/db.example.xyz',
+                  primaries: ['2001:db8::1'],
+                },
               ],
             }
           end
@@ -325,7 +331,13 @@ describe 'bind' do
     \};
 \};$>).with_content(%r<^zone "example\.org" IN \{
     in-view "view0";
-\};$>)
+\};$>).with_content(%r<^zone "example\.xyz" \{
+    type secondary;
+    file "/var/cache/bind/db\.example\.xyz";
+    primaries \{
+        2001:db8::1;
+    \};
+\};>)
           end
         end
       end

@@ -130,6 +130,20 @@ zone "<%= $zone['name'] %>" {
       <%- } -%>
     };
   <%- } -%>
+  <%- if $zone['primaries'] { -%>
+    primaries {
+      <%- $zone['primaries'].each |$primary| { -%>
+        <%= $primary %>;
+      <%- } -%>
+    };
+  <%- } -%>
+  <%- if $zone['masters'] { -%>
+    masters {
+      <%- $zone['masters'].each |$master| { -%>
+        <%= $master %>;
+      <%- } -%>
+    };
+  <%- } -%>
 };
 
 <%  }
