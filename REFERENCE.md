@@ -8,13 +8,13 @@
 
 #### Public Classes
 
-* [`bind`](#bind): Manage the BIND domain name server and DNS zones
+* [`bind`](#bind): Manages the BIND domain name server and DNS zones
 
 #### Private Classes
 
-* `bind::config`: Manage BIND configuration
-* `bind::install`: Manage BIND installation
-* `bind::service`: Manage BIND service
+* `bind::config`: Manages BIND configuration
+* `bind::install`: Manages BIND installation
+* `bind::service`: Manages BIND service
 
 ### Functions
 
@@ -43,7 +43,7 @@
 
 ### `bind`
 
-Manage the BIND domain name server and DNS zones
+Manages the BIND domain name server and DNS zones
 
 #### Examples
 
