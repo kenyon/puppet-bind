@@ -7,7 +7,6 @@ require 'spec_helper'
 describe 'Bind::Options' do
   it { is_expected.not_to allow_value(:undef, 12, 'string') }
   it { is_expected.not_to allow_value(directory: 'not_absolute') }
-  it { is_expected.not_to allow_value('key-directory' => 'not_absolute') }
   it { is_expected.not_to allow_value('zone-statistics' => 'invalid') }
   it { is_expected.not_to allow_value('allow-query' => 'not_an_array') }
 
@@ -29,6 +28,6 @@ describe 'Bind::Options' do
   end
 
   it { is_expected.to allow_value('auto-dnssec' => 'maintain', 'inline-signing' => true) }
-  it { is_expected.to allow_value('key-directory' => '/absolute-dir') }
+  it { is_expected.to allow_value('key-directory' => 'dir') }
   it { is_expected.to allow_value('serial-update-method' => 'date') }
 end
