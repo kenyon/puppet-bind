@@ -100,6 +100,9 @@ options {
   <%- if $options['key-directory'] { -%>
     key-directory "<%= $options['key-directory'] %>";
   <%- } -%>
+  <%- if $options['serial-update-method'] { -%>
+    serial-update-method <%= $options['serial-update-method'] %>;
+  <%- } -%>
   <%- if $options['zone-statistics'] { -%>
     zone-statistics <%= $options['zone-statistics'] %>;
   <%- } -%>
@@ -203,6 +206,9 @@ zone "<%= $zone['name'] %>" {
         <%= $master %>;
       <%- } -%>
     };
+  <%- } -%>
+  <%- if $zone['serial-update-method'] { -%>
+    serial-update-method <%= $zone['serial-update-method'] %>;
   <%- } -%>
   <%- if $zone['update-policy'] {
         if $zone['update-policy'].member('local') { -%>

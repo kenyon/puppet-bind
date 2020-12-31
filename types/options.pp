@@ -8,5 +8,6 @@ type Bind::Options = Struct[{
   Optional['directory'] => Stdlib::Absolutepath,
   Optional['inline-signing'] => Variant[Boolean, Stdlib::Yes_no],
   Optional['key-directory'] => Stdlib::Absolutepath,
+  Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['zone-statistics'] => Variant[Boolean, Stdlib::Yes_no, Enum['full', 'terse', 'none']],
 }]

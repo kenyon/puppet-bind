@@ -30,4 +30,5 @@ describe 'Bind::Options' do
 
   it { is_expected.to allow_value('auto-dnssec' => 'maintain', 'inline-signing' => true) }
   it { is_expected.to allow_value('key-directory' => '/absolute-dir') }
+  it { is_expected.to allow_value('serial-update-method' => 'date') }
 end

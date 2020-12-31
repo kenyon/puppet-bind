@@ -14,6 +14,7 @@ type Bind::Zone = Struct[{
   Optional['key-directory'] => Stdlib::Absolutepath,
   Optional['masters'] => Array[Stdlib::Host],
   Optional['primaries'] => Array[Stdlib::Host],
+  Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['type'] => Enum[
     'primary',
     'master',

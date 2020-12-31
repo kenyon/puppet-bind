@@ -362,6 +362,7 @@ describe 'bind' do
                     ruletype: 'zonesub',
                     types: 'any',
                   ],
+                  'serial-update-method' => 'unixtime',
                 },
               ],
             }
@@ -422,6 +423,7 @@ describe 'bind' do
 \};>).with_content(%r<^zone "example\.local2" \{
     type primary;
     file "/var/cache/bind/db\.example\.local2";
+    serial-update-method unixtime;
     update-policy \{
         grant local-ddns zonesub\s+any;
     \};
@@ -584,6 +586,7 @@ describe 'bind' do
               'directory' => '/meh',
               'inline-signing' => true,
               'key-directory' => '/example',
+              'serial-update-method' => 'date',
               'zone-statistics' => 'full',
             },
           }
@@ -598,6 +601,7 @@ describe 'bind' do
             .with_content(%r{inline-signing true;})
             .with_content(%r{key-directory "/example";})
             .with_content(%r{zone-statistics full;})
+            .with_content(%r{serial-update-method date;})
             .with_content(%r<allow-query \{
         localhost;
         localnets;
