@@ -320,6 +320,49 @@ describe 'bind' do
                   file: '/var/cache/bind/db.example.xyz',
                   primaries: ['2001:db8::1'],
                 },
+                {
+                  name: 'example.lol',
+                  type: 'primary',
+                  file: '/var/cache/bind/db.example.lol',
+                  'update-policy' => [
+                    permission: 'deny',
+                    identity: 'host-key',
+                    ruletype: 'name',
+                    name: 'ns1.example.com.',
+                    types: 'A',
+                  ],
+                },
+                {
+                  name: 'example.local',
+                  type: 'primary',
+                  file: '/var/cache/bind/db.example.local',
+                  'update-policy' => ['local'],
+                },
+                {
+                  name: 'example.both',
+                  type: 'primary',
+                  file: '/var/cache/bind/db.example.both',
+                  'update-policy' => [
+                    'local',
+                    {
+                      permission: 'deny',
+                      identity: 'host-key',
+                      ruletype: 'name',
+                      name: 'ns1.example.com.',
+                    },
+                  ],
+                },
+                {
+                  name: 'example.local2',
+                  type: 'primary',
+                  file: '/var/cache/bind/db.example.local2',
+                  'update-policy' => [
+                    permission: 'grant',
+                    identity: 'local-ddns',
+                    ruletype: 'zonesub',
+                    types: 'any',
+                  ],
+                },
               ],
             }
           end
@@ -358,6 +401,29 @@ describe 'bind' do
     file "/var/cache/bind/db\.example\.xyz";
     primaries \{
         2001:db8::1;
+    \};
+\};>).with_content(%r<^zone "example\.lol" \{
+    type primary;
+    file "/var/cache/bind/db\.example\.lol";
+    update-policy \{
+        deny host-key name ns1\.example\.com\. A;
+    \};
+\};>).with_content(%r<^zone "example\.local" \{
+    type primary;
+    file "/var/cache/bind/db\.example\.local";
+    update-policy local;
+\};>).with_content(%r<^zone "example\.both" \{
+    type primary;
+    file "/var/cache/bind/db\.example\.both";
+    update-policy local;
+    update-policy \{
+        deny host-key name ns1\.example\.com\.\s*;
+    \};
+\};>).with_content(%r<^zone "example\.local2" \{
+    type primary;
+    file "/var/cache/bind/db\.example\.local2";
+    update-policy \{
+        grant local-ddns zonesub\s+any;
     \};
 \};>)
           end

@@ -27,4 +27,5 @@ type Bind::Zone = Struct[{
     'redirect',
     'delegation-only'
   ],
+  Optional['update-policy'] => Array[Bind::Zone::UpdatePolicy],
 }]

@@ -38,4 +38,37 @@ describe 'Bind::Zone' do
       'inline-signing' => true,
     )
   end
+
+  it { is_expected.to allow_value('name' => 'example.com', 'update-policy' => ['local']) }
+
+  it do
+    is_expected.to allow_value(
+      'name' => 'example.com',
+      'update-policy' => [
+        'local',
+        {
+          permission: 'grant',
+          identity: '*',
+          ruletype: 'tcp-self',
+          name: '.',
+          types: 'PTR(1)',
+        },
+      ],
+    )
+  end
+
+  it do
+    is_expected.to allow_value(
+      'name' => 'example.com',
+      'update-policy' => [
+        {
+          permission: 'grant',
+          identity: '*',
+          ruletype: 'tcp-self',
+          name: '.',
+          types: 'PTR(1)',
+        },
+      ],
+    )
+  end
 end

@@ -36,6 +36,8 @@
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
 * [`Bind::Size`](#bindsize): Type definition for BIND's file size specification
 * [`Bind::Zone`](#bindzone): Type definition for BIND's `zone` statement
+* [`Bind::Zone::UpdatePolicy`](#bindzoneupdatepolicy): Type definition for BIND's `update-policy` clause in the `zone` statement
+* [`Bind::Zone::UpdatePolicy::Rule`](#bindzoneupdatepolicyrule): Type definition for rules in BIND's `update-policy` clause in the `zone` statement
 
 ## Classes
 
@@ -284,6 +286,7 @@ Type definition for BIND's `options` statement
 
 Alias of `Struct[{
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
+  Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-query'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['also-notify'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['auto-dnssec'] => Enum['allow', 'maintain', 'off'],
@@ -306,6 +309,7 @@ Type definition for BIND's `zone` statement
 Alias of `Struct[{
   name => String[1],
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
+  Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['also-notify'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['auto-dnssec'] => Enum['allow', 'maintain', 'off'],
   Optional['class'] => Enum['IN', 'HS', 'hesiod', 'CHAOS'],
@@ -330,5 +334,41 @@ Alias of `Struct[{
     'redirect',
     'delegation-only'
   ],
+  Optional['update-policy'] => Array[Bind::Zone::UpdatePolicy],
+}]`
+
+### `Bind::Zone::UpdatePolicy`
+
+Type definition for BIND's `update-policy` clause in the `zone` statement
+
+Alias of `Variant[Enum['local'], Bind::Zone::UpdatePolicy::Rule]`
+
+### `Bind::Zone::UpdatePolicy::Rule`
+
+Type definition for rules in BIND's `update-policy` clause in the `zone` statement
+
+Alias of `Struct[{
+  'permission' => Enum['deny', 'grant'],
+  'identity'   => String[1],
+  'ruletype'   => Enum[
+    'name',
+    'subdomain',
+    'zonesub',
+    'wildcard',
+    'self',
+    'selfsub',
+    'selfwild',
+    'ms-self',
+    'ms-selfsub',
+    'ms-subdomain',
+    'krb5-self',
+    'krb5-selfsub',
+    'krb5-subdomain',
+    'tcp-self',
+    '6to4-self',
+    'external',
+  ],
+  Optional['name'] => String[1],
+  Optional['types'] => String[1],
 }]`
 

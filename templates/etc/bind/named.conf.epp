@@ -204,6 +204,19 @@ zone "<%= $zone['name'] %>" {
       <%- } -%>
     };
   <%- } -%>
+  <%- if $zone['update-policy'] {
+        if $zone['update-policy'].member('local') { -%>
+    update-policy local;
+    <%- }
+        $update_policy_rules = $zone['update-policy'] - 'local'
+        unless $update_policy_rules.empty { -%>
+    update-policy {
+      <%- $update_policy_rules.each |$rule| { -%>
+        <%= $rule['permission'] %> <%= $rule['identity'] %> <%= $rule['ruletype'] %> <%= $rule['name'] %> <%= $rule['types'] %>;
+      <%- } -%>
+    };
+    <%- } -%>
+  <%- } -%>
 };
 
 <%  }
