@@ -24,3 +24,11 @@
   - views
   - ...
 - manage `rndc.conf`
+
+## Notes to self
+
+- my config options: set serial-update-method date;
+- my zone:
+  - leave zone-default `$TTL` directive to two days, but specify RR-specific TTLs for home
+    stuff that can change
+  - use relative names in the SOA for primary server and contact email
