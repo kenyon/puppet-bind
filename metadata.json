@@ -36,5 +36,11 @@
   ],
   "pdk-version": "1.18.1",
   "template-url": "pdk-default#1.18.1",
-  "template-ref": "tags/1.18.1-0-g3d2e75c"
+  "template-ref": "tags/1.18.1-0-g3d2e75c",
+  "tags": [
+    "bind",
+    "bind9",
+    "dns",
+    "named"
+  ]
 }
