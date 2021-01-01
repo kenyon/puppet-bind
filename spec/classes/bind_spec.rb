@@ -297,7 +297,7 @@ describe 'bind' do
               zones: [
                 { name: '.', type: 'mirror' },
                 {
-                  name: 'example.com',
+                  name: 'example.com.',
                   type: 'primary',
                   file: 'example',
                   'allow-transfer' => ['2001:db8::/64'],
@@ -308,20 +308,20 @@ describe 'bind' do
                   'key-directory' => 'example',
                 },
                 {
-                  name: 'example.net',
+                  name: 'example.net.',
                   type: 'secondary',
                   forward: 'only',
                   forwarders: ['192.0.2.3', '192.0.2.4'],
                 },
-                { name: 'example.org', class: 'IN', 'in-view' => 'view0' },
+                { name: 'example.org.', class: 'IN', 'in-view' => 'view0' },
                 {
-                  name: 'example.xyz',
+                  name: 'example.xyz.',
                   type: 'secondary',
                   file: 'db.example.xyz',
                   primaries: ['2001:db8::1'],
                 },
                 {
-                  name: 'example.lol',
+                  name: 'example.lol.',
                   type: 'primary',
                   file: 'db.example.lol',
                   'update-policy' => [
@@ -333,13 +333,13 @@ describe 'bind' do
                   ],
                 },
                 {
-                  name: 'example.local',
+                  name: 'example.local.',
                   type: 'primary',
                   file: 'db.example.local',
                   'update-policy' => ['local'],
                 },
                 {
-                  name: 'example.both',
+                  name: 'example.both.',
                   type: 'primary',
                   file: 'db.example.both',
                   'update-policy' => [
@@ -353,7 +353,7 @@ describe 'bind' do
                   ],
                 },
                 {
-                  name: 'example.local2',
+                  name: 'example.local2.',
                   type: 'primary',
                   file: 'db.example.local2',
                   'update-policy' => [
@@ -373,7 +373,7 @@ describe 'bind' do
           it do
             is_expected.to contain_file(config_file).with_content(%r<^zone "\." \{
     type mirror;
-\};$>).with_content(%r<^zone "example\.com" \{
+\};$>).with_content(%r<^zone "example\.com\." \{
     type primary;
     file "example";
     allow-transfer \{
@@ -388,39 +388,39 @@ describe 'bind' do
     auto-dnssec maintain;
     inline-signing true;
     key-directory "example";
-\};$>).with_content(%r<^zone "example\.net" \{
+\};$>).with_content(%r<^zone "example\.net\." \{
     type secondary;
     forward only;
     forwarders \{
         192\.0\.2\.3;
         192\.0\.2\.4;
     \};
-\};$>).with_content(%r<^zone "example\.org" IN \{
+\};$>).with_content(%r<^zone "example\.org\." IN \{
     in-view "view0";
-\};$>).with_content(%r<^zone "example\.xyz" \{
+\};$>).with_content(%r<^zone "example\.xyz\." \{
     type secondary;
     file "db\.example\.xyz";
     primaries \{
         2001:db8::1;
     \};
-\};>).with_content(%r<^zone "example\.lol" \{
+\};>).with_content(%r<^zone "example\.lol\." \{
     type primary;
     file "db\.example\.lol";
     update-policy \{
         deny host-key name ns1\.example\.com\. A;
     \};
-\};>).with_content(%r<^zone "example\.local" \{
+\};>).with_content(%r<^zone "example\.local\." \{
     type primary;
     file "db\.example\.local";
     update-policy local;
-\};>).with_content(%r<^zone "example\.both" \{
+\};>).with_content(%r<^zone "example\.both\." \{
     type primary;
     file "db\.example\.both";
     update-policy local;
     update-policy \{
         deny host-key name ns1\.example\.com\.\s*;
     \};
-\};>).with_content(%r<^zone "example\.local2" \{
+\};>).with_content(%r<^zone "example\.local2\." \{
     type primary;
     file "db\.example\.local2";
     serial-update-method unixtime;

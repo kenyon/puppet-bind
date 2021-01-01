@@ -1,6 +1,6 @@
 # @summary Type definition for BIND's `zone` statement
 type Bind::Zone = Struct[{
-  name => String[1],
+  name => Pattern[/\.$/],
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['also-notify'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
