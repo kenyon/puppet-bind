@@ -269,7 +269,7 @@ describe 'bind' do
       end
 
       context 'with custom zones' do
-        context 'undef (and without default zones to make test easier)' do
+        context 'with zones => undef (and without default zones to make test easier)' do
           let(:params) do
             {
               default_zones: false,
@@ -281,7 +281,7 @@ describe 'bind' do
           it { is_expected.to contain_file(config_file).without_content(%r{^zone}) }
         end
 
-        context 'invalid type' do
+        context 'with zones having an invalid Puppet datatype' do
           let(:params) do
             {
               zones: 'strings are invalid',
@@ -291,7 +291,15 @@ describe 'bind' do
           it { is_expected.not_to compile }
         end
 
-        context 'array of zones' do
+        context 'with invalid configurations' do
+          context 'such as missing type and in-view' do
+            let(:params) { { zones: [{ name: 'missing-type.example.com.', 'update-policy' => ['local'] }] } }
+
+            it { is_expected.not_to compile }
+          end
+        end
+
+        context 'with an array of zones' do
           let(:params) do
             {
               zones: [

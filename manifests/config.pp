@@ -6,6 +6,7 @@
 #
 class bind::config {
   assert_private()
+  require bind::configchecks
 
   if $bind::options {
     $merged_options = $bind::default_options + $bind::options
