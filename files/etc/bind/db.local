@@ -6,7 +6,8 @@
 ; of the MPL was not distributed with this file, You can obtain one at
 ; https://mozilla.org/MPL/2.0/.
 ;
-; BIND data file for local loopback interface
+; Zone for localhost.
+; https://tools.ietf.org/html/rfc6761#section-6.3
 ;
 $TTL	604800
 @	IN	SOA	localhost. root.localhost. (

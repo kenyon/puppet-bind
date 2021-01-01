@@ -6,7 +6,8 @@
 ; of the MPL was not distributed with this file, You can obtain one at
 ; https://mozilla.org/MPL/2.0/.
 ;
-; BIND reverse data file for local loopback interface
+; Zone for the reserved 127.0.0.0/8 "local loopback interface" address space.
+; https://www.iana.org/assignments/ipv4-address-space
 ;
 $TTL	604800
 @	IN	SOA	localhost. root.localhost. (

@@ -6,7 +6,8 @@
 ; of the MPL was not distributed with this file, You can obtain one at
 ; https://mozilla.org/MPL/2.0/.
 ;
-; BIND reverse data file for broadcast zone
+; Zone for the reserved 0.0.0.0/8 "this host on this network" address space.
+; https://www.iana.org/assignments/iana-ipv4-special-registry
 ;
 $TTL	604800
 @	IN	SOA	localhost. root.localhost. (
