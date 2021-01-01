@@ -2,7 +2,7 @@
 
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-CONFIG_DIR = File.join('/etc', 'bind')
+CONFIG_DIR = File.join('/etc', 'bind').freeze
 PACKAGE_NAME = 'bind9'.freeze
 SERVICE_NAME =
   if os[:family] == 'debian' && os[:release].to_i == 10
