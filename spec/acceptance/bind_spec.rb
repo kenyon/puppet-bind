@@ -27,10 +27,14 @@ describe 'bind' do
 
     describe 'the default zones' do
       it 'are valid' do
-        run_shell('named-checkzone localhost /etc/bind/db.local')
-        run_shell('named-checkzone 127.in-addr.arpa /etc/bind/db.127')
-        run_shell('named-checkzone 0.in-addr.arpa /etc/bind/db.0')
-        run_shell('named-checkzone 255.in-addr.arpa /etc/bind/db.255')
+        [
+          { name: 'localhost', file: 'local' },
+          { name: '127.in-addr.arpa', file: '127' },
+          { name: '0.in-addr.arpa', file: '0' },
+          { name: '255.in-addr.arpa', file: '255' },
+        ].each do |zone|
+          run_shell("named-checkzone #{zone[:name]} #{File.join(CONFIG_DIR, 'db.' + zone[:file])}")
+        end
       end
     end
   end
