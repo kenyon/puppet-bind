@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-checkconf_cmd = '/usr/sbin/named-checkconf %'
+checkconf_cmd = '/usr/sbin/named-checkconf -z %'
 
 def checkzone_cmd(zone_name)
   "/usr/sbin/named-checkzone #{zone_name} %"

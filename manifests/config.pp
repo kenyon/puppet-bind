@@ -32,13 +32,13 @@ class bind::config {
     ensure       => file,
     content      => epp("${module_name}/etc/bind/named.conf.epp",
                         {'options' => $merged_options}),
-    validate_cmd => '/usr/sbin/named-checkconf %',
+    validate_cmd => '/usr/sbin/named-checkconf -z %',
   }
 
   file { extlib::path_join([$bind::config_dir, 'bind.keys']):
     ensure       => file,
     content      => epp("${module_name}/etc/bind/bind.keys.epp"),
-    validate_cmd => '/usr/sbin/named-checkconf %',
+    validate_cmd => '/usr/sbin/named-checkconf -z %',
   }
 
   exec { '/usr/sbin/rndc-confgen -a':
@@ -50,7 +50,7 @@ class bind::config {
     owner        => root,
     group        => $bind::service_group,
     mode         => '0600',
-    validate_cmd => '/usr/sbin/named-checkconf %',
+    validate_cmd => '/usr/sbin/named-checkconf -z %',
   }
 
   $default_zone_names = [
