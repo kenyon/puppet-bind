@@ -150,8 +150,24 @@ zone "<%= $zone['name'] %>" {
   <%- if $zone['in-view'] { -%>
     in-view "<%= $zone['in-view'] %>";
   <%- } -%>
-  <%- if $zone['file'] { -%>
+  <%- if [
+          'primary',
+          'master',
+          'hint',
+          'redirect',
+          'secondary',
+          'slave',
+          'mirror',
+          'stub',
+          'redirect',
+        ].member($zone['type']) { -%>
+    <%- if $zone['file'] { -%>
     file "<%= $zone['file'] %>";
+    <%- } elsif $zone['name'] == '.' { -%>
+    file "db.root";
+    <%- } else { -%>
+    file "db.<%= $zone['name'] %>";
+    <%- } -%>
   <%- } -%>
   <%- if $zone['allow-transfer'] { -%>
     allow-transfer {

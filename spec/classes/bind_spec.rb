@@ -299,7 +299,7 @@ describe 'bind' do
                 {
                   name: 'example.com.',
                   type: 'primary',
-                  file: 'example',
+                  file: 'specified-file-example',
                   'allow-transfer' => ['2001:db8::/64'],
                   'allow-update' => ['2001:db8:2::/64'],
                   'also-notify' => ['2001:db8:1::/64'],
@@ -317,13 +317,11 @@ describe 'bind' do
                 {
                   name: 'example.xyz.',
                   type: 'secondary',
-                  file: 'db.example.xyz',
                   primaries: ['2001:db8::1'],
                 },
                 {
                   name: 'example.lol.',
                   type: 'primary',
-                  file: 'db.example.lol',
                   'update-policy' => [
                     permission: 'deny',
                     identity: 'host-key',
@@ -335,13 +333,11 @@ describe 'bind' do
                 {
                   name: 'example.local.',
                   type: 'primary',
-                  file: 'db.example.local',
                   'update-policy' => ['local'],
                 },
                 {
                   name: 'example.both.',
                   type: 'primary',
-                  file: 'db.example.both',
                   'update-policy' => [
                     'local',
                     {
@@ -355,7 +351,6 @@ describe 'bind' do
                 {
                   name: 'example.local2.',
                   type: 'primary',
-                  file: 'db.example.local2',
                   'update-policy' => [
                     permission: 'grant',
                     identity: 'local-ddns',
@@ -373,9 +368,10 @@ describe 'bind' do
           it do
             is_expected.to contain_file(config_file).with_content(%r<^zone "\." \{
     type mirror;
+    file "db\.root";
 \};$>).with_content(%r<^zone "example\.com\." \{
     type primary;
-    file "example";
+    file "specified-file-example";
     allow-transfer \{
         2001:db8::/64;
     \};
@@ -390,6 +386,7 @@ describe 'bind' do
     key-directory "example";
 \};$>).with_content(%r<^zone "example\.net\." \{
     type secondary;
+    file "db\.example\.net\.";
     forward only;
     forwarders \{
         192\.0\.2\.3;
@@ -399,30 +396,30 @@ describe 'bind' do
     in-view "view0";
 \};$>).with_content(%r<^zone "example\.xyz\." \{
     type secondary;
-    file "db\.example\.xyz";
+    file "db\.example\.xyz\.";
     primaries \{
         2001:db8::1;
     \};
 \};>).with_content(%r<^zone "example\.lol\." \{
     type primary;
-    file "db\.example\.lol";
+    file "db\.example\.lol\.";
     update-policy \{
         deny host-key name ns1\.example\.com\. A;
     \};
 \};>).with_content(%r<^zone "example\.local\." \{
     type primary;
-    file "db\.example\.local";
+    file "db\.example\.local\.";
     update-policy local;
 \};>).with_content(%r<^zone "example\.both\." \{
     type primary;
-    file "db\.example\.both";
+    file "db\.example\.both\.";
     update-policy local;
     update-policy \{
         deny host-key name ns1\.example\.com\.\s*;
     \};
 \};>).with_content(%r<^zone "example\.local2\." \{
     type primary;
-    file "db\.example\.local2";
+    file "db\.example\.local2\.";
     serial-update-method unixtime;
     update-policy \{
         grant local-ddns zonesub\s+any;
