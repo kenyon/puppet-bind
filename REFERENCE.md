@@ -37,6 +37,7 @@
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
 * [`Bind::Size`](#bindsize): Type definition for BIND's file size specification
 * [`Bind::Zone`](#bindzone): Type definition for BIND's `zone` statement
+* [`Bind::Zone::ResourceRecord`](#bindzoneresourcerecord): Type definition for a resource record
 * [`Bind::Zone::UpdatePolicy`](#bindzoneupdatepolicy): Type definition for BIND's `update-policy` clause in the `zone` statement
 * [`Bind::Zone::UpdatePolicy::Rule`](#bindzoneupdatepolicyrule): Type definition for rules in BIND's `update-policy` clause in the `zone` statement
 
@@ -323,6 +324,7 @@ Alias of `Struct[{
   Optional['key-directory'] => String[1],
   Optional['masters'] => Array[Stdlib::Host],
   Optional['primaries'] => Array[Stdlib::Host],
+  Optional['resource-records'] => Array[Bind::Zone::ResourceRecord],
   Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['type'] => Enum[
     'primary',
@@ -338,6 +340,18 @@ Alias of `Struct[{
     'delegation-only'
   ],
   Optional['update-policy'] => Array[Bind::Zone::UpdatePolicy],
+}]`
+
+### `Bind::Zone::ResourceRecord`
+
+Type definition for a resource record
+
+Alias of `Struct[{
+  'data' => Variant[String[1], Array[String[1]]],
+  'type' => String[1],
+  Optional['name'] => String[1],
+  Optional['class'] => String[1],
+  Optional['ttl'] => String[1],
 }]`
 
 ### `Bind::Zone::UpdatePolicy`

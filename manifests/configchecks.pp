@@ -12,6 +12,12 @@ class bind::configchecks {
       unless $zone['type'] or $zone['in-view'] {
         fail("zone ${zone['name']}: must specify either in-view or type")
       }
+
+      if $zone['type'] in ['primary', 'master', 'redirect'] and $zone['resource-records'] {
+        unless $zone['resource-records'].any |$rr| {$rr['type'].upcase == 'SOA'} {
+          fail("zone ${zone['name']}: must define a SOA record")
+        }
+      }
     }
   }
 }

@@ -73,4 +73,48 @@ describe 'Bind::Zone' do
       ],
     )
   end
+
+  it do
+    is_expected.to allow_value(
+      'name' => 'example.com.',
+      'type' => 'primary',
+      'resource-records' => [
+        {
+          # name defaults to @
+          'type' => 'SOA',
+          'data' => 'ns1 hostmaster (2021010101 24h 2h 1000h 1h)',
+        },
+        {
+          'type' => 'NS',
+          'data' => ['ns1', 'ns2.example.org.'],
+        },
+        {
+          'type' => 'MX',
+          'data' => '0 mail',
+        },
+        {
+          'name' => 'mail',
+          'type' => 'AAAA',
+          'data' => '2001:db8::4',
+        },
+        {
+          'name' => 'www',
+          'class' => 'IN',
+          'ttl' => '1d',
+          'type' => 'AAAA',
+          'data' => '2001:db8::1',
+        },
+        {
+          'name' => 'ftp',
+          'type' => 'AAAA',
+          'data' => ['2001:db8::2', '2001:db8::3'],
+        },
+        {
+          'name' => 'ftp',
+          'type' => 'SSHFP',
+          'data' => ['1 1 abc', '4 2 def'],
+        },
+      ],
+    )
+  end
 end

@@ -275,7 +275,26 @@ describe 'bind' do
           context 'such as missing type and in-view' do
             let(:params) { { zones: [{ name: 'missing-type.example.com.', 'update-policy' => ['local'] }] } }
 
-            it { is_expected.not_to compile }
+            it { is_expected.to compile.and_raise_error(%r{must specify either in-view or type}) }
+          end
+
+          context 'such as missing a SOA record for primary, master, and redirect zone types' do
+            let(:params) do
+              {
+                zones: [
+                  name: 'missing-soa.example.com.',
+                  type: 'primary',
+                  'resource-records' => [
+                    {
+                      type: 'NS',
+                      data: 'ns1',
+                    },
+                  ],
+                ],
+              }
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{must define a SOA record}) }
           end
         end
 
