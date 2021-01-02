@@ -17,6 +17,10 @@ class bind::configchecks {
         unless $zone['resource-records'].any |$rr| {$rr['type'].upcase == 'SOA'} {
           fail("zone ${zone['name']}: must define a SOA record")
         }
+
+        unless $zone['allow-update'] or $zone['update-policy'] {
+          fail("zone ${zone['name']}: must be updatable locally via allow-update or update-policy")
+        }
       }
     }
   }

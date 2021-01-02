@@ -60,6 +60,10 @@ For parameter defaults, see the [`data`](data) directory, which is organized acc
 
 The test suite in the [`spec`](spec) directory is a good source for usage examples.
 
+To manage the resource records of a zone with this module, the zone must be dynamically updatable
+by the host being managed, via either the `allow-update` or `update-policy` configuration
+options. TODO: provide example.
+
 ## Limitations
 
 See [`metadata.json`](metadata.json) for supported operating systems, supported Puppet versions,

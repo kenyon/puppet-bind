@@ -296,6 +296,29 @@ describe 'bind' do
 
             it { is_expected.to compile.and_raise_error(%r{must define a SOA record}) }
           end
+
+          context 'such as non-updatable primary zones' do
+            let(:params) do
+              {
+                zones: [
+                  name: 'non-updatable.example.com.',
+                  type: 'primary',
+                  'resource-records': [
+                    {
+                      type: 'SOA',
+                      data: 'ns1 hostmaster (2021010201 24h 2h 1000h 1h)',
+                    },
+                  ],
+                ],
+              }
+            end
+
+            it do
+              is_expected.to compile.and_raise_error(
+                %r{must be updatable locally via allow-update or update-policy},
+              )
+            end
+          end
         end
 
         context 'with an array of zones' do
