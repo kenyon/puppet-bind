@@ -150,7 +150,7 @@ zone "<%= $zone['name'] %>" {
   <%- if $zone['in-view'] { -%>
     in-view "<%= $zone['in-view'] %>";
   <%- } -%>
-  <%- if [
+  <%- if $zone['type'] in [
           'primary',
           'master',
           'hint',
@@ -160,7 +160,7 @@ zone "<%= $zone['name'] %>" {
           'mirror',
           'stub',
           'redirect',
-        ].member($zone['type']) { -%>
+        ] { -%>
     <%- if $zone['file'] { -%>
     file "<%= $zone['file'] %>";
     <%- } elsif $zone['name'] == '.' { -%>
@@ -227,7 +227,7 @@ zone "<%= $zone['name'] %>" {
     serial-update-method <%= $zone['serial-update-method'] %>;
   <%- } -%>
   <%- if $zone['update-policy'] {
-        if $zone['update-policy'].member('local') { -%>
+        if 'local' in $zone['update-policy'] { -%>
     update-policy local;
     <%- }
         $update_policy_rules = $zone['update-policy'] - 'local'
