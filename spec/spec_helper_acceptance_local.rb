@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 CONFIG_DIR = File.join('/etc', 'bind').freeze
-PACKAGE_NAME = 'bind9'.freeze
+PACKAGE_NAME = 'bind9'
 SERVICE_NAME =
   if os[:family] == 'debian' && os[:release].to_i == 10
-    'bind9'.freeze
+    'bind9'
   else
-    'named'.freeze
+    'named'
   end
 
 shared_examples 'a DNS server' do

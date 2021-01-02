@@ -585,7 +585,6 @@ describe 'bind' do
                 '192.0.2.0/24',
               ],
               'also-notify' => ['2001:db8:1::/64'],
-              # PDK's super old rubocop fails to parse this using newer hash syntax :(
               'auto-dnssec' => 'maintain',
               'directory' => '/meh',
               'inline-signing' => true,
