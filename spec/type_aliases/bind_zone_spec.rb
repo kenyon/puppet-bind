@@ -78,6 +78,7 @@ describe 'Bind::Zone' do
     is_expected.to allow_value(
       'name' => 'example.com.',
       'type' => 'primary',
+      'ttl' => '1w',
       'resource-records' => [
         {
           # name defaults to @

@@ -326,6 +326,7 @@ Alias of `Struct[{
   Optional['primaries'] => Array[Stdlib::Host],
   Optional['resource-records'] => Array[Bind::Zone::ResourceRecord],
   Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
+  Optional['ttl'] => String[1],
   Optional['type'] => Enum[
     'primary',
     'master',
