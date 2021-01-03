@@ -30,6 +30,7 @@ describe 'Bind::Zone' do
   it { is_expected.to allow_value('name' => 'example.com.', 'allow-update' => ['2001:db8:2::/64']) }
   it { is_expected.to allow_value('name' => 'example.com.', 'also-notify' => ['2001:db8:1::/64']) }
   it { is_expected.to allow_value('name' => 'example.com.', 'serial-update-method' => 'unixtime') }
+  it { is_expected.to allow_value('name' => 'example.com.', 'purge' => true) }
 
   it do
     is_expected.to allow_value(

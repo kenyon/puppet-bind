@@ -17,6 +17,7 @@ type Bind::Zone = Struct[{
   Optional['key-directory'] => String[1],
   Optional['masters'] => Array[Stdlib::Host],
   Optional['primaries'] => Array[Stdlib::Host],
+  Optional['purge'] => Boolean,
   Optional['resource-records'] => Array[Bind::Zone::ResourceRecord],
   Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['ttl'] => String[1],

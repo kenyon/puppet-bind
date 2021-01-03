@@ -11,7 +11,10 @@
 
 ## Zones
 
-- use dynamic zone files for regular user-defined zones
+- use dynamic zones for regular user-defined zones
+  - have a `purge` parameter which purges unmanaged resource records, except for the SOA record.
+    otherwise unmanaged resource records are left alone. similar to the `purge` parameter for
+    directories with the `file` resource.
   - use [dnsruby](https://rubygems.org/gems/dnsruby) to do zone updates
     - types and providers with the Resource API
     - use `package` resource with the `puppet_gem` provider to install dnsruby
