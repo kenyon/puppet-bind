@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-# @summary Some checks for BIND configuration validity
+# @summary Executes some checks for BIND configuration validity
 #
 # @api private
 #

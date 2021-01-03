@@ -13,7 +13,7 @@
 #### Private Classes
 
 * `bind::config`: Manages BIND configuration
-* `bind::configchecks`: Some checks for BIND configuration validity
+* `bind::configchecks`: Executes some checks for BIND configuration validity
 * `bind::install`: Manages BIND installation
 * `bind::service`: Manages BIND service
 
