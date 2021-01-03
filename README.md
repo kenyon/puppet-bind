@@ -12,6 +12,9 @@
    - [Setup requirements](#setup-requirements)
    - [Beginning with bind](#beginning-with-bind)
 1. [Usage - Configuration options and additional functionality](#usage)
+   - [Recursive, caching only](#recursive-caching-only)
+   - [Authoritative only](#authoritative-only)
+   - [Authoritative and caching](#authoritative-and-caching)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
    - [Running tests](#running-tests)
@@ -29,14 +32,13 @@ zones](https://en.wikipedia.org/wiki/DNS_zone).
 
 ### What bind affects
 
-- the BIND package, service, and configuration files
+- the BIND package, service, configuration, and zone files
 - a [resolvconf](https://en.wikipedia.org/wiki/Resolvconf) package, by default
   [openresolv](https://roy.marples.name/projects/openresolv/), is installed if
   `resolvconf_service_enable` is `true`. This causes the localhost's BIND to be used in
   `/etc/resolv.conf`.
-
-If configured to install the backported package, also affects
-[APT](https://tracker.debian.org/pkg/apt) sources by ensuring that backports are available.
+- if configured to install the backported package, also affects
+  [APT](https://tracker.debian.org/pkg/apt) sources by ensuring that backports are available.
 
 ### Setup requirements
 
@@ -45,7 +47,7 @@ and Puppet module dependencies.
 
 ### Beginning with bind
 
-For a default configuration that provides recursive name resolution service:
+For a default configuration that provides recursive, caching name resolution service:
 
 ```puppet
 include bind
@@ -62,7 +64,21 @@ The test suite in the [`spec`](spec) directory is a good source for usage exampl
 
 To manage the resource records of a zone with this module, the zone must be dynamically updatable
 by the host being managed, via either the `allow-update` or `update-policy` configuration
-options. TODO: provide example.
+options.
+
+### Recursive, caching only
+
+```puppet
+include bind
+```
+
+### Authoritative only
+
+TODO: provide example.
+
+### Authoritative and caching
+
+TODO: provide example.
 
 ## Limitations
 
@@ -70,7 +86,7 @@ See [`metadata.json`](metadata.json) for supported operating systems, supported 
 and Puppet module dependencies.
 
 Downgrading the package by setting `package_backport => false` (after it had been `true`) is not
-supported by this module, but you can of course do this downgrade manually.
+supported by this module, but you can of course do such a downgrade manually outside of Puppet.
 
 Changing the value provided for a zone's `$TTL` directive after initial zone creation is not
 supported by this module (because the zone file is only created initially from a template and
