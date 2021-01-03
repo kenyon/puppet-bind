@@ -12,7 +12,8 @@
 #   Default BIND
 #   [options](https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar) loaded
 #   from Hiera data in this module's `data` directory. Merged with, and overridden by, the `options`
-#   parameter.
+#   parameter. You'll generally want to use the `options` parameter and leave `default_options`
+#   alone.
 #
 # @param default_zones
 #   Whether to include the default zones in the BIND configuration.
