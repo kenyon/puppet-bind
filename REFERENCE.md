@@ -313,13 +313,13 @@ Default value: `'2d'`
 
 ### `Bind::Include`
 
-Type definition for BIND's `include` statement
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar
 
 Alias of `Stdlib::Absolutepath`
 
 ### `Bind::Logging`
 
-Type definition for BIND's `logging` statement
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar
 
 Alias of `Struct[{
   Optional['channels'] => Hash[Bind::Logging::ChannelName, Bind::Logging::ChannelPhrase],
@@ -367,7 +367,7 @@ Alias of `Variant[Enum['null', 'stderr', 'syslog'], Struct[{
 
 ### `Bind::Options`
 
-Type definition for BIND's `options` statement
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar
 
 Alias of `Struct[{
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
@@ -384,13 +384,13 @@ Alias of `Struct[{
 
 ### `Bind::Size`
 
-Type definition for BIND's file size specification
+Reference: `size_spec` under https://bind9.readthedocs.io/en/latest/reference.html#configuration-file-elements
 
 Alias of `Variant[Enum['unlimited', 'default'], Integer[0], Pattern[/\A\d+(?i:k|m|g)\Z/]]`
 
 ### `Bind::Zone`
 
-Type definition for BIND's `zone` statement
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar
 
 Alias of `Struct[{
   name => Pattern[/\.$/],
@@ -428,7 +428,7 @@ Alias of `Struct[{
 
 ### `Bind::Zone::ResourceRecord`
 
-Type definition for a resource record
+Reference: https://en.wikipedia.org/wiki/Domain_Name_System#Resource_records
 
 Alias of `Struct[{
   'data' => Variant[String[1], Array[String[1]]],
@@ -440,13 +440,13 @@ Alias of `Struct[{
 
 ### `Bind::Zone::UpdatePolicy`
 
-Type definition for BIND's `update-policy` clause in the `zone` statement
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
 
 Alias of `Variant[Enum['local'], Bind::Zone::UpdatePolicy::Rule]`
 
 ### `Bind::Zone::UpdatePolicy::Rule`
 
-Type definition for rules in BIND's `update-policy` clause in the `zone` statement
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
 
 Alias of `Struct[{
   'permission' => Enum['deny', 'grant'],

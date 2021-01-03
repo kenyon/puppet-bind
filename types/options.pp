@@ -1,4 +1,7 @@
 # @summary Type definition for BIND's `options` statement
+#
+# Reference: https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar
+#
 type Bind::Options = Struct[{
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],

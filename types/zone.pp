@@ -1,4 +1,7 @@
 # @summary Type definition for BIND's `zone` statement
+#
+# Reference: https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar
+#
 type Bind::Zone = Struct[{
   name => Pattern[/\.$/],
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
