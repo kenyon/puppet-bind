@@ -10,6 +10,7 @@ SERVICE_NAME =
   else
     'named'
   end
+WORKING_DIR = File.join('/var', 'cache', 'bind').freeze
 
 shared_examples 'a DNS server' do
   describe port(53) do

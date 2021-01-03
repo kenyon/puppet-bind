@@ -224,6 +224,89 @@ statements.
 
 Default value: ``undef``
 
+##### `zone_default_expire`
+
+Data type: `String[1]`
+
+The default SOA expire time, set per a [RIPE
+recommendation](https://www.ripe.net/publications/docs/ripe-203) (same as with all of the default
+time values). Can be overridden by individual zones by providing a SOA record in the zone's hash
+of the `$zones` parameter. Reference: [RFC
+1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+
+Default value: `'1000h'`
+
+##### `zone_default_mname`
+
+Data type: `String[1]`
+
+The default SOA MNAME. That is, the domain name of the primary name server for the zone. Can be
+overridden by individual zones by providing a SOA record in the zone's hash of the `$zones`
+parameter. Reference: [RFC 1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+
+Default value: `'ns1'`
+
+##### `zone_default_negative_caching_ttl`
+
+Data type: `String[1]`
+
+The default negative caching TTL, the last field of the SOA record. Can be overridden by
+individual zones by providing a SOA record in the zone's hash of the `$zones` parameter.
+Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308)
+
+Default value: `'1h'`
+
+##### `zone_default_refresh`
+
+Data type: `String[1]`
+
+The default SOA refresh time. Can be overridden by individual zones by providing a SOA record in
+the zone's hash of the `$zones` parameter. Reference: [RFC
+1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+
+Default value: `'24h'`
+
+##### `zone_default_retry`
+
+Data type: `String[1]`
+
+The default SOA retry time. Can be overridden by individual zones by providing a SOA record in
+the zone's hash of the `$zones` parameter. Reference: [RFC
+1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+
+Default value: `'2h'`
+
+##### `zone_default_rname`
+
+Data type: `String[1]`
+
+The default SOA RNAME. That is, the domain name-formatted email address of the person responsible
+for the zone. Can be overridden by individual zones by providing a SOA record in the zone's hash
+of the `$zones` parameter. Reference: [RFC
+1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+
+Default value: `'hostmaster'`
+
+##### `zone_default_serial`
+
+Data type: `Integer[0]`
+
+The default initial serial number for the zone. Can be overridden by individual zones by
+providing a SOA record in the zone's hash of the `$zones` parameter.
+
+Default value: `1`
+
+##### `zone_default_ttl`
+
+Data type: `String[1]`
+
+The default zone-wide TTL. This value is used in the zone's `$TTL` directive at the start of the
+zone. Individual zones can override this default with the `ttl` key in their configuration hashes
+in the `$zones` parameter. Also, individual resource records can override this value with the
+`ttl` key in their hashes. Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308#section-4)
+
+Default value: `'2d'`
+
 ## Functions
 
 ## Data types

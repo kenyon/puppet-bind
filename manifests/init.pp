@@ -81,6 +81,49 @@
 #   configuration](https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar)
 #   statements.
 #
+# @param zone_default_expire
+#   The default SOA expire time, set per a [RIPE
+#   recommendation](https://www.ripe.net/publications/docs/ripe-203) (same as with all of the default
+#   time values). Can be overridden by individual zones by providing a SOA record in the zone's hash
+#   of the `$zones` parameter. Reference: [RFC
+#   1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+#
+# @param zone_default_mname
+#   The default SOA MNAME. That is, the domain name of the primary name server for the zone. Can be
+#   overridden by individual zones by providing a SOA record in the zone's hash of the `$zones`
+#   parameter. Reference: [RFC 1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+#
+# @param zone_default_negative_caching_ttl
+#   The default negative caching TTL, the last field of the SOA record. Can be overridden by
+#   individual zones by providing a SOA record in the zone's hash of the `$zones` parameter.
+#   Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308)
+#
+# @param zone_default_refresh
+#   The default SOA refresh time. Can be overridden by individual zones by providing a SOA record in
+#   the zone's hash of the `$zones` parameter. Reference: [RFC
+#   1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+#
+# @param zone_default_retry
+#   The default SOA retry time. Can be overridden by individual zones by providing a SOA record in
+#   the zone's hash of the `$zones` parameter. Reference: [RFC
+#   1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+#
+# @param zone_default_rname
+#   The default SOA RNAME. That is, the domain name-formatted email address of the person responsible
+#   for the zone. Can be overridden by individual zones by providing a SOA record in the zone's hash
+#   of the `$zones` parameter. Reference: [RFC
+#   1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
+#
+# @param zone_default_serial
+#   The default initial serial number for the zone. Can be overridden by individual zones by
+#   providing a SOA record in the zone's hash of the `$zones` parameter.
+#
+# @param zone_default_ttl
+#   The default zone-wide TTL. This value is used in the zone's `$TTL` directive at the start of the
+#   zone. Individual zones can override this default with the `ttl` key in their configuration hashes
+#   in the `$zones` parameter. Also, individual resource records can override this value with the
+#   `ttl` key in their hashes. Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308#section-4)
+#
 class bind (
   Stdlib::Absolutepath $config_dir,
   Bind::Options $default_options,
@@ -103,6 +146,14 @@ class bind (
   Boolean $service_manage = true,
   Optional[String[1]] $service_options = undef,
   Optional[Array[Bind::Zone]] $zones = undef,
+  String[1] $zone_default_expire = '1000h',
+  String[1] $zone_default_mname = 'ns1',
+  String[1] $zone_default_negative_caching_ttl = '1h',
+  String[1] $zone_default_refresh = '24h',
+  String[1] $zone_default_retry = '2h',
+  String[1] $zone_default_rname = 'hostmaster',
+  Integer[0] $zone_default_serial = 1,
+  String[1] $zone_default_ttl = '2d',
 ) {
   contain bind::install
   contain bind::config

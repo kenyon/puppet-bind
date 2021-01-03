@@ -72,6 +72,12 @@ and Puppet module dependencies.
 Downgrading the package by setting `package_backport => false` (after it had been `true`) is not
 supported by this module, but you can of course do this downgrade manually.
 
+Changing the value provided for a zone's `$TTL` directive after initial zone creation is not
+supported by this module (because the zone file is only created initially from a template and
+then never replaced, only updated dynamically using the [RFC
+2136](https://tools.ietf.org/html/rfc2136) method), but you can do this manually outside of
+Puppet.
+
 ## Development
 
 The development of this module attempts to be

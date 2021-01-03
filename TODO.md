@@ -15,7 +15,6 @@
   - use [dnsruby](https://rubygems.org/gems/dnsruby) to do zone updates
     - types and providers with the Resource API
     - use `package` resource with the `puppet_gem` provider to install dnsruby
-  - use `named-checkzone` to validate the zone
 
 ## Config
 

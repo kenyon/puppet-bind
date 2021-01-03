@@ -112,11 +112,12 @@ fi &&
     then
         parallel \
         'TARGET_HOST=localhost:222{1} pdk bundle exec rspec spec/acceptance/bind_{2}spec.rb' \
-        ::: 2 3 4 :::+ '' backport_ resolvconf_service_
+        ::: 2 3 4 5 :::+ '' backport_ resolvconf_service_ authoritative_
     else
         TARGET_HOST=localhost:2222 pdk bundle exec rspec spec/acceptance/bind_spec.rb &&
         TARGET_HOST=localhost:2223 pdk bundle exec rspec spec/acceptance/bind_backport_spec.rb &&
-        TARGET_HOST=localhost:2224 pdk bundle exec rspec spec/acceptance/bind_resolvconf_service_spec.rb
+        TARGET_HOST=localhost:2224 pdk bundle exec rspec spec/acceptance/bind_resolvconf_service_spec.rb &&
+        TARGET_HOST=localhost:2225 pdk bundle exec rspec spec/acceptance/bind_authoritative_spec.rb
     fi &&
     if [[ $_arg_tear_down == 'on' ]]
     then

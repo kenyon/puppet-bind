@@ -1,0 +1,15 @@
+<%- |
+   String[1] $ttl = $bind::zone_default_ttl,
+   Optional[String[1]] $soa_ttl = undef,
+   String[1] $mname = $bind::zone_default_mname,
+   String[1] $rname = $bind::zone_default_rname,
+   Integer[0] $serial = $bind::zone_default_serial,
+   String[1] $refresh = $bind::zone_default_refresh,
+   String[1] $retry = $bind::zone_default_retry,
+   String[1] $expire = $bind::zone_default_expire,
+   String[1] $negative_caching_ttl = $bind::zone_default_negative_caching_ttl,
+| -%>
+$TTL <%= $ttl %>
+@ <%= $soa_ttl %> SOA <%= $mname %> <%= $rname %> (<%= $serial %> <%= $refresh %> <%= $retry %> <%= $expire %> <%= $negative_caching_ttl %>)
+@ NS <%= $facts['hostname'] %>
+<%= $facts['hostname'] %> AAAA <%= $facts['networking']['ip6'] %>

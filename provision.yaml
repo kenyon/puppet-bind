@@ -5,3 +5,4 @@ default:
     - litmusimage/debian:10
     - litmusimage/debian:10
     - litmusimage/debian:10
+    - litmusimage/debian:10
