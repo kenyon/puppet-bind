@@ -53,6 +53,19 @@ For a default configuration that provides recursive, caching name resolution ser
 include bind
 ```
 
+On Debian, install the `bind9` package from the backports repository (ensures that the
+`$facts['os']['distro']['codename']-backports` apt source is configured using the
+[`puppetlabs-apt`](https://github.com/puppetlabs/puppetlabs-apt) module, but will fail if a
+backported package does not exist for your particular
+`$facts['os']['distro']['codename']-backports` repo; check on the [Debian package
+tracker](https://tracker.debian.org/pkg/bind9)):
+
+```puppet
+class { 'bind':
+  package_backport => true,
+}
+```
+
 ## Usage
 
 See the [reference](REFERENCE.md) for available class parameters.
