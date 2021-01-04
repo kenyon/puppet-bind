@@ -7,16 +7,6 @@ require 'spec_helper_acceptance'
 describe 'authoritative BIND with zones configured' do
   domain_name = 'test0.example.'
 
-  before(:context) do
-    # Needed for testing.
-    utilities_install = <<-MANIFEST
-      package { 'bind9-host':
-        ensure => installed,
-      }
-    MANIFEST
-    apply_manifest(utilities_install)
-  end
-
   let(:pp) do
     <<-MANIFEST
       class { 'bind':

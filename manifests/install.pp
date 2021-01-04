@@ -29,10 +29,22 @@ class bind::install {
   }
 
   if $bind::install_dev_packages {
-    ensure_packages($bind::dev_packages)
+    if $bind::package_backport {
+      ensure_packages('bind9-dev')
+    } else {
+      ensure_packages($bind::dev_packages)
+    }
   }
 
   if $bind::install_doc_packages {
     ensure_packages($bind::doc_packages)
+  }
+
+  if $bind::install_utils_packages {
+    if $bind::package_backport {
+      ensure_packages('bind9-dnsutils')
+    } else {
+      ensure_packages($bind::utils_packages)
+    }
   }
 }

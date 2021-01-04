@@ -91,6 +91,14 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
 
+        if os_facts[:os]['name'] == 'Debian'
+          if os_facts[:os]['release']['major'] == '10'
+            it { is_expected.to contain_package('dnsutils').with_ensure('present') }
+          else
+            it { is_expected.to contain_package('bind9-dnsutils').with_ensure('present') }
+          end
+        end
+
         # optional, non-default packages shouldn't be managed by default
         [
           'bind9-dev',
@@ -231,6 +239,24 @@ describe 'bind' do
         raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('bind9-doc').with_ensure('present') }
+      end
+
+      context 'without utils packages' do
+        let(:params) do
+          {
+            install_utils_packages: false,
+          }
+        end
+
+        raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+        it { is_expected.to compile.with_all_deps }
+
+        [
+          'dnsutils',
+          'bind9-dnsutils',
+        ].each do |pkg|
+          it { is_expected.not_to contain_package(pkg) }
+        end
       end
 
       context 'without default zones' do
@@ -1147,10 +1173,20 @@ describe 'bind' do
             package_name,
           ).with_install_options(
             ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
-          )
+          ).with_ensure('installed')
         end
 
+        it { is_expected.to contain_package('bind9-dnsutils').with_ensure('present') }
         it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{trust-anchors}) }
+
+        context 'with dev packages' do
+          let(:params) do
+            super().merge(install_dev_packages: true)
+          end
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_package('bind9-dev').with_ensure('present') }
+        end
       end
 
       context 'when package_manage => false' do

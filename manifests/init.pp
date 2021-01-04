@@ -24,6 +24,9 @@
 # @param doc_packages
 #   List of BIND documentation packages.
 #
+# @param utils_packages
+#   List of BIND utilities packages.
+#
 # @param includes
 #   Additional configuration files to include in the BIND configuration using the
 #   [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
@@ -34,6 +37,9 @@
 #
 # @param install_doc_packages
 #   Whether to install the BIND documentation packages.
+#
+# @param install_utils_packages
+#   Whether to install the BIND utilities packages.
 #
 # @param logging
 #   Configuration of the [logging
@@ -142,6 +148,7 @@ class bind (
   Bind::Options $default_options,
   Array[String[1]] $dev_packages,
   Array[String[1]] $doc_packages,
+  Array[String[1]] $utils_packages,
   Boolean $package_backport,
   String[1] $package_name,
   String[1] $resolvconf_package_name,
@@ -152,6 +159,7 @@ class bind (
   Optional[Variant[Array[Bind::Include], Bind::Include]] $includes = undef,
   Boolean $install_dev_packages = false,
   Boolean $install_doc_packages = false,
+  Boolean $install_utils_packages = true,
   Optional[Bind::Logging] $logging = undef,
   Optional[Bind::Options] $options = undef,
   String[1] $package_ensure = installed,

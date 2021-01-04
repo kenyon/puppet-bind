@@ -3,4 +3,6 @@
 
 bind::dev_packages:
   - libbind-dev
+bind::utils_packages:
+  - dnsutils
 bind::service_name: bind9

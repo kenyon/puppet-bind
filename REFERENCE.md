@@ -95,6 +95,12 @@ Data type: `Array[String[1]]`
 
 List of BIND documentation packages.
 
+##### `utils_packages`
+
+Data type: `Array[String[1]]`
+
+List of BIND utilities packages.
+
 ##### `includes`
 
 Data type: `Optional[Variant[Array[Bind::Include], Bind::Include]]`
@@ -120,6 +126,14 @@ Data type: `Boolean`
 Whether to install the BIND documentation packages.
 
 Default value: ``false``
+
+##### `install_utils_packages`
+
+Data type: `Boolean`
+
+Whether to install the BIND utilities packages.
+
+Default value: ``true``
 
 ##### `logging`
 

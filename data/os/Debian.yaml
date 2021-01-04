@@ -8,6 +8,8 @@ bind::dev_packages:
   - bind9-dev
 bind::doc_packages:
   - bind9-doc
+bind::utils_packages:
+  - bind9-dnsutils
 bind::package_backport: false
 bind::package_name: bind9
 bind::resolvconf_package_name: openresolv
