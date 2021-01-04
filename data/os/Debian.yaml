@@ -6,6 +6,8 @@ bind::default_options:
   directory: /var/cache/bind
 bind::dev_packages:
   - bind9-dev
+bind::doc_packages:
+  - bind9-doc
 bind::package_backport: false
 bind::package_name: bind9
 bind::resolvconf_package_name: openresolv

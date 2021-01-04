@@ -221,6 +221,18 @@ describe 'bind' do
         end
       end
 
+      context 'with doc packages' do
+        let(:params) do
+          {
+            install_doc_packages: true,
+          }
+        end
+
+        raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('bind9-doc').with_ensure('present') }
+      end
+
       context 'without default zones' do
         let(:params) do
           {

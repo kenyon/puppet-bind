@@ -31,4 +31,8 @@ class bind::install {
   if $bind::install_dev_packages {
     ensure_packages($bind::dev_packages)
   }
+
+  if $bind::install_doc_packages {
+    ensure_packages($bind::doc_packages)
+  }
 }

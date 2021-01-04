@@ -89,6 +89,12 @@ Data type: `Array[String[1]]`
 
 List of BIND development packages.
 
+##### `doc_packages`
+
+Data type: `Array[String[1]]`
+
+List of BIND documentation packages.
+
 ##### `includes`
 
 Data type: `Optional[Variant[Array[Bind::Include], Bind::Include]]`
@@ -104,6 +110,14 @@ Default value: ``undef``
 Data type: `Boolean`
 
 Whether to install the BIND development packages (libraries and header files).
+
+Default value: ``false``
+
+##### `install_doc_packages`
+
+Data type: `Boolean`
+
+Whether to install the BIND documentation packages.
 
 Default value: ``false``
 
