@@ -81,17 +81,30 @@ options.
 
 ### Recursive, caching only
 
+Using a minimal configuration with BIND defaults:
+
 ```puppet
 include bind
 ```
 
+TODO: provide more examples.
+
 ### Authoritative only
 
-TODO: provide example.
+When creating a new zone with BIND, the zone file must have a `$TTL`, a SOA record, an NS record,
+and an address record for that host used in the NS record. All of these have defaults (see the
+`zone_default_*` parameters of [`init.pp`](manifests/init.pp) and the [initial zone
+template](templates/db.empty.epp)) so you don't have to specify them. The default initial zone
+creates `A` and `AAAA` records based on the host's facts. Those default NS records are only used
+if no NS records are provided for the zone's origin. You should specify your own SOA and NS
+records unless you happen to want those defaults. Note that if you want to provide your own NS
+records at the zone origin, you also have to provide your own SOA record.
+
+TODO: provide examples.
 
 ### Authoritative and caching
 
-TODO: provide example.
+TODO: provide examples.
 
 ## Limitations
 

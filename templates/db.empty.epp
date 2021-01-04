@@ -8,8 +8,15 @@
    String[1] $retry = $bind::zone_default_retry,
    String[1] $expire = $bind::zone_default_expire,
    String[1] $negative_caching_ttl = $bind::zone_default_negative_caching_ttl,
+   Optional[Stdlib::IP::Address::V6] $ns_address = $facts['networking']['ip6'],
+   Optional[Stdlib::IP::Address::V4] $ns_legacy_address = $facts['networking']['ip'],
 | -%>
 $TTL <%= $ttl %>
 @ <%= $soa_ttl %> SOA <%= $mname %> <%= $rname %> (<%= $serial %> <%= $refresh %> <%= $retry %> <%= $expire %> <%= $negative_caching_ttl %>)
-@ NS <%= $facts['hostname'] %>
-<%= $facts['hostname'] %> AAAA <%= $facts['networking']['ip6'] %>
+@ NS <%= $mname %>
+<%- if $ns_address { -%>
+<%= $mname %> AAAA <%= $ns_address %>
+<%- } -%>
+<%- if $ns_legacy_address { -%>
+<%= $mname %> A <%= $ns_legacy_address %>
+<%- } -%>

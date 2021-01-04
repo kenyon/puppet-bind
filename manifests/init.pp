@@ -148,7 +148,7 @@ class bind (
   Optional[String[1]] $service_options = undef,
   Optional[Array[Bind::Zone]] $zones = undef,
   String[1] $zone_default_expire = '1000h',
-  String[1] $zone_default_mname = 'ns1',
+  String[1] $zone_default_mname = $facts['networking']['hostname'],
   String[1] $zone_default_negative_caching_ttl = '1h',
   String[1] $zone_default_refresh = '24h',
   String[1] $zone_default_retry = '2h',

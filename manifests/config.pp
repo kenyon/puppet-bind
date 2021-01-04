@@ -107,6 +107,26 @@ class bind::config {
           $retry = $soa_fields[4]
           $expire = $soa_fields[5]
           $negative_caching_ttl = $soa_fields[6]
+
+          $ns_index = $zone['resource-records'].index |$rr| {
+            $rr['type'].upcase == 'AAAA' and $rr['name'] == $mname
+          }
+
+          $ns_legacy_index = $zone['resource-records'].index |$rr| {
+            $rr['type'].upcase == 'A' and $rr['name'] == $mname
+          }
+
+          if $ns_index {
+            $ns_address = $zone.dig('resource-records', $ns_index, 'data')
+          } else {
+            $ns_address = undef
+          }
+
+          if $ns_legacy_index {
+            $ns_legacy_address = $zone.dig('resource-records', $ns_legacy_index, 'data')
+          } else {
+            $ns_legacy_address = undef
+          }
         } else {
           $soa_ttl =
           $mname =
@@ -116,6 +136,8 @@ class bind::config {
           $retry =
           $expire =
           $negative_caching_ttl =
+          $ns_address =
+          $ns_legacy_address =
           undef
         }
 
@@ -135,6 +157,8 @@ class bind::config {
               'retry'                => $retry,
               'expire'               => $expire,
               'negative_caching_ttl' => $negative_caching_ttl,
+              'ns_address'           => $ns_address,
+              'ns_legacy_address'    => $ns_legacy_address,
             },
           ),
           validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -r fail -S fail '${zone['name']}' %",

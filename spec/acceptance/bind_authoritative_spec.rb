@@ -27,11 +27,7 @@ describe 'authoritative BIND with zones configured' do
             'update-policy' => ['local'],
             'resource-records' => [
               {
-                'type' => 'NS',
-                'data' => 'ns1',
-              },
-              {
-                'name' => 'ns1',
+                'name' => 'www',
                 'type' => 'AAAA',
                 'data' => '2001:db8::1',
               },
@@ -51,5 +47,9 @@ describe 'authoritative BIND with zones configured' do
 
   describe command("host -t SOA #{domain_name} localhost") do
     its(:exit_status) { is_expected.to eq 0 }
+  end
+
+  describe command("host -t AAAA www.#{domain_name} localhost") do
+    its(:exit_status) { pending; is_expected.to eq 0 } # rubocop:disable Style/Semicolon
   end
 end

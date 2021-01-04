@@ -245,7 +245,7 @@ The default SOA MNAME. That is, the domain name of the primary name server for t
 overridden by individual zones by providing a SOA record in the zone's hash of the `$zones`
 parameter. Reference: [RFC 1035](https://tools.ietf.org/html/rfc1035#section-3.3.13)
 
-Default value: `'ns1'`
+Default value: `$facts['networking']['hostname']`
 
 ##### `zone_default_negative_caching_ttl`
 
