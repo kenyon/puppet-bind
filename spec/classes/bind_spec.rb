@@ -91,6 +91,15 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
 
+        # optional, non-default packages shouldn't be managed by default
+        [
+          'bind9-dev',
+          'libbind-dev',
+          'openresolv',
+        ].each do |pkg|
+          it { is_expected.not_to contain_package(pkg) }
+        end
+
         it do
           is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
             ensure: 'file',
@@ -201,14 +210,14 @@ describe 'bind' do
           }
         end
 
-        it { is_expected.to compile.with_all_deps }
-
         raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
 
+        it { is_expected.to compile.with_all_deps }
+
         if os_facts[:os]['name'] == 'Debian' && os_facts[:os]['release']['major'] == '10'
-          it { is_expected.to contain_package('libbind-dev') }
+          it { is_expected.to contain_package('libbind-dev').with_ensure('present') }
         else
-          it { is_expected.to contain_package('bind9-dev') }
+          it { is_expected.to contain_package('bind9-dev').with_ensure('present') }
         end
       end
 
