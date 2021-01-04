@@ -1,4 +1,6 @@
 ---
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+bind::dev_packages:
+  - libbind-dev
 bind::service_name: bind9

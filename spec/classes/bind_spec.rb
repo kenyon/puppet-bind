@@ -194,6 +194,24 @@ describe 'bind' do
         end
       end
 
+      context 'with dev packages' do
+        let(:params) do
+          {
+            install_dev_packages: true,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+
+        if os_facts[:os]['name'] == 'Debian' && os_facts[:os]['release']['major'] == '10'
+          it { is_expected.to contain_package('libbind-dev') }
+        else
+          it { is_expected.to contain_package('bind9-dev') }
+        end
+      end
+
       context 'without default zones' do
         let(:params) do
           {

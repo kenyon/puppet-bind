@@ -27,4 +27,8 @@ class bind::install {
       install_options => $package_install_options,
     }
   }
+
+  if $bind::install_dev_packages {
+    ensure_packages($bind::dev_packages)
+  }
 }

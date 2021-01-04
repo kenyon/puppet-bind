@@ -18,10 +18,16 @@
 # @param default_zones
 #   Whether to include the default zones in the BIND configuration.
 #
+# @param dev_packages
+#   List of BIND development packages.
+#
 # @param includes
 #   Additional configuration files to include in the BIND configuration using the
 #   [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
 #   statement.
+#
+# @param install_dev_packages
+#   Whether to install the BIND development packages (libraries and header files).
 #
 # @param logging
 #   Configuration of the [logging
@@ -128,6 +134,7 @@
 class bind (
   Stdlib::Absolutepath $config_dir,
   Bind::Options $default_options,
+  Array[String[1]] $dev_packages,
   Boolean $package_backport,
   String[1] $package_name,
   String[1] $resolvconf_package_name,
@@ -136,6 +143,7 @@ class bind (
   String[1] $service_user,
   Boolean $default_zones = true,
   Optional[Variant[Array[Bind::Include], Bind::Include]] $includes = undef,
+  Boolean $install_dev_packages = false,
   Optional[Bind::Logging] $logging = undef,
   Optional[Bind::Options] $options = undef,
   String[1] $package_ensure = installed,

@@ -83,6 +83,12 @@ Whether to include the default zones in the BIND configuration.
 
 Default value: ``true``
 
+##### `dev_packages`
+
+Data type: `Array[String[1]]`
+
+List of BIND development packages.
+
 ##### `includes`
 
 Data type: `Optional[Variant[Array[Bind::Include], Bind::Include]]`
@@ -92,6 +98,14 @@ Additional configuration files to include in the BIND configuration using the
 statement.
 
 Default value: ``undef``
+
+##### `install_dev_packages`
+
+Data type: `Boolean`
+
+Whether to install the BIND development packages (libraries and header files).
+
+Default value: ``false``
 
 ##### `logging`
 
