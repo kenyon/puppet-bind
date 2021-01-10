@@ -1,18 +1,4 @@
 ---
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-bind::config_dir: /etc/bind
-bind::default_options:
-  directory: /var/cache/bind
-bind::dev_packages:
-  - bind9-dev
-bind::doc_packages:
-  - bind9-doc
-bind::utils_packages:
-  - bind9-dnsutils
-bind::package_backport: false
-bind::package_name: bind9
-bind::resolvconf_package_name: openresolv
-bind::resolvconf_service_enable: false
-bind::service_name: named
-bind::service_user: bind
+{}

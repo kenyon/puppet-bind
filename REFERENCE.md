@@ -65,6 +65,8 @@ Data type: `Stdlib::Absolutepath`
 
 Directory for BIND configuration files.
 
+Default value: `'/etc/bind'`
+
 ##### `default_options`
 
 Data type: `Bind::Options`
@@ -74,6 +76,10 @@ Default BIND
 from Hiera data in this module's `data` directory. Merged with, and overridden by, the `options`
 parameter. You'll generally want to use the `options` parameter and leave `default_options`
 alone.
+
+Default value: `{
+    'directory' => '/var/cache/bind',
+  }`
 
 ##### `default_zones`
 
@@ -89,17 +95,23 @@ Data type: `Array[String[1]]`
 
 List of BIND development packages.
 
+Default value: `['bind9-dev']`
+
 ##### `doc_packages`
 
 Data type: `Array[String[1]]`
 
 List of BIND documentation packages.
 
+Default value: `['bind9-doc']`
+
 ##### `utils_packages`
 
 Data type: `Array[String[1]]`
 
 List of BIND utilities packages.
+
+Default value: `['bind9-dnsutils']`
 
 ##### `includes`
 
@@ -176,11 +188,15 @@ Data type: `Boolean`
 
 Whether to install the BIND package from Debian backports.
 
+Default value: ``false``
+
 ##### `package_name`
 
 Data type: `String[1]`
 
 The name of the BIND package.
+
+Default value: `'bind9'`
 
 ##### `package_ensure`
 
@@ -196,12 +212,16 @@ Data type: `String[1]`
 
 The name of the resolvconf package to use if `resolvconf_service_enable` is `true`.
 
+Default value: `'openresolv'`
+
 ##### `resolvconf_service_enable`
 
 Data type: `Boolean`
 
 Whether to enable the named-resolvconf service so that localhost's BIND resolver is used in
 `/etc/resolv.conf`.
+
+Default value: ``false``
 
 ##### `service_config_file`
 
@@ -241,11 +261,15 @@ Data type: `String[1]`
 
 The name of the BIND service.
 
+Default value: `'named'`
+
 ##### `service_user`
 
 Data type: `String[1]`
 
 The user to run BIND as (for the `-u` command line option).
+
+Default value: `'bind'`
 
 ##### `service_options`
 
