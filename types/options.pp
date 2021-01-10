@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # @summary Type definition for BIND's `options` statement
 #
 # Reference: https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar

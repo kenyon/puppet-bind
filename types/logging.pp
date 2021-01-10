@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # @summary Type definition for BIND's `logging` statement
 #
 # Reference: https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar

@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 #
 # ARG_OPTIONAL_BOOLEAN([tear-down],[t],[tear down the docker containers after testing],[on])
 # ARG_OPTIONAL_BOOLEAN([parallel],[p],[run tests in parallel (GNU Parallel required)],[on])

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # @summary Type definition for a resource record
 #
 # Reference: https://en.wikipedia.org/wiki/Domain_Name_System#Resource_records

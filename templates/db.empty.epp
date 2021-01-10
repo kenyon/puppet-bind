@@ -1,4 +1,6 @@
 <%- |
+   # SPDX-License-Identifier: GPL-3.0-or-later
+
    String[1] $ttl = $bind::zone_default_ttl,
    Optional[String[1]] $soa_ttl = undef,
    String[1] $mname = $bind::zone_default_mname,
