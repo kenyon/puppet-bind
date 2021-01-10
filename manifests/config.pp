@@ -99,7 +99,7 @@ class bind::config {
         if $soa_index {
           $soa_ttl = $zone.dig('resource-records', $soa_index, 'ttl')
           $soa_data = $zone.dig('resource-records', $soa_index, 'data')
-          $soa_fields = $soa_data.regsubst(/[()]/, '', 'G').split(/\s+/)
+          $soa_fields = $soa_data.split(/\s+/)
           $mname = $soa_fields[0]
           $rname = $soa_fields[1]
           $serial = Integer($soa_fields[2])

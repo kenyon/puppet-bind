@@ -14,7 +14,7 @@
    Optional[Stdlib::IP::Address::V4] $ns_legacy_address = $facts['networking']['ip'],
 | -%>
 $TTL <%= $ttl %>
-@ <%= $soa_ttl %> SOA <%= $mname %> <%= $rname %> (<%= $serial %> <%= $refresh %> <%= $retry %> <%= $expire %> <%= $negative_caching_ttl %>)
+@ <%= $soa_ttl %> SOA <%= $mname %> <%= $rname %> <%= $serial %> <%= $refresh %> <%= $retry %> <%= $expire %> <%= $negative_caching_ttl %>
 @ NS <%= $mname %>
 <%- if $ns_address { -%>
 <%= $mname %> AAAA <%= $ns_address %>

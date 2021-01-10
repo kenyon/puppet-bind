@@ -352,7 +352,7 @@ describe 'bind' do
                   'resource-records': [
                     {
                       type: 'SOA',
-                      data: 'ns1 hostmaster (2021010201 24h 2h 1000h 1h)',
+                      data: 'ns1 hostmaster 2021010201 24h 2h 1000h 1h',
                     },
                   ],
                 ],
@@ -562,7 +562,7 @@ describe 'bind' do
                 validate_cmd: checkzone_cmd('example.com.'),
                 content: <<~CONTENT
                   $TTL 2d
-                  @  SOA #{facts[:networking][:hostname]} hostmaster (1 24h 2h 1000h 1h)
+                  @  SOA #{facts[:networking][:hostname]} hostmaster 1 24h 2h 1000h 1h
                   @ NS #{facts[:networking][:hostname]}
                   #{facts[:networking][:hostname]} AAAA #{facts[:networking][:ip6]}
                   #{facts[:networking][:hostname]} A #{facts[:networking][:ip]}
@@ -584,7 +584,7 @@ describe 'bind' do
                       {
                         type: 'SOA',
                         ttl: '8d',
-                        data: "#{facts[:networking][:hostname]} hostmaster (2021010201 48h 6h 1500h 2h)",
+                        data: "#{facts[:networking][:hostname]} hostmaster 2021010201 48h 6h 1500h 2h",
                       },
                     ],
                   },
@@ -611,7 +611,7 @@ describe 'bind' do
                 validate_cmd: checkzone_cmd('example.com.'),
                 content: <<~CONTENT
                   $TTL 4d
-                  @ 8d SOA #{facts[:networking][:hostname]} hostmaster (2021010201 48h 6h 1500h 2h)
+                  @ 8d SOA #{facts[:networking][:hostname]} hostmaster 2021010201 48h 6h 1500h 2h
                   @ NS #{facts[:networking][:hostname]}
                   #{facts[:networking][:hostname]} AAAA #{facts[:networking][:ip6]}
                   #{facts[:networking][:hostname]} A #{facts[:networking][:ip]}
@@ -639,7 +639,7 @@ describe 'bind' do
                     'resource-records' => [
                       {
                         type: 'SOA',
-                        data: 'my-ns hostmaster (2021010301 48h 6h 1500h 30m)',
+                        data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                       },
                       {
                         name: 'my-ns',
@@ -671,7 +671,7 @@ describe 'bind' do
                 validate_cmd: checkzone_cmd('example.com.'),
                 content: <<~CONTENT
                   $TTL 2d
-                  @  SOA my-ns hostmaster (2021010301 48h 6h 1500h 30m)
+                  @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                   @ NS my-ns
                   my-ns AAAA 2001:db8::ffff
                 CONTENT
@@ -698,7 +698,7 @@ describe 'bind' do
                     'resource-records' => [
                       {
                         type: 'SOA',
-                        data: 'my-ns hostmaster (2021010301 48h 6h 1500h 30m)',
+                        data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                       },
                       {
                         name: 'my-ns',
@@ -730,7 +730,7 @@ describe 'bind' do
                 validate_cmd: checkzone_cmd('example.com.'),
                 content: <<~CONTENT
                   $TTL 2d
-                  @  SOA my-ns hostmaster (2021010301 48h 6h 1500h 30m)
+                  @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                   @ NS my-ns
                   my-ns A 192.0.2.254
                 CONTENT
@@ -749,7 +749,7 @@ describe 'bind' do
                     'resource-records' => [
                       {
                         type: 'SOA',
-                        data: 'my-ns hostmaster (2021010301 48h 6h 1500h 30m)',
+                        data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                       },
                       {
                         name: 'my-ns',
@@ -786,7 +786,7 @@ describe 'bind' do
                 validate_cmd: checkzone_cmd('example.com.'),
                 content: <<~CONTENT
                   $TTL 2d
-                  @  SOA my-ns hostmaster (2021010301 48h 6h 1500h 30m)
+                  @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                   @ NS my-ns
                   my-ns AAAA 2001:db8::ffff
                   my-ns A 192.0.2.254
