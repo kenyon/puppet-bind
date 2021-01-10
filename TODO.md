@@ -8,6 +8,8 @@
 - DNSSEC setup support
 - update [`metadata.json`](metadata.json) with new URLs after moving to GitHub
 - publish on Forge
+- be able to collect and export resource records, and have an example in the docs, like the
+example here: https://github.com/inkblot/puppet-bind/issues/12#issuecomment-57109768
 
 ## Zones
 
