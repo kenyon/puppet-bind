@@ -10,6 +10,9 @@ describe 'Bind::Logging::ChannelPhrase' do
   it { is_expected.not_to allow_value(file: { name: 'log', suffix: 'wrong' }) }
   it { is_expected.not_to allow_value(file: { name: 'log', versions: 'wrong' }) }
   it { is_expected.not_to allow_value(syslog: 'wrong') }
+  it { is_expected.not_to allow_value(file: { name: 'log', versions: 2.3 }) }
+  it { is_expected.not_to allow_value(file: { name: 'log', versions: 0 }) }
+  it { is_expected.not_to allow_value(file: { name: 'log', versions: -1 }) }
   it { is_expected.to allow_value(buffered: true) }
   it { is_expected.to allow_value(file: { name: 'log' }) }
   it { is_expected.to allow_value(file: { name: 'log', versions: 3 }) }

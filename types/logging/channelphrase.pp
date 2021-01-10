@@ -8,7 +8,7 @@ type Bind::Logging::ChannelPhrase = Variant[Enum['null', 'stderr', 'syslog'], St
   Optional['buffered'] => Boolean,
   Optional['file'] => Struct[{
     'name' => String[1],
-    Optional['versions'] => Variant[Enum['unlimited'], Integer],
+    Optional['versions'] => Variant[Enum['unlimited'], Integer[1]],
     Optional['size'] => Bind::Size,
     Optional['suffix'] => Enum['increment', 'timestamp'],
   }],
