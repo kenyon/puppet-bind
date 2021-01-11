@@ -679,6 +679,69 @@ describe 'bind' do
             end
           end
 
+          context 'with non-default SOA and non-default NS records, IPv6 only, array' do
+            let(:facts) do
+              super().merge(
+                networking: {
+                  ip: nil,
+                },
+              )
+            end
+
+            let(:params) do
+              {
+                zones: [
+                  {
+                    name: 'example.com.',
+                    type: 'primary',
+                    'update-policy' => ['local'],
+                    'resource-records' => [
+                      {
+                        type: 'SOA',
+                        data: 'my-ns hostmaster 2021011001 48h 6h 1500h 30m',
+                      },
+                      {
+                        name: 'my-ns',
+                        type: 'AAAA',
+                        data: [
+                          '2001:db8::eeee',
+                          '2001:db8::ffff',
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              }
+            end
+
+            it { is_expected.to compile.with_all_deps }
+
+            it do
+              is_expected.to contain_file(config_file)
+                .with_content(%r<^zone "example\.com\." \{
+    type primary;
+    file "db\.example\.com\.";
+    update-policy local;
+\};>)
+            end
+
+            it do
+              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
+                ensure: 'file',
+                owner: user,
+                replace: false,
+                validate_cmd: checkzone_cmd('example.com.'),
+                content: <<~CONTENT
+                  $TTL 2d
+                  @  SOA my-ns hostmaster 2021011001 48h 6h 1500h 30m
+                  @ NS my-ns
+                  my-ns AAAA 2001:db8::eeee
+                  my-ns AAAA 2001:db8::ffff
+                CONTENT
+              )
+            end
+          end
+
           context 'with non-default SOA and non-default NS records, legacy only' do
             let(:facts) do
               super().merge(
@@ -732,6 +795,69 @@ describe 'bind' do
                   $TTL 2d
                   @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                   @ NS my-ns
+                  my-ns A 192.0.2.254
+                CONTENT
+              )
+            end
+          end
+
+          context 'with non-default SOA and non-default NS records, legacy only, array' do
+            let(:facts) do
+              super().merge(
+                networking: {
+                  ip6: nil,
+                },
+              )
+            end
+
+            let(:params) do
+              {
+                zones: [
+                  {
+                    name: 'example.com.',
+                    type: 'primary',
+                    'update-policy' => ['local'],
+                    'resource-records' => [
+                      {
+                        type: 'SOA',
+                        data: 'my-ns hostmaster 2021011001 48h 6h 1500h 30m',
+                      },
+                      {
+                        name: 'my-ns',
+                        type: 'A',
+                        data: [
+                          '192.0.2.253',
+                          '192.0.2.254',
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              }
+            end
+
+            it { is_expected.to compile.with_all_deps }
+
+            it do
+              is_expected.to contain_file(config_file)
+                .with_content(%r<^zone "example\.com\." \{
+    type primary;
+    file "db\.example\.com\.";
+    update-policy local;
+\};>)
+            end
+
+            it do
+              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
+                ensure: 'file',
+                owner: user,
+                replace: false,
+                validate_cmd: checkzone_cmd('example.com.'),
+                content: <<~CONTENT
+                  $TTL 2d
+                  @  SOA my-ns hostmaster 2021011001 48h 6h 1500h 30m
+                  @ NS my-ns
+                  my-ns A 192.0.2.253
                   my-ns A 192.0.2.254
                 CONTENT
               )
