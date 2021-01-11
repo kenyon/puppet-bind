@@ -6,6 +6,7 @@
 
 - `git grep -E 'TODO|FIXME'`
 - DNSSEC setup support
+- move to GitHub once I'm using this in production
 - update [`metadata.json`](metadata.json) with new URLs after moving to GitHub
 - publish on Forge
 - be able to collect and export resource records, and have an example in the docs, like the
