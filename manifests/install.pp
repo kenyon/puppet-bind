@@ -7,6 +7,34 @@
 class bind::install {
   assert_private()
 
+  ensure_packages(
+    [
+      'g++',
+      'make',
+    ],
+    {
+      ensure => installed,
+      before => Package['dnsruby'],
+    },
+  )
+
+  # workaround for https://github.com/rvm/rvm/issues/4975
+  # The dnsruby build fails with the Ruby 2.7.1 build included with Puppet 7.1.0 if /usr/bin/mkdir
+  # is missing.
+  file { '/usr/bin/mkdir':
+    ensure => link,
+    target => '/bin/mkdir',
+    before => Package['dnsruby'],
+  }
+
+  ensure_packages(
+    'dnsruby',
+    {
+      ensure   => installed,
+      provider => puppet_gem,
+    },
+  )
+
   if $bind::package_backport {
     require apt::backports
   }

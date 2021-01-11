@@ -79,6 +79,37 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
 
+        # dnsruby build dependencies
+        if os_facts[:os]['name'] == 'Debian'
+          [
+            'g++',
+            'make',
+          ].each do |pkg|
+            it do
+              is_expected.to contain_package(pkg).with(
+                ensure: 'present',
+                before: 'Package[dnsruby]',
+              )
+            end
+          end
+        end
+
+        # workaround for https://github.com/rvm/rvm/issues/4975
+        it do
+          is_expected.to contain_file('/usr/bin/mkdir').with(
+            ensure: 'link',
+            target: '/bin/mkdir',
+            before: 'Package[dnsruby]',
+          )
+        end
+
+        it do
+          is_expected.to contain_package('dnsruby').with(
+            ensure: 'present',
+            provider: 'puppet_gem',
+          )
+        end
+
         if os_facts[:os]['name'] == 'Debian'
           if os_facts[:os]['release']['major'] == '10'
             it { is_expected.to contain_package('dnsutils').with_ensure('present') }
