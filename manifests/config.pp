@@ -54,31 +54,19 @@ class bind::config {
     validate_cmd => '/usr/sbin/named-checkconf %',
   }
 
-  $default_zone_names = [
-    {
-      'filename' => 'db.0',
-      'zonename' => '0.in-addr.arpa',
-    },
-    {
-      'filename' => 'db.127',
-      'zonename' => '127.in-addr.arpa',
-    },
-    {
-      'filename' => 'db.255',
-      'zonename' => '255.in-addr.arpa',
-    },
-    {
-      'filename' => 'db.local',
-      'zonename' => 'localhost',
-    },
-  ]
+  $default_zone_filenames_to_names = {
+    'db.0' => '0.in-addr.arpa',
+    'db.127' => '127.in-addr.arpa',
+    'db.255' => '255.in-addr.arpa',
+    'db.local' => 'localhost',
+  }
 
   if $bind::default_zones {
-    $default_zone_names.each |$names| {
-      file { extlib::path_join([$bind::config_dir, $names['filename']]):
+    $default_zone_filenames_to_names.each |$filename, $name| {
+      file { extlib::path_join([$bind::config_dir, $filename]):
         ensure       => file,
-        content      => file("${module_name}/etc/bind/${names['filename']}"),
-        validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -r fail -S fail '${names['zonename']}' %",
+        content      => file("${module_name}/etc/bind/${filename}"),
+        validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -r fail -S fail '${name}' %",
       }
     }
   }

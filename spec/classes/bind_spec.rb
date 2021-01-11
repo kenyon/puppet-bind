@@ -13,24 +13,12 @@ end
 config_dir = File.join('/etc', 'bind')
 config_filename = 'named.conf'
 config_file = File.join(config_dir, config_filename)
-default_zone_names = [
-  {
-    'filename' => 'db.0',
-    'zonename' => '0.in-addr.arpa',
-  },
-  {
-    'filename' => 'db.127',
-    'zonename' => '127.in-addr.arpa',
-  },
-  {
-    'filename' => 'db.255',
-    'zonename' => '255.in-addr.arpa',
-  },
-  {
-    'filename' => 'db.local',
-    'zonename' => 'localhost',
-  },
-]
+default_zone_filenames_to_names = {
+  'db.0' => '0.in-addr.arpa',
+  'db.127' => '127.in-addr.arpa',
+  'db.255' => '255.in-addr.arpa',
+  'db.local' => 'localhost',
+}
 default_zones = %r<zone "." \{
     type hint;
     file "/usr/share/dns/root\.hints";
@@ -116,11 +104,11 @@ describe 'bind' do
           )
         end
 
-        default_zone_names.each do |names|
+        default_zone_filenames_to_names.each do |filename, name|
           it do
-            is_expected.to contain_file(File.join(config_dir, names['filename'])).with(
+            is_expected.to contain_file(File.join(config_dir, filename)).with(
               ensure: 'file',
-              validate_cmd: checkzone_cmd(names['zonename']),
+              validate_cmd: checkzone_cmd(name),
             )
           end
         end
