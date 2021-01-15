@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Kenyon Ralph",
   "summary": "Manage the BIND name server and DNS zones",
-  "license": "GPL-3.0-or-later",
+  "license": "AGPL-3.0-or-later",
   "source": "https://gitlab.com/kenyon/puppet-bind/",
   "issues_url": "https://gitlab.com/kenyon/puppet-bind/-/issues",
   "dependencies": [

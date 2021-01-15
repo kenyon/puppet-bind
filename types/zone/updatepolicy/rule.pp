@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: AGPL-3.0-or-later
 
 # @summary Type definition for rules in BIND's `update-policy` clause in the `zone` statement
 #
