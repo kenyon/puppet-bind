@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-describe 'Bind::Zone::UpdatePolicy' do
+describe 'Bind::ZoneConfig::UpdatePolicy' do
   it { is_expected.not_to allow_value(:undef, 12, 'str', ['str']) }
   it { is_expected.to allow_value('local') }
   it { is_expected.to allow_value(permission: 'grant', identity: '*', ruletype: 'tcp-self', name: '.', types: 'PTR(1)') }

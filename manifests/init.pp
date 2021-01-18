@@ -172,7 +172,7 @@ class bind (
   String[1] $service_user = 'bind',
   String[1] $service_group = $service_user,
   Array[String[1]] $utils_packages = ['bind9-dnsutils'],
-  Optional[Array[Bind::Zone]] $zones = undef,
+  Optional[Array[Bind::ZoneConfig]] $zones = undef,
   String[1] $zone_default_expire = '1000h',
   String[1] $zone_default_mname = $facts['networking']['hostname'],
   String[1] $zone_default_negative_caching_ttl = '1h',

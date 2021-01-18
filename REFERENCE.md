@@ -36,10 +36,10 @@
 * [`Bind::Logging::ChannelPhrase`](#bindloggingchannelphrase): Type definition for BIND's `logging` `channel` phrase
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
 * [`Bind::Size`](#bindsize): Type definition for BIND's file size specification
-* [`Bind::Zone`](#bindzone): Type definition for BIND's `zone` statement
-* [`Bind::Zone::ResourceRecord`](#bindzoneresourcerecord): Type definition for a resource record
-* [`Bind::Zone::UpdatePolicy`](#bindzoneupdatepolicy): Type definition for BIND's `update-policy` clause in the `zone` statement
-* [`Bind::Zone::UpdatePolicy::Rule`](#bindzoneupdatepolicyrule): Type definition for rules in BIND's `update-policy` clause in the `zone` statement
+* [`Bind::ZoneConfig`](#bindzoneconfig): Type definition for BIND's `zone` configuration statement
+* [`Bind::ZoneConfig::ResourceRecord`](#bindzoneconfigresourcerecord): Type definition for a resource record
+* [`Bind::ZoneConfig::UpdatePolicy`](#bindzoneconfigupdatepolicy): Type definition for BIND's `update-policy` clause in the `zone` statement
+* [`Bind::ZoneConfig::UpdatePolicy::Rule`](#bindzoneconfigupdatepolicyrule): Type definition for rules in BIND's `update-policy` clause in the `zone` statement
 
 ## Classes
 
@@ -283,7 +283,7 @@ Default value: ``undef``
 
 ##### `zones`
 
-Data type: `Optional[Array[Bind::Zone]]`
+Data type: `Optional[Array[Bind::ZoneConfig]]`
 
 [Zone
 configuration](https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar)
@@ -455,7 +455,7 @@ Reference: `size_spec` under https://bind9.readthedocs.io/en/latest/reference.ht
 
 Alias of `Variant[Enum['unlimited', 'default'], Integer[0], Pattern[/\A\d+(?i:k|m|g)\Z/]]`
 
-### `Bind::Zone`
+### `Bind::ZoneConfig`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar
 
@@ -475,7 +475,7 @@ Alias of `Struct[{
   Optional['masters'] => Array[Stdlib::Host],
   Optional['primaries'] => Array[Stdlib::Host],
   Optional['purge'] => Boolean,
-  Optional['resource-records'] => Array[Bind::Zone::ResourceRecord],
+  Optional['resource-records'] => Array[Bind::ZoneConfig::ResourceRecord],
   Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['ttl'] => String[1],
   Optional['type'] => Enum[
@@ -491,10 +491,10 @@ Alias of `Struct[{
     'redirect',
     'delegation-only'
   ],
-  Optional['update-policy'] => Array[Bind::Zone::UpdatePolicy],
+  Optional['update-policy'] => Array[Bind::ZoneConfig::UpdatePolicy],
 }]`
 
-### `Bind::Zone::ResourceRecord`
+### `Bind::ZoneConfig::ResourceRecord`
 
 Reference: https://en.wikipedia.org/wiki/Domain_Name_System#Resource_records
 
@@ -506,13 +506,13 @@ Alias of `Struct[{
   Optional['ttl'] => String[1],
 }]`
 
-### `Bind::Zone::UpdatePolicy`
+### `Bind::ZoneConfig::UpdatePolicy`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
 
-Alias of `Variant[Enum['local'], Bind::Zone::UpdatePolicy::Rule]`
+Alias of `Variant[Enum['local'], Bind::ZoneConfig::UpdatePolicy::Rule]`
 
-### `Bind::Zone::UpdatePolicy::Rule`
+### `Bind::ZoneConfig::UpdatePolicy::Rule`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
 

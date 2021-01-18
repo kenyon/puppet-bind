@@ -4,7 +4,7 @@
 #
 # Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
 #
-type Bind::Zone::UpdatePolicy::Rule = Struct[{
+type Bind::ZoneConfig::UpdatePolicy::Rule = Struct[{
   'permission' => Enum['deny', 'grant'],
   'identity'   => String[1],
   'ruletype'   => Enum[

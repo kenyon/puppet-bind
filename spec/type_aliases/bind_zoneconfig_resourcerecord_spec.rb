@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-describe 'Bind::Zone::ResourceRecord' do
+describe 'Bind::ZoneConfig::ResourceRecord' do
   it { is_expected.not_to allow_value(:undef, 12, 'str') }
 
   it do

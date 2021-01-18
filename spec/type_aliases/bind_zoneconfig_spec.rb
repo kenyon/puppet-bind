@@ -4,7 +4,7 @@
 
 require 'spec_helper'
 
-describe 'Bind::Zone' do
+describe 'Bind::ZoneConfig' do
   it { is_expected.not_to allow_value(:undef, 12, 'string') }
   it { is_expected.not_to allow_value(name: 'not.ending.with.a.dot', file: 'meh') }
   it { is_expected.to allow_value(name: 'example.com.', file: 'not_absolute') }

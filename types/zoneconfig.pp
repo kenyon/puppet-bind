@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-# @summary Type definition for BIND's `zone` statement
+# @summary Type definition for BIND's `zone` configuration statement
 #
 # Reference: https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar
 #
-type Bind::Zone = Struct[{
+type Bind::ZoneConfig = Struct[{
   name => Pattern[/\.$/],
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
@@ -20,7 +20,7 @@ type Bind::Zone = Struct[{
   Optional['masters'] => Array[Stdlib::Host],
   Optional['primaries'] => Array[Stdlib::Host],
   Optional['purge'] => Boolean,
-  Optional['resource-records'] => Array[Bind::Zone::ResourceRecord],
+  Optional['resource-records'] => Array[Bind::ZoneConfig::ResourceRecord],
   Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['ttl'] => String[1],
   Optional['type'] => Enum[
@@ -36,5 +36,5 @@ type Bind::Zone = Struct[{
     'redirect',
     'delegation-only'
   ],
-  Optional['update-policy'] => Array[Bind::Zone::UpdatePolicy],
+  Optional['update-policy'] => Array[Bind::ZoneConfig::UpdatePolicy],
 }]
