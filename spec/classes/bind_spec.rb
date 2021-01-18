@@ -121,6 +121,7 @@ describe 'bind' do
         # optional, non-default packages shouldn't be managed by default
         [
           'bind9-dev',
+          'bind9-doc',
           'libbind-dev',
           'openresolv',
         ].each do |pkg|
@@ -258,6 +259,44 @@ describe 'bind' do
         raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('bind9-doc').with_ensure('present') }
+      end
+
+      context 'with custom dev_packages' do
+        let(:params) do
+          {
+            dev_packages: ['pkg1', 'pkg2'],
+            install_dev_packages: true,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('pkg1').with_ensure('present') }
+        it { is_expected.to contain_package('pkg2').with_ensure('present') }
+      end
+
+      context 'with custom doc_packages' do
+        let(:params) do
+          {
+            doc_packages: ['pkg1', 'pkg2'],
+            install_doc_packages: true,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('pkg1').with_ensure('present') }
+        it { is_expected.to contain_package('pkg2').with_ensure('present') }
+      end
+
+      context 'with custom utils_packages' do
+        let(:params) do
+          {
+            utils_packages: ['pkg1', 'pkg2'],
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_package('pkg1').with_ensure('present') }
+        it { is_expected.to contain_package('pkg2').with_ensure('present') }
       end
 
       context 'without utils packages' do
