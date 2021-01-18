@@ -1210,12 +1210,6 @@ describe 'bind' do
         it { is_expected.to compile.with_all_deps }
 
         it do
-          is_expected.to contain_file(
-            File.join('/etc', 'default', service_name),
-          ).with_content(%r{^RESOLVCONF=yes$})
-        end
-
-        it do
           is_expected.to contain_package(
             'openresolv',
           ).that_comes_before("Package[#{package_name}]")

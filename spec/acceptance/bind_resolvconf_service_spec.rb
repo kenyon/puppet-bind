@@ -15,10 +15,6 @@ describe 'bind with resolvconf_service_enable => true', if: os[:family] == 'debi
 
   it_behaves_like 'an idempotent resource after the initial run'
 
-  describe file(File.join('/etc', 'default', SERVICE_NAME)) do
-    its(:content) { is_expected.to match %r{RESOLVCONF=yes} }
-  end
-
   describe package('openresolv') do
     it { is_expected.to be_installed }
   end
