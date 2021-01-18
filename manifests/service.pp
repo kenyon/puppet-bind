@@ -16,11 +16,20 @@ class bind::service {
   }
 
   if $bind::service_manage and $bind::package_ensure != 'absent' {
-    service { bind::service_name():
+    systemd::dropin_file { "${bind::service_name()}.conf":
+      unit          => "${bind::service_name()}.service",
+      content       => epp("${module_name}/etc/systemd/system/named.service.d/named.conf.epp"),
+      daemon_reload => eager,
+    } ~> service { bind::service_name():
       ensure => $bind::service_ensure,
       enable => $bind::service_enable,
     }
   } elsif $bind::service_manage and $bind::package_ensure == 'absent' {
+    systemd::dropin_file { "${bind::service_name()}.conf":
+      ensure => absent,
+      unit   => "${bind::service_name()}.service",
+    }
+
     service { bind::service_name():
       ensure => stopped,
       enable => false,

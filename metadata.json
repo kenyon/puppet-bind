@@ -8,6 +8,10 @@
   "issues_url": "https://gitlab.com/kenyon/puppet-bind/-/issues",
   "dependencies": [
     {
+      "name": "camptocamp/systemd",
+      "version_requirement": ">= 2.10.0 < 3.0.0"
+    },
+    {
       "name": "puppet/extlib",
       "version_requirement": ">= 5.0.0 < 6.0.0"
     },

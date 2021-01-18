@@ -15,8 +15,7 @@ class bind::config {
   }
 
   file { extlib::path_join(['/etc', 'default', bind::service_name()]):
-    ensure  => file,
-    content => epp("${module_name}/etc/default/named.epp"),
+    ensure  => absent,
   }
 
   file { $bind::config_dir:

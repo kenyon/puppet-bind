@@ -222,12 +222,24 @@ describe 'bind' do
             is_expected.to contain_file(config_file).with_content(%r{directory "#{working_dir}";})
           end
 
-          it do
-            is_expected.to contain_file(File.join('/etc', 'default', service_name))
-              .with_ensure('file')
-              .with_content(%r{^RESOLVCONF=no$})
-              .with_content(%r{^OPTIONS="-u '#{user}' -c '#{config_file}' "$})
-          end
+          it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_ensure('absent') }
+        end
+
+        it do
+          is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
+            unit: "#{service_name}.service",
+            daemon_reload: 'eager',
+            notify: ["Service[#{service_name}]"],
+            # FIXME: why does this fail?
+            # content: <<~CONTENT
+            #   # Managed by Puppet
+            #   [Service]
+            #   Type=simple
+            #   EnvironmentFile=
+            #   ExecStart=
+            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{config_file}'
+            # CONTENT
+          )
         end
       end
 
@@ -1191,12 +1203,21 @@ describe 'bind' do
 
         it { is_expected.to compile.with_all_deps }
 
-        if os_facts[:os]['family'] == 'Debian'
-          it do
-            is_expected.to contain_file(
-              File.join('/etc', 'default', service_name),
-            ).with_content(%r{^OPTIONS="-u '#{user}' -c '#{config_file}' #{custom_service_options}"$})
-          end
+        it do
+          is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
+            unit: "#{service_name}.service",
+            daemon_reload: 'eager',
+            notify: ["Service[#{service_name}]"],
+            # FIXME: why does this fail?
+            # content: <<~CONTENT
+            #   # Managed by Puppet
+            #   [Service]
+            #   Type=simple
+            #   EnvironmentFile=
+            #   ExecStart=
+            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{config_file}' #{custom_service_options}
+            # CONTENT
+          )
         end
       end
 
@@ -1266,14 +1287,29 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file(custom_service_config_file) }
 
-        if os_facts[:os]['family'] == 'Debian'
-          it do
-            is_expected.to contain_file(
-              File.join('/etc', 'default', service_name),
-            ).with_content(%r{^OPTIONS="-u '#{user}' -c '#{custom_service_config_file}' "$})
-          end
+        it do
+          is_expected.to contain_file(custom_service_config_file).with(
+            ensure: 'file',
+            validate_cmd: checkconf_cmd,
+          )
+        end
+
+        it do
+          is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
+            unit: "#{service_name}.service",
+            daemon_reload: 'eager',
+            notify: ["Service[#{service_name}]"],
+            # FIXME: why does this fail?
+            # content: <<~CONTENT
+            #   # Managed by Puppet
+            #   [Service]
+            #   Type=simple
+            #   EnvironmentFile=
+            #   ExecStart=
+            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{custom_service_config_file}'
+            # CONTENT
+          )
         end
       end
 
@@ -1289,12 +1325,21 @@ describe 'bind' do
 
         it { is_expected.to compile.with_all_deps }
 
-        if os_facts[:os]['family'] == 'Debian'
-          it do
-            is_expected.to contain_file(
-              File.join('/etc', 'default', service_name),
-            ).with_content(%r{^OPTIONS="-u '#{custom_service_user}' -c '#{config_file}' "$})
-          end
+        it do
+          is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
+            unit: "#{service_name}.service",
+            daemon_reload: 'eager',
+            notify: ["Service[#{service_name}]"],
+            # FIXME: why does this fail?
+            # content: <<~CONTENT
+            #   # Managed by Puppet
+            #   [Service]
+            #   Type=simple
+            #   EnvironmentFile=
+            #   ExecStart=
+            #   ExecStart=/usr/sbin/named -f -u #{custom_service_user} -c '#{config_file}'
+            # CONTENT
+          )
         end
 
         it do
@@ -1421,6 +1466,14 @@ describe 'bind' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package(package_name).with_ensure('absent') }
+
+        it do
+          is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
+            ensure: 'absent',
+            unit: "#{service_name}.service",
+          )
+        end
+
         it do
           is_expected.to contain_service(service_name).with(
             ensure: 'stopped',

@@ -6,6 +6,7 @@ fixtures:
     apt: puppetlabs/apt
     extlib: puppet/extlib
     stdlib: puppetlabs/stdlib
+    systemd: camptocamp/systemd
   repositories:
     facts: https://github.com/puppetlabs/puppetlabs-facts.git
     puppet_agent: https://github.com/puppetlabs/puppetlabs-puppet_agent.git

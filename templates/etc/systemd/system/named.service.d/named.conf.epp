@@ -1,0 +1,6 @@
+# Managed by Puppet
+[Service]
+Type=simple
+EnvironmentFile=
+ExecStart=
+ExecStart=/usr/sbin/named -f -u <%= $bind::service_user %> -c '<%= $bind::service_config_file %>'<% if $bind::service_options { %> <%= $bind::service_options %><%- } -%>

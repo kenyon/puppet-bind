@@ -1,6 +1,0 @@
-<%# SPDX-License-Identifier: AGPL-3.0-or-later -%>
-
-# Managed by Puppet
-
-# startup options for the server
-OPTIONS="-u '<%= $bind::service_user %>' -c '<%= $bind::service_config_file %>' <%= $bind::service_options %>"
