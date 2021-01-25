@@ -6,7 +6,6 @@
 #
 class bind::config {
   assert_private()
-  require bind::configchecks
 
   if $bind::options {
     $merged_options = $bind::default_options + $bind::options
@@ -28,11 +27,14 @@ class bind::config {
     recurse => true,
   }
 
-  file { $bind::service_config_file:
-    ensure       => file,
-    content      => epp("${module_name}/etc/bind/named.conf.epp",
-                        {'options' => $merged_options}),
+  concat { $bind::service_config_file:
     validate_cmd => '/usr/sbin/named-checkconf %',
+  }
+
+  concat::fragment { 'named.conf base':
+    target  => $bind::service_config_file,
+    content => epp("${module_name}/etc/bind/named.conf.epp",
+                        {'options' => $merged_options}),
   }
 
   file { extlib::path_join([$bind::config_dir, 'bind.keys']):
@@ -78,79 +80,9 @@ class bind::config {
     mode   => '0775',
   }
 
-  if $bind::zones {
-    $bind::zones.each |$zone| {
-      if $zone['type'] in ['primary', 'master', 'redirect'] and $zone['resource-records'] {
-        $soa_index = $zone['resource-records'].index |$rr| { $rr['type'].upcase == 'SOA' }
-
-        if $soa_index {
-          $soa_ttl = $zone.dig('resource-records', $soa_index, 'ttl')
-          $soa_data = $zone.dig('resource-records', $soa_index, 'data')
-          $soa_fields = $soa_data.split(/\s+/)
-          $mname = $soa_fields[0]
-          $rname = $soa_fields[1]
-          $serial = Integer($soa_fields[2])
-          $refresh = $soa_fields[3]
-          $retry = $soa_fields[4]
-          $expire = $soa_fields[5]
-          $negative_caching_ttl = $soa_fields[6]
-
-          $ns_index = $zone['resource-records'].index |$rr| {
-            $rr['type'].upcase == 'AAAA' and $rr['name'] == $mname
-          }
-
-          $ns_legacy_index = $zone['resource-records'].index |$rr| {
-            $rr['type'].upcase == 'A' and $rr['name'] == $mname
-          }
-
-          if $ns_index {
-            $ns_address = $zone.dig('resource-records', $ns_index, 'data')
-          } else {
-            $ns_address = undef
-          }
-
-          if $ns_legacy_index {
-            $ns_legacy_address = $zone.dig('resource-records', $ns_legacy_index, 'data')
-          } else {
-            $ns_legacy_address = undef
-          }
-        } else {
-          $soa_ttl =
-          $mname =
-          $rname =
-          $serial =
-          $refresh =
-          $retry =
-          $expire =
-          $negative_caching_ttl =
-          $ns_address =
-          $ns_legacy_address =
-          undef
-        }
-
-        file { extlib::path_join([$merged_options['directory'], "db.${zone['name']}"]):
-          ensure       => file,
-          owner        => $bind::service_user,
-          replace      => false,
-          content      => epp(
-            "${module_name}/db.empty.epp",
-            {
-              'ttl'                  => $zone['ttl'],
-              'soa_ttl'              => $soa_ttl,
-              'mname'                => $mname,
-              'rname'                => $rname,
-              'serial'               => $serial,
-              'refresh'              => $refresh,
-              'retry'                => $retry,
-              'expire'               => $expire,
-              'negative_caching_ttl' => $negative_caching_ttl,
-              'ns_address'           => $ns_address,
-              'ns_legacy_address'    => $ns_legacy_address,
-            },
-          ),
-          validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -r fail -S fail '${zone['name']}' %",
-        }
-      }
+  $bind::zones.each |$zone_name, $zone| {
+    bind::zone { $zone_name:
+      * => $zone,
     }
   }
 }

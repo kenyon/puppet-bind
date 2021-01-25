@@ -10,20 +10,18 @@ describe 'authoritative BIND with zones configured' do
   let(:pp) do
     <<-MANIFEST
       class { 'bind':
-        zones => [
-          {
-            'name' => '#{domain_name}',
+        zones => {
+          '#{domain_name}' => {
             'type' => 'master',
-            'update-policy' => ['local'],
-            'resource-records' => [
-              {
-                'name' => 'www',
+            'update_policy' => ['local'],
+            'resource_records' => {
+              'www' => {
                 'type' => 'AAAA',
                 'data' => '2001:db8::1',
               },
-            ],
+            },
           },
-        ],
+        },
       }
     MANIFEST
   end

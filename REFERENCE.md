@@ -13,9 +13,16 @@
 #### Private Classes
 
 * `bind::config`: Manages BIND configuration
-* `bind::configchecks`: Executes some checks for BIND configuration validity
 * `bind::install`: Manages BIND installation
 * `bind::service`: Manages BIND service
+
+### Defined types
+
+* [`bind::zone`](#bindzone): A DNS zone
+
+### Resource types
+
+* [`resource_record`](#resource_record): a DNS resource record type
 
 ### Functions
 
@@ -36,8 +43,6 @@
 * [`Bind::Logging::ChannelPhrase`](#bindloggingchannelphrase): Type definition for BIND's `logging` `channel` phrase
 * [`Bind::Options`](#bindoptions): Type definition for BIND's `options` statement
 * [`Bind::Size`](#bindsize): Type definition for BIND's file size specification
-* [`Bind::ZoneConfig`](#bindzoneconfig): Type definition for BIND's `zone` configuration statement
-* [`Bind::ZoneConfig::ResourceRecord`](#bindzoneconfigresourcerecord): Type definition for a resource record
 * [`Bind::ZoneConfig::UpdatePolicy`](#bindzoneconfigupdatepolicy): Type definition for BIND's `update-policy` clause in the `zone` statement
 * [`Bind::ZoneConfig::UpdatePolicy::Rule`](#bindzoneconfigupdatepolicyrule): Type definition for rules in BIND's `update-policy` clause in the `zone` statement
 
@@ -283,13 +288,11 @@ Default value: ``undef``
 
 ##### `zones`
 
-Data type: `Optional[Array[Bind::ZoneConfig]]`
+Data type: `Hash`
 
-[Zone
-configuration](https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar)
-statements.
+Hash for creating Bind::Zone resources.
 
-Default value: ``undef``
+Default value: `{}`
 
 ##### `zone_default_expire`
 
@@ -374,6 +377,253 @@ in the `$zones` parameter. Also, individual resource records can override this v
 
 Default value: `'2d'`
 
+## Defined types
+
+### `bind::zone`
+
+A DNS zone
+
+#### Examples
+
+##### Basic usage
+
+```puppet
+bind::zone { 'example.com.': }
+```
+
+#### Parameters
+
+The following parameters are available in the `bind::zone` defined type.
+
+##### `zone_name`
+
+Data type: `Pattern[/\.$/]`
+
+The name of the zone.
+
+Default value: `$title`
+
+##### `allow_transfer`
+
+Data type: `Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]]`
+
+Which hosts are allowed to receive zone transfers from the server.
+https://bind9.readthedocs.io/en/latest/reference.html#allow-transfer-access
+
+Default value: ``undef``
+
+##### `allow_update`
+
+Data type: `Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]]`
+
+Which hosts are allowed to submit Dynamic DNS updates to the zone.
+
+Default value: ``undef``
+
+##### `also_notify`
+
+Data type: `Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]]`
+
+list of IP addresses of name servers that are also sent NOTIFY messages
+whenever a fresh copy of the zone is loaded, in addition to the servers listed in the zone’s NS
+records.
+
+Default value: ``undef``
+
+##### `auto_dnssec`
+
+Data type: `Optional[Enum['allow', 'maintain', 'off']]`
+
+The automatic DNSSEC key management mode.
+
+Default value: ``undef``
+
+##### `class`
+
+Data type: `Optional[Enum['IN', 'HS', 'hesiod', 'CHAOS']]`
+
+DNS class. Defaults to 'IN', for Internet.
+https://bind9.readthedocs.io/en/latest/reference.html#class
+
+Default value: ``undef``
+
+##### `file`
+
+Data type: `Optional[String[1]]`
+
+The zone's filename.
+
+Default value: ``undef``
+
+##### `forward`
+
+Data type: `Optional[Enum['first', 'only']]`
+
+This option is only meaningful if the zone has a forwarders list. The 'only' value
+causes the lookup to fail after trying the forwarders and getting no answer, while 'first' allows
+a normal lookup to be tried. https://bind9.readthedocs.io/en/latest/reference.html#forwarding
+
+Default value: ``undef``
+
+##### `forwarders`
+
+Data type: `Optional[Array[Stdlib::Host]]`
+
+Hosts to which queries are forwarded.
+https://bind9.readthedocs.io/en/latest/reference.html#forwarding
+
+Default value: ``undef``
+
+##### `in_view`
+
+Data type: `Optional[String[1]]`
+
+Allows for referencing the zone in another view.
+
+Default value: ``undef``
+
+##### `inline_signing`
+
+Data type: `Optional[Variant[Boolean, Stdlib::Yes_no]]`
+
+Allows BIND to automatically sign zones.
+
+Default value: ``undef``
+
+##### `key_directory`
+
+Data type: `Optional[String[1]]`
+
+The directory where the public and private DNSSEC key files should be found
+when performing a dynamic update of secure zones, if different than the current working
+directory.
+
+Default value: ``undef``
+
+##### `masters`
+
+Data type: `Optional[Array[Stdlib::Host]]`
+
+Synonym for `primaries`.
+
+Default value: ``undef``
+
+##### `primaries`
+
+Data type: `Optional[Array[Stdlib::Host]]`
+
+Defines a named list of servers for inclusion in stub and secondary zones'
+primaries or also-notify lists.
+
+Default value: ``undef``
+
+##### `purge`
+
+Data type: `Boolean`
+
+Whether to purge unmanaged resource records from the zone.
+
+Default value: ``true``
+
+##### `resource_records`
+
+Data type: `Hash`
+
+Hash for creating `resource_record` resources.
+
+Default value: `{}`
+
+##### `serial_update_method`
+
+Data type: `Optional[Enum['date', 'increment', 'unixtime']]`
+
+Method for incrementing the zone's serial number.
+
+Default value: ``undef``
+
+##### `ttl`
+
+Data type: `Optional[String[1]]`
+
+The value for the `$TTL` directive, which sets the default resource record TTL for the
+zone.
+
+Default value: ``undef``
+
+##### `type`
+
+Data type: `Optional[Enum[
+    'primary',
+    'master',
+    'secondary',
+    'slave',
+    'mirror',
+    'hint',
+    'stub',
+    'static-stub',
+    'forward',
+    'redirect',
+    'delegation-only',
+  ]]`
+
+The zone type. https://bind9.readthedocs.io/en/latest/reference.html#zone-types
+
+Default value: ``undef``
+
+##### `update_policy`
+
+Data type: `Optional[Array[Bind::ZoneConfig::UpdatePolicy]]`
+
+The update-policy.
+https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
+
+Default value: ``undef``
+
+## Resource types
+
+### `resource_record`
+
+This type provides Puppet with the capabilities to manage DNS resource records.
+
+**Autorequires**: If Puppet is managing the zone that this resource record belongs to,
+the resource record will autorequire the zone.
+
+#### Examples
+
+##### AAAA record in the example.com. zone
+
+```puppet
+resource_record { 'foo.example.com.':
+  ensure => 'present',
+  type   => 'AAAA',
+  data   => '2001:db8::1',
+}
+```
+
+#### Properties
+
+The following properties are available in the `resource_record` type.
+
+##### `ensure`
+
+Data type: `Enum[present, absent]`
+
+Whether this resource should be present or absent on the target system.
+
+Default value: `present`
+
+#### Parameters
+
+The following parameters are available in the `resource_record` type.
+
+##### `name`
+
+namevar
+
+Data type: `String`
+
+The name of the resource record.
+
 ## Functions
 
 ## Data types
@@ -454,57 +704,6 @@ Alias of `Struct[{
 Reference: `size_spec` under https://bind9.readthedocs.io/en/latest/reference.html#configuration-file-elements
 
 Alias of `Variant[Enum['unlimited', 'default'], Integer[0], Pattern[/\A\d+(?i:k|m|g)\Z/]]`
-
-### `Bind::ZoneConfig`
-
-Reference: https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar
-
-Alias of `Struct[{
-  name => Pattern[/\.$/],
-  Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
-  Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
-  Optional['also-notify'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
-  Optional['auto-dnssec'] => Enum['allow', 'maintain', 'off'],
-  Optional['class'] => Enum['IN', 'HS', 'hesiod', 'CHAOS'],
-  Optional['file'] => String[1],
-  Optional['forward'] => Enum['first', 'only'],
-  Optional['forwarders'] => Array[Stdlib::Host],
-  Optional['in-view'] => String[1],
-  Optional['inline-signing'] => Variant[Boolean, Stdlib::Yes_no],
-  Optional['key-directory'] => String[1],
-  Optional['masters'] => Array[Stdlib::Host],
-  Optional['primaries'] => Array[Stdlib::Host],
-  Optional['purge'] => Boolean,
-  Optional['resource-records'] => Array[Bind::ZoneConfig::ResourceRecord],
-  Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
-  Optional['ttl'] => String[1],
-  Optional['type'] => Enum[
-    'primary',
-    'master',
-    'secondary',
-    'slave',
-    'mirror',
-    'hint',
-    'stub',
-    'static-stub',
-    'forward',
-    'redirect',
-    'delegation-only'
-  ],
-  Optional['update-policy'] => Array[Bind::ZoneConfig::UpdatePolicy],
-}]`
-
-### `Bind::ZoneConfig::ResourceRecord`
-
-Reference: https://en.wikipedia.org/wiki/Domain_Name_System#Resource_records
-
-Alias of `Struct[{
-  'data' => Variant[String[1], Array[String[1]]],
-  'type' => String[1],
-  Optional['name'] => String[1],
-  Optional['class'] => String[1],
-  Optional['ttl'] => String[1],
-}]`
 
 ### `Bind::ZoneConfig::UpdatePolicy`
 

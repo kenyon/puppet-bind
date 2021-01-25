@@ -4,6 +4,7 @@
 fixtures:
   forge_modules:
     apt: puppetlabs/apt
+    concat: puppetlabs/concat
     extlib: puppet/extlib
     stdlib: puppetlabs/stdlib
     systemd: camptocamp/systemd

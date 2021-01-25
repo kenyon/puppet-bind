@@ -96,9 +96,7 @@
 #   for the BIND service.
 #
 # @param zones
-#   [Zone
-#   configuration](https://bind9.readthedocs.io/en/latest/reference.html#zone-statement-grammar)
-#   statements.
+#   Hash for creating Bind::Zone resources.
 #
 # @param zone_default_expire
 #   The default SOA expire time, set per a [RIPE
@@ -172,7 +170,7 @@ class bind (
   String[1] $service_user = 'bind',
   String[1] $service_group = $service_user,
   Array[String[1]] $utils_packages = ['bind9-dnsutils'],
-  Optional[Array[Bind::ZoneConfig]] $zones = undef,
+  Hash $zones = {},
   String[1] $zone_default_expire = '1000h',
   String[1] $zone_default_mname = $facts['networking']['hostname'],
   String[1] $zone_default_negative_caching_ttl = '1h',

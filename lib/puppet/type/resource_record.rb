@@ -4,21 +4,21 @@ require 'puppet/resource_api'
 
 Puppet::ResourceApi.register_type(
   name: 'resource_record',
-  docs: <<-EOS,
-@summary a resource_record type
-@example
-resource_record { 'foo':
-  ensure => 'present',
-}
+  docs: <<~EOS,
+          @summary a DNS resource record type
+          @example AAAA record in the example.com. zone
+            resource_record { 'foo.example.com.':
+              ensure => 'present',
+              type   => 'AAAA',
+              data   => '2001:db8::1',
+            }
 
-This type provides Puppet with the capabilities to manage ...
+          This type provides Puppet with the capabilities to manage DNS resource records.
 
-If your type uses autorequires, please document as shown below, else delete
-these lines.
-**Autorequires**:
-* `Package[foo]`
-EOS
-  features: [],
+          **Autorequires**: If Puppet is managing the zone that this resource record belongs to,
+          the resource record will autorequire the zone.
+        EOS
+  features: ['canonicalize'],
   attributes: {
     ensure: {
       type:    'Enum[present, absent]',
@@ -27,7 +27,7 @@ EOS
     },
     name: {
       type:      'String',
-      desc:      'The name of the resource you want to manage.',
+      desc:      'The name of the resource record.',
       behaviour: :namevar,
     },
   },

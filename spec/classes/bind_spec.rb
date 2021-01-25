@@ -4,15 +4,6 @@
 
 require 'spec_helper'
 
-checkconf_cmd = '/usr/sbin/named-checkconf %'
-
-def checkzone_cmd(zone_name)
-  "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -r fail -S fail '#{zone_name}' %"
-end
-
-config_dir = File.join('/etc', 'bind')
-config_filename = 'named.conf'
-config_file = File.join(config_dir, config_filename)
 default_zone_filenames_to_names = {
   'db.0' => '0.in-addr.arpa',
   'db.127' => '127.in-addr.arpa',
@@ -54,8 +45,6 @@ root_key = Regexp.new(Regexp.escape('AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKT
                 oZG+SrDK6nWeL3c6H5Apxz7LjVc1uTIdsIXxuOLYA4/ilBmSVIzuDWfd
                 RUfhHdY6+cn8HFRm+2hM8AnXGXws9555KrUB5qihylGa8subX2Nn6UwN
                 R1AkUTV74bU='))
-user = 'bind'
-working_dir = File.join('/var', 'cache', 'bind')
 
 describe 'bind' do
   on_supported_os.each do |os, os_facts|
@@ -129,16 +118,16 @@ describe 'bind' do
         end
 
         it do
-          is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
+          is_expected.to contain_file(File.join(CONFIG_DIR, 'bind.keys')).with(
             ensure: 'file',
             content: root_key,
-            validate_cmd: checkconf_cmd,
+            validate_cmd: CHECKCONF_CMD,
           )
         end
 
         default_zone_filenames_to_names.each do |filename, name|
           it do
-            is_expected.to contain_file(File.join(config_dir, filename)).with(
+            is_expected.to contain_file(File.join(CONFIG_DIR, filename)).with(
               ensure: 'file',
               validate_cmd: checkzone_cmd(name),
             )
@@ -147,24 +136,24 @@ describe 'bind' do
 
         if os_facts[:os]['name'] == 'Debian' && os_facts[:os]['release']['major'] == '10'
           it do
-            is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
+            is_expected.to contain_file(File.join(CONFIG_DIR, 'bind.keys')).with(
               ensure: 'file',
               content: %r{managed-keys},
-              validate_cmd: checkconf_cmd,
+              validate_cmd: CHECKCONF_CMD,
             )
           end
         else
           it do
-            is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with(
+            is_expected.to contain_file(File.join(CONFIG_DIR, 'bind.keys')).with(
               ensure: 'file',
               content: %r{trust-anchors},
-              validate_cmd: checkconf_cmd,
+              validate_cmd: CHECKCONF_CMD,
             )
           end
         end
 
         it do
-          is_expected.to contain_file(working_dir).with(
+          is_expected.to contain_file(WORKING_DIR).with(
             ensure: 'directory',
             owner: 'root',
             group: group,
@@ -181,7 +170,7 @@ describe 'bind' do
 
         context 'named configuration' do
           it do
-            is_expected.to contain_file(config_dir).with(
+            is_expected.to contain_file(CONFIG_DIR).with(
               ensure: 'directory',
               force: true,
               owner: 'root',
@@ -192,34 +181,35 @@ describe 'bind' do
             )
           end
 
+          it { is_expected.to contain_concat(CONFIG_FILE).with_validate_cmd(CHECKCONF_CMD) }
+
           it do
-            is_expected.to contain_file(config_file)
-              .with_ensure('file')
+            is_expected.to contain_concat__fragment('named.conf base')
               .with_content(%r{# Managed by Puppet})
               .with_content(default_zones)
               .without_content(%r{include ".*";})
-              .with_validate_cmd(checkconf_cmd)
           end
 
           it do
-            is_expected.to contain_file(File.join(config_dir, 'rndc.key')).with(
+            is_expected.to contain_file(File.join(CONFIG_DIR, 'rndc.key')).with(
               ensure: 'file',
               owner: 'root',
               group: group,
               mode: '0640',
-              validate_cmd: checkconf_cmd,
+              validate_cmd: CHECKCONF_CMD,
             )
           end
 
           it do
             is_expected.to contain_exec('/usr/sbin/rndc-confgen -a')
-              .with_creates(File.join(config_dir, 'rndc.key'))
+              .with_creates(File.join(CONFIG_DIR, 'rndc.key'))
           end
         end
 
         if os_facts[:os]['family'] == 'Debian'
           it do
-            is_expected.to contain_file(config_file).with_content(%r{directory "#{working_dir}";})
+            is_expected.to contain_concat__fragment('named.conf base')
+              .with_content(%r{directory "#{WORKING_DIR}";})
           end
 
           it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_ensure('absent') }
@@ -237,7 +227,7 @@ describe 'bind' do
             #   Type=simple
             #   EnvironmentFile=
             #   ExecStart=
-            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{config_file}'
+            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{CONFIG_FILE}'
             # CONTENT
           )
         end
@@ -337,11 +327,16 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file(config_file).without_content(default_zones) }
-        it { is_expected.not_to contain_file(File.join(config_dir, 'db.0')) }
-        it { is_expected.not_to contain_file(File.join(config_dir, 'db.127')) }
-        it { is_expected.not_to contain_file(File.join(config_dir, 'db.255')) }
-        it { is_expected.not_to contain_file(File.join(config_dir, 'db.local')) }
+
+        it do
+          is_expected.to contain_concat__fragment('named.conf base')
+            .without_content(%r{^zone})
+        end
+
+        it { is_expected.not_to contain_file(File.join(CONFIG_DIR, 'db.0')) }
+        it { is_expected.not_to contain_file(File.join(CONFIG_DIR, 'db.127')) }
+        it { is_expected.not_to contain_file(File.join(CONFIG_DIR, 'db.255')) }
+        it { is_expected.not_to contain_file(File.join(CONFIG_DIR, 'db.local')) }
       end
 
       context 'with custom includes' do
@@ -353,7 +348,11 @@ describe 'bind' do
           end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_file(config_file).without_content(%r{include}) }
+
+          it do
+            is_expected.to contain_concat__fragment('named.conf base')
+              .without_content(%r{include})
+          end
         end
 
         context 'single file' do
@@ -367,7 +366,7 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file)
+            is_expected.to contain_concat__fragment('named.conf base')
               .with_content(%r{^include "#{custom_includes_file}";$})
           end
         end
@@ -386,7 +385,7 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file)
+            is_expected.to contain_concat__fragment('named.conf base')
               .with_content(%r{^include "#{custom_includes_array[0]}";$})
               .with_content(%r{^include "#{custom_includes_array[1]}";$})
           end
@@ -394,21 +393,82 @@ describe 'bind' do
       end
 
       context 'with custom zones' do
-        context 'with zones => undef (and without default zones to make test easier)' do
-          let(:params) do
-            {
-              default_zones: false,
-              zones: :undef,
-            }
-          end
-
-          it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_file(config_file).without_content(%r{^zone}) }
+        let(:params) do
+          {
+            zones: {
+              '.': {
+                type: 'mirror',
+              },
+              'example.com.': {
+                type: 'primary',
+                update_policy: ['local'],
+                resource_records: {
+                  www: {
+                    type: 'AAAA',
+                    data: '2001:db8::1',
+                  },
+                },
+              },
+              'example.net.': {
+                type: 'secondary',
+              },
+            },
+          }
         end
 
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_bind__zone('.') }
+        it { is_expected.to contain_bind__zone('example.com.') }
+        it { is_expected.to contain_bind__zone('example.net.') }
+
         context 'with invalid configurations' do
+          context 'such as zone name not ending with a dot' do
+            let(:params) do
+              {
+                zones: {
+                  'not-ending-with-dot.example.com': {
+                    type: 'primary',
+                  },
+                },
+              }
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{parameter 'zone_name' expects a match}) }
+          end
+
+          context 'such as multiple SOA records' do
+            let(:params) do
+              {
+                zones: {
+                  'multiple-soa-records.example.com.': {
+                    type: 'primary',
+                    update_policy: ['local'],
+                    resource_records: {
+                      '@ SOA1': {
+                        type: 'SOA',
+                        data: 'ns1 hostmaster 2021012401 24h 2h 1000h 1h',
+                      },
+                      '@ SOA2': {
+                        type: 'soa',
+                        data: 'ns1 hostmaster 2021012402 24h 2h 1000h 1h',
+                      },
+                    },
+                  },
+                },
+              }
+            end
+
+            it { is_expected.to compile.and_raise_error(%r{only one SOA record allowed per zone}) }
+          end
+
           context 'such as missing type and in-view' do
-            let(:params) { { zones: [{ name: 'missing-type.example.com.', 'update-policy' => ['local'] }] } }
+            let(:params) do
+              {
+                zones: {
+                  'missing-type.example.com.': { update_policy: ['local'] },
+                },
+              }
+            end
 
             it { is_expected.to compile.and_raise_error(%r{must specify either in-view or type}) }
           end
@@ -416,577 +476,23 @@ describe 'bind' do
           context 'such as non-updatable primary zones' do
             let(:params) do
               {
-                zones: [
-                  name: 'non-updatable.example.com.',
-                  type: 'primary',
-                  'resource-records': [
-                    {
-                      type: 'SOA',
-                      data: 'ns1 hostmaster 2021010201 24h 2h 1000h 1h',
+                zones: {
+                  'non-updatable.example.com.': {
+                    type: 'primary',
+                    resource_records: {
+                      '@ SOA': {
+                        type: 'SOA',
+                        data: 'ns1 hostmaster 2021010201 24h 2h 1000h 1h',
+                      },
                     },
-                  ],
-                ],
+                  },
+                },
               }
             end
 
             it do
               is_expected.to compile.and_raise_error(
                 %r{must be updatable locally via allow-update or update-policy},
-              )
-            end
-          end
-        end
-
-        context 'with various zone configurations without resource records' do
-          let(:params) do
-            {
-              zones: [
-                { name: '.', type: 'mirror' },
-                {
-                  name: 'example.com.',
-                  type: 'primary',
-                  file: 'specified-file-example',
-                  'allow-transfer' => ['2001:db8::/64'],
-                  'allow-update' => ['2001:db8:2::/64'],
-                  'also-notify' => ['2001:db8:1::/64'],
-                  'auto-dnssec' => 'maintain',
-                  'inline-signing' => true,
-                  'key-directory' => 'example',
-                },
-                {
-                  name: 'example.net.',
-                  type: 'secondary',
-                  forward: 'only',
-                  forwarders: ['192.0.2.3', '192.0.2.4'],
-                },
-                { name: 'example.org.', class: 'IN', 'in-view' => 'view0' },
-                {
-                  name: 'example.xyz.',
-                  type: 'secondary',
-                  primaries: ['2001:db8::1'],
-                },
-                {
-                  name: 'example.lol.',
-                  type: 'primary',
-                  'update-policy' => [
-                    permission: 'deny',
-                    identity: 'host-key',
-                    ruletype: 'name',
-                    name: 'ns1.example.com.',
-                    types: 'A',
-                  ],
-                },
-                {
-                  name: 'example.local.',
-                  type: 'primary',
-                  'update-policy' => ['local'],
-                },
-                {
-                  name: 'example.both.',
-                  type: 'primary',
-                  'update-policy' => [
-                    'local',
-                    {
-                      permission: 'deny',
-                      identity: 'host-key',
-                      ruletype: 'name',
-                      name: 'ns1.example.com.',
-                    },
-                  ],
-                },
-                {
-                  name: 'example.local2.',
-                  type: 'primary',
-                  'update-policy' => [
-                    permission: 'grant',
-                    identity: 'local-ddns',
-                    ruletype: 'zonesub',
-                    types: 'any',
-                  ],
-                  'serial-update-method' => 'unixtime',
-                },
-              ],
-            }
-          end
-
-          it { is_expected.to compile.with_all_deps }
-
-          it do
-            is_expected.to contain_file(config_file).with_content(%r<^zone "\." \{
-    type mirror;
-    file "db\.root";
-\};$>).with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "specified-file-example";
-    allow-transfer \{
-        2001:db8::/64;
-    \};
-    allow-update \{
-        2001:db8:2::/64;
-    \};
-    also-notify \{
-        2001:db8:1::/64;
-    \};
-    auto-dnssec maintain;
-    inline-signing true;
-    key-directory "example";
-\};$>).with_content(%r<^zone "example\.net\." \{
-    type secondary;
-    file "db\.example\.net\.";
-    forward only;
-    forwarders \{
-        192\.0\.2\.3;
-        192\.0\.2\.4;
-    \};
-\};$>).with_content(%r<^zone "example\.org\." IN \{
-    in-view "view0";
-\};$>).with_content(%r<^zone "example\.xyz\." \{
-    type secondary;
-    file "db\.example\.xyz\.";
-    primaries \{
-        2001:db8::1;
-    \};
-\};>).with_content(%r<^zone "example\.lol\." \{
-    type primary;
-    file "db\.example\.lol\.";
-    update-policy \{
-        deny host-key name ns1\.example\.com\. A;
-    \};
-\};>).with_content(%r<^zone "example\.local\." \{
-    type primary;
-    file "db\.example\.local\.";
-    update-policy local;
-\};>).with_content(%r<^zone "example\.both\." \{
-    type primary;
-    file "db\.example\.both\.";
-    update-policy local;
-    update-policy \{
-        deny host-key name ns1\.example\.com\.\s*;
-    \};
-\};>).with_content(%r<^zone "example\.local2\." \{
-    type primary;
-    file "db\.example\.local2\.";
-    serial-update-method unixtime;
-    update-policy \{
-        grant local-ddns zonesub\s+any;
-    \};
-\};>)
-          end
-        end
-
-        context 'with zones with resource records' do
-          let(:node) { 'ns1.example.com' }
-
-          let(:facts) do
-            super().merge(
-              networking: {
-                hostname: 'ns1',
-                ip: '192.0.2.1',
-                ip6: '2001:db8::1',
-              },
-            )
-          end
-
-          context 'with default SOA values and default NS records' do
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        # FIXME: This RR is not actually used until I implement the RR Puppet
-                        # resource type and provider which would nsupdate the zone with these kinds
-                        # of RRs. It's just needed to cause a zone file to be initialized (only
-                        # zone configuration is applied, not zone file, if no RRs are provided).
-                        # Once the RR type/provider is implemented, add test to make sure the
-                        # resource is in the catalog.
-                        name: 'www',
-                        type: 'AAAA',
-                        data: '2001:db8::2',
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 2d
-                  @  SOA #{facts[:networking][:hostname]} hostmaster 1 24h 2h 1000h 1h
-                  @ NS #{facts[:networking][:hostname]}
-                  #{facts[:networking][:hostname]} AAAA #{facts[:networking][:ip6]}
-                  #{facts[:networking][:hostname]} A #{facts[:networking][:ip]}
-                CONTENT
-              )
-            end
-          end
-
-          context 'with non-default SOA and default NS records' do
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    ttl: '4d',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        type: 'SOA',
-                        ttl: '8d',
-                        data: "#{facts[:networking][:hostname]} hostmaster 2021010201 48h 6h 1500h 2h",
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 4d
-                  @ 8d SOA #{facts[:networking][:hostname]} hostmaster 2021010201 48h 6h 1500h 2h
-                  @ NS #{facts[:networking][:hostname]}
-                  #{facts[:networking][:hostname]} AAAA #{facts[:networking][:ip6]}
-                  #{facts[:networking][:hostname]} A #{facts[:networking][:ip]}
-                CONTENT
-              )
-            end
-          end
-
-          context 'with non-default SOA and non-default NS records, IPv6 only' do
-            let(:facts) do
-              super().merge(
-                networking: {
-                  ip: nil,
-                },
-              )
-            end
-
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        type: 'SOA',
-                        data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
-                      },
-                      {
-                        name: 'my-ns',
-                        type: 'AAAA',
-                        data: '2001:db8::ffff',
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 2d
-                  @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
-                  @ NS my-ns
-                  my-ns AAAA 2001:db8::ffff
-                CONTENT
-              )
-            end
-          end
-
-          context 'with non-default SOA and non-default NS records, IPv6 only, array' do
-            let(:facts) do
-              super().merge(
-                networking: {
-                  ip: nil,
-                },
-              )
-            end
-
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        type: 'SOA',
-                        data: 'my-ns hostmaster 2021011001 48h 6h 1500h 30m',
-                      },
-                      {
-                        name: 'my-ns',
-                        type: 'AAAA',
-                        data: [
-                          '2001:db8::eeee',
-                          '2001:db8::ffff',
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 2d
-                  @  SOA my-ns hostmaster 2021011001 48h 6h 1500h 30m
-                  @ NS my-ns
-                  my-ns AAAA 2001:db8::eeee
-                  my-ns AAAA 2001:db8::ffff
-                CONTENT
-              )
-            end
-          end
-
-          context 'with non-default SOA and non-default NS records, legacy only' do
-            let(:facts) do
-              super().merge(
-                networking: {
-                  ip6: nil,
-                },
-              )
-            end
-
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        type: 'SOA',
-                        data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
-                      },
-                      {
-                        name: 'my-ns',
-                        type: 'A',
-                        data: '192.0.2.254',
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 2d
-                  @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
-                  @ NS my-ns
-                  my-ns A 192.0.2.254
-                CONTENT
-              )
-            end
-          end
-
-          context 'with non-default SOA and non-default NS records, legacy only, array' do
-            let(:facts) do
-              super().merge(
-                networking: {
-                  ip6: nil,
-                },
-              )
-            end
-
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        type: 'SOA',
-                        data: 'my-ns hostmaster 2021011001 48h 6h 1500h 30m',
-                      },
-                      {
-                        name: 'my-ns',
-                        type: 'A',
-                        data: [
-                          '192.0.2.253',
-                          '192.0.2.254',
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 2d
-                  @  SOA my-ns hostmaster 2021011001 48h 6h 1500h 30m
-                  @ NS my-ns
-                  my-ns A 192.0.2.253
-                  my-ns A 192.0.2.254
-                CONTENT
-              )
-            end
-          end
-
-          context 'with non-default SOA and non-default NS records, legacy and IPv6' do
-            let(:params) do
-              {
-                zones: [
-                  {
-                    name: 'example.com.',
-                    type: 'primary',
-                    'update-policy' => ['local'],
-                    'resource-records' => [
-                      {
-                        type: 'SOA',
-                        data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
-                      },
-                      {
-                        name: 'my-ns',
-                        type: 'AAAA',
-                        data: '2001:db8::ffff',
-                      },
-                      {
-                        name: 'my-ns',
-                        type: 'A',
-                        data: '192.0.2.254',
-                      },
-                    ],
-                  },
-                ],
-              }
-            end
-
-            it { is_expected.to compile.with_all_deps }
-
-            it do
-              is_expected.to contain_file(config_file)
-                .with_content(%r<^zone "example\.com\." \{
-    type primary;
-    file "db\.example\.com\.";
-    update-policy local;
-\};>)
-            end
-
-            it do
-              is_expected.to contain_file(File.join(working_dir, 'db.example.com.')).with(
-                ensure: 'file',
-                owner: user,
-                replace: false,
-                validate_cmd: checkzone_cmd('example.com.'),
-                content: <<~CONTENT
-                  $TTL 2d
-                  @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
-                  @ NS my-ns
-                  my-ns AAAA 2001:db8::ffff
-                  my-ns A 192.0.2.254
-                CONTENT
               )
             end
           end
@@ -1013,7 +519,7 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file).with_content(%r<^logging \{
+            is_expected.to contain_concat__fragment('named.conf base').with_content(%r<^logging \{
     category security \{
         my_security_channel;
         default_syslog;
@@ -1044,7 +550,7 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file).with_content(%r<^logging \{
+            is_expected.to contain_concat__fragment('named.conf base').with_content(%r<^logging \{
     channel chan1 \{
         null;
     \};
@@ -1101,7 +607,7 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file)
+            is_expected.to contain_concat__fragment('named.conf base')
               .with_content(%r<^logging \{
     category rpz \{
     \};
@@ -1155,7 +661,7 @@ describe 'bind' do
         it { is_expected.to compile.with_all_deps }
 
         it do
-          is_expected.to contain_file(config_file)
+          is_expected.to contain_concat__fragment('named.conf base')
             .with_content(%r{directory "/meh";})
             .with_content(%r{auto-dnssec maintain;})
             .with_content(%r{inline-signing true;})
@@ -1186,8 +692,8 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_file(config_file)
-              .with_content(%r{directory "#{working_dir}"})
+            is_expected.to contain_concat__fragment('named.conf base')
+              .with_content(%r{directory "#{WORKING_DIR}"})
               .with_content(%r{zone-statistics full;})
           end
         end
@@ -1215,7 +721,7 @@ describe 'bind' do
             #   Type=simple
             #   EnvironmentFile=
             #   ExecStart=
-            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{config_file}' #{custom_service_options}
+            #   ExecStart=/usr/sbin/named -f -u #{user} -c '#{CONFIG_FILE}' #{custom_service_options}
             # CONTENT
           )
         end
@@ -1275,7 +781,7 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file(File.join(custom_config_dir, config_filename)) }
+        it { is_expected.to contain_concat(File.join(custom_config_dir, CONFIG_FILENAME)) }
       end
 
       context 'with a custom service_config_file' do
@@ -1289,9 +795,8 @@ describe 'bind' do
         it { is_expected.to compile.with_all_deps }
 
         it do
-          is_expected.to contain_file(custom_service_config_file).with(
-            ensure: 'file',
-            validate_cmd: checkconf_cmd,
+          is_expected.to contain_concat(custom_service_config_file).with(
+            validate_cmd: CHECKCONF_CMD,
           )
         end
 
@@ -1337,13 +842,13 @@ describe 'bind' do
             #   Type=simple
             #   EnvironmentFile=
             #   ExecStart=
-            #   ExecStart=/usr/sbin/named -f -u #{custom_service_user} -c '#{config_file}'
+            #   ExecStart=/usr/sbin/named -f -u #{custom_service_user} -c '#{CONFIG_FILE}'
             # CONTENT
           )
         end
 
         it do
-          is_expected.to contain_file(working_dir).with(
+          is_expected.to contain_file(WORKING_DIR).with(
             ensure: 'directory',
             owner: 'root',
             group: custom_service_group,
@@ -1400,7 +905,7 @@ describe 'bind' do
         end
 
         it { is_expected.to contain_package('bind9-dnsutils').with_ensure('present') }
-        it { is_expected.to contain_file(File.join(config_dir, 'bind.keys')).with_content(%r{trust-anchors}) }
+        it { is_expected.to contain_file(File.join(CONFIG_DIR, 'bind.keys')).with_content(%r{trust-anchors}) }
 
         context 'with dev packages' do
           let(:params) do

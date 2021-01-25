@@ -1,0 +1,101 @@
+<%- if $class { -%>
+zone "<%= $zone_name %>" <%= $class %> {
+  <%- } else { -%>
+zone "<%= $zone_name %>" {
+  <%- } -%>
+  <%- if $type { -%>
+    type <%= $type %>;
+  <%- } -%>
+  <%- if $in_view { -%>
+    in-view "<%= $in_view %>";
+  <%- } -%>
+  <%- if $type in [
+          'primary',
+          'master',
+          'hint',
+          'redirect',
+          'secondary',
+          'slave',
+          'mirror',
+          'stub',
+          'redirect',
+        ] { -%>
+    <%- if $file { -%>
+    file "<%= $file %>";
+    <%- } elsif $zone_name == '.' { -%>
+    file "db.root";
+    <%- } else { -%>
+    file "db.<%= $zone_name %>";
+    <%- } -%>
+  <%- } -%>
+  <%- if $allow_transfer { -%>
+    allow-transfer {
+    <%- $allow_transfer.each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
+  <%- if $allow_update { -%>
+    allow-update {
+    <%- $allow_update.each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
+  <%- if $also_notify { -%>
+    also-notify {
+    <%- $also_notify.each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
+  <%- if $auto_dnssec { -%>
+    auto-dnssec <%= $auto_dnssec %>;
+  <%- } -%>
+  <%- if $inline_signing { -%>
+    inline-signing <%= $inline_signing %>;
+  <%- } -%>
+  <%- if $key_directory { -%>
+    key-directory "<%= $key_directory %>";
+  <%- } -%>
+  <%- if $forward { -%>
+    forward <%= $forward %>;
+  <%- } -%>
+  <%- if $forwarders { -%>
+    forwarders {
+      <%- $forwarders.each |$forwarder| { -%>
+        <%= $forwarder %>;
+      <%- } -%>
+    };
+  <%- } -%>
+  <%- if $primaries { -%>
+    primaries {
+      <%- $primaries.each |$primary| { -%>
+        <%= $primary %>;
+      <%- } -%>
+    };
+  <%- } -%>
+  <%- if $masters { -%>
+    masters {
+      <%- $masters.each |$master| { -%>
+        <%= $master %>;
+      <%- } -%>
+    };
+  <%- } -%>
+  <%- if $serial_update_method { -%>
+    serial-update-method <%= $serial_update_method %>;
+  <%- } -%>
+  <%- if $update_policy {
+        if 'local' in $update_policy { -%>
+    update-policy local;
+    <%- }
+        $update_policy_rules = $update_policy - 'local'
+        unless $update_policy_rules.empty { -%>
+    update-policy {
+      <%- $update_policy_rules.each |$rule| { -%>
+        <%= $rule['permission'] %> <%= $rule['identity'] %> <%= $rule['ruletype'] %> <%= $rule['name'] %> <%= $rule['types'] %>;
+      <%- } -%>
+    };
+    <%- } -%>
+  <%- } -%>
+};
