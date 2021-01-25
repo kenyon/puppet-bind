@@ -54,7 +54,7 @@ Manages the BIND domain name server and DNS zones
 
 #### Examples
 
-##### 
+##### Caching nameserver with default configuration
 
 ```puppet
 include bind

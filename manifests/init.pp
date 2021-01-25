@@ -2,7 +2,7 @@
 
 # @summary Manages the BIND domain name server and DNS zones
 #
-# @example
+# @example Caching nameserver with default configuration
 #   include bind
 #
 # @param config_dir
