@@ -21,6 +21,7 @@ class bind::install {
   # workaround for https://github.com/rvm/rvm/issues/4975
   # The dnsruby build fails with the Ruby 2.7.1 build included with Puppet 7.1.0 if /usr/bin/mkdir
   # is missing.
+  # FIXME: remove this when Puppet's Ruby is fixed.
   file { '/usr/bin/mkdir':
     ensure => link,
     target => '/bin/mkdir',
