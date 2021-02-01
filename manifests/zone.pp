@@ -95,12 +95,6 @@ define bind::zone (
     fail("zone ${zone_name}: must specify either in-view or type")
   }
 
-  if $type in ['primary', 'master', 'redirect'] and !$resource_records.empty {
-    unless $allow_update or $update_policy {
-      fail("zone ${zone_name}: must be updatable locally via allow-update or update-policy")
-    }
-  }
-
   concat::fragment { $zone_name:
     target  => $bind::service_config_file,
     content => epp("${module_name}/zone.conf.epp", {
@@ -127,6 +121,10 @@ define bind::zone (
   }
 
   if $type in ['primary', 'master', 'redirect'] and !$resource_records.empty {
+    unless $allow_update or $update_policy {
+      fail("zone ${zone_name}: must be updatable locally via allow-update or update-policy")
+    }
+
     if length($resource_records.filter |$rr| { $rr[1]['type'].upcase == 'SOA' }) > 1 {
       fail('only one SOA record allowed per zone')
     }
