@@ -33,6 +33,7 @@ Puppet::ResourceApi.register_type(
     zone: {
       type: 'String',
       desc: 'The zone the resource record belongs to.',
+      behavior: :namevar,
     },
     type: {
       type: 'String',
