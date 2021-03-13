@@ -90,6 +90,8 @@ TODO: provide more examples.
 
 ### Authoritative only
 
+Note that support for authoritative servers is incomplete in this module.
+
 When creating a new zone with BIND, the zone file must have a `$TTL`, a SOA record, an NS record,
 and an address record for that host used in the NS record. All of these have defaults (see the
 `zone_default_*` parameters of [`init.pp`](manifests/init.pp) and the [initial zone
