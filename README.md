@@ -68,9 +68,8 @@ class { 'bind':
 
 ## Usage
 
-See the [reference](REFERENCE.md) for available class parameters.
-
-For parameter defaults, see the [`data`](data) directory, which is organized according to
+See the [reference](REFERENCE.md) for available class parameters and defaults. For
+platform-specific defaults, see the [`data`](data) directory, which is organized according to
 [`hiera.yaml`](hiera.yaml).
 
 The test suite in the [`spec`](spec) directory is a good source for usage examples.
