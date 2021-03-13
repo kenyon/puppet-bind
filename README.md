@@ -2,8 +2,6 @@
 
 # bind
 
-[![pipeline status](https://gitlab.com/kenyon/puppet-bind/badges/main/pipeline.svg)](https://gitlab.com/kenyon/puppet-bind/-/commits/main)
-
 ## Table of Contents
 
 1. [Description](#description)
