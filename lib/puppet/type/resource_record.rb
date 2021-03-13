@@ -21,14 +21,36 @@ Puppet::ResourceApi.register_type(
   features: ['canonicalize'],
   attributes: {
     ensure: {
-      type:    'Enum[present, absent]',
-      desc:    'Whether this resource should be present or absent on the target system.',
+      type: 'Enum[present, absent]',
+      desc: 'Whether this resource record should be present or absent on the target system.',
       default: 'present',
     },
     name: {
-      type:      'String',
-      desc:      'The name of the resource record.',
-      behaviour: :namevar,
+      type: 'String',
+      desc: 'The name of the resource record, also known as the owner or label.',
+      behavior: :namevar,
     },
+    zone: {
+      type: 'String',
+      desc: 'The zone the resource record belongs to.',
+    },
+    type: {
+      type: 'String',
+      desc: 'The type of the resource record.',
+      behavior: :namevar,
+    },
+    data: {
+      type: 'String',
+      desc: 'The data for the resource record.',
+      behavior: :namevar,
+    },
+    ttl: {
+      type: 'String',
+      desc: 'The TTL for the resource record.',
+    },
+  },
+  # FIXME: seems like this doesn't do anything.
+  autorequire: {
+    'bind::zone': '$zone',
   },
 )

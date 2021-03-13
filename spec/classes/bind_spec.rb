@@ -209,7 +209,7 @@ describe 'bind' do
         if os_facts[:os]['family'] == 'Debian'
           it do
             is_expected.to contain_concat__fragment('named.conf base')
-              .with_content(%r{directory "#{WORKING_DIR}";})
+              .with_content(%r{directory "#{WORKING_DIR}";}o)
           end
 
           it { is_expected.to contain_file(File.join('/etc', 'default', service_name)).with_ensure('absent') }
@@ -693,7 +693,7 @@ describe 'bind' do
 
           it do
             is_expected.to contain_concat__fragment('named.conf base')
-              .with_content(%r{directory "#{WORKING_DIR}"})
+              .with_content(%r{directory "#{WORKING_DIR}"}o)
               .with_content(%r{zone-statistics full;})
           end
         end

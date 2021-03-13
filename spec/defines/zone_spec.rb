@@ -20,7 +20,7 @@ describe 'bind::zone' do
         it do
           is_expected.to contain_concat__fragment(title).with(
             target: CONFIG_FILE,
-            content: <<~CONTENT
+            content: <<~CONTENT,
               zone "#{title}" {
                   type #{params[:type]};
                   file "db.root";
@@ -47,7 +47,7 @@ describe 'bind::zone' do
           it do
             is_expected.to contain_concat__fragment(title).with(
               target: CONFIG_FILE,
-              content: <<~CONTENT
+              content: <<~CONTENT,
                 zone "#{title}" IN {
                     in-view "#{params[:in_view]}";
                 };
@@ -70,7 +70,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -96,7 +96,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "#{params[:file]}";
@@ -128,7 +128,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -155,7 +155,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -186,7 +186,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -216,7 +216,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -251,7 +251,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -275,7 +275,7 @@ describe 'bind::zone' do
             it do
               is_expected.to contain_concat__fragment(title).with(
                 target: CONFIG_FILE,
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   zone "#{title}" {
                       type #{params[:type]};
                       file "db.#{title}";
@@ -319,7 +319,7 @@ describe 'bind::zone' do
         it do
           is_expected.to contain_concat__fragment(title).with(
             target: CONFIG_FILE,
-            content: <<~CONTENT
+            content: <<~CONTENT,
               zone "#{title}" {
                   type #{params[:type]};
                   file "db.#{title}";
@@ -347,13 +347,21 @@ describe 'bind::zone' do
               owner: USER,
               replace: false,
               validate_cmd: checkzone_cmd(title),
-              content: <<~CONTENT
+              content: <<~CONTENT,
                 $TTL 2d
                 @  SOA #{facts[:networking][:hostname]} hostmaster 1 24h 2h 1000h 1h
                 @ NS #{facts[:networking][:hostname]}
                 #{facts[:networking][:hostname]} AAAA #{facts[:networking][:ip6]}
                 #{facts[:networking][:hostname]} A #{facts[:networking][:ip]}
               CONTENT
+            )
+          end
+
+          it do
+            is_expected.to contain_resource_record('www').with(
+              zone: title,
+              type: params[:resource_records][:www][:type],
+              data: params[:resource_records][:www][:data],
             )
           end
         end
@@ -378,7 +386,7 @@ describe 'bind::zone' do
               owner: USER,
               replace: false,
               validate_cmd: checkzone_cmd(title),
-              content: <<~CONTENT
+              content: <<~CONTENT,
                 $TTL 4d
                 @ 8d SOA #{facts[:networking][:hostname]} hostmaster 2021010201 48h 6h 1500h 2h
                 @ NS #{facts[:networking][:hostname]}
@@ -408,7 +416,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      owner: 'my-ns',
+                      name: 'my-ns',
                       type: 'AAAA',
                       data: '2001:db8::ffff',
                     },
@@ -422,7 +430,7 @@ describe 'bind::zone' do
                   owner: USER,
                   replace: false,
                   validate_cmd: checkzone_cmd(title),
-                  content: <<~CONTENT
+                  content: <<~CONTENT,
                     $TTL 2d
                     @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                     @ NS my-ns
@@ -441,7 +449,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      owner: 'my-ns',
+                      name: 'my-ns',
                       type: 'AAAA',
                       data: [
                         '2001:db8::eeee',
@@ -458,7 +466,7 @@ describe 'bind::zone' do
                   owner: USER,
                   replace: false,
                   validate_cmd: checkzone_cmd(title),
-                  content: <<~CONTENT
+                  content: <<~CONTENT,
                     $TTL 2d
                     @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                     @ NS my-ns
@@ -488,7 +496,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      owner: 'my-ns',
+                      name: 'my-ns',
                       type: 'A',
                       data: '192.0.2.254',
                     },
@@ -502,7 +510,7 @@ describe 'bind::zone' do
                   owner: USER,
                   replace: false,
                   validate_cmd: checkzone_cmd(title),
-                  content: <<~CONTENT
+                  content: <<~CONTENT,
                     $TTL 2d
                     @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                     @ NS my-ns
@@ -521,7 +529,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      owner: 'my-ns',
+                      name: 'my-ns',
                       type: 'A',
                       data: [
                         '192.0.2.253',
@@ -538,7 +546,7 @@ describe 'bind::zone' do
                   owner: USER,
                   replace: false,
                   validate_cmd: checkzone_cmd(title),
-                  content: <<~CONTENT
+                  content: <<~CONTENT,
                     $TTL 2d
                     @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                     @ NS my-ns
@@ -559,12 +567,12 @@ describe 'bind::zone' do
                     data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                   },
                   ns: {
-                    owner: 'my-ns',
+                    name: 'my-ns',
                     type: 'AAAA',
                     data: '2001:db8::ffff',
                   },
                   ns_legacy: {
-                    owner: 'my-ns',
+                    name: 'my-ns',
                     type: 'A',
                     data: '192.0.2.254',
                   },
@@ -578,7 +586,7 @@ describe 'bind::zone' do
                 owner: USER,
                 replace: false,
                 validate_cmd: checkzone_cmd(title),
-                content: <<~CONTENT
+                content: <<~CONTENT,
                   $TTL 2d
                   @  SOA my-ns hostmaster 2021010301 48h 6h 1500h 30m
                   @ NS my-ns

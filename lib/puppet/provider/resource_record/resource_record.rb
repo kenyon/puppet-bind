@@ -29,4 +29,10 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def delete(context, name)
     context.notice("Deleting '#{name}'")
   end
+
+  def canonicalize(_context, resources)
+    resources.each do |r|
+      r[:name] = r[:name].downcase
+    end
+  end
 end

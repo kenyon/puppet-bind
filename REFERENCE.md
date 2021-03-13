@@ -48,7 +48,7 @@
 
 ## Classes
 
-### `bind`
+### <a name="bind"></a>`bind`
 
 Manages the BIND domain name server and DNS zones
 
@@ -62,9 +62,45 @@ include bind
 
 #### Parameters
 
-The following parameters are available in the `bind` class.
+The following parameters are available in the `bind` class:
 
-##### `config_dir`
+* [`config_dir`](#config_dir)
+* [`default_options`](#default_options)
+* [`default_zones`](#default_zones)
+* [`dev_packages`](#dev_packages)
+* [`doc_packages`](#doc_packages)
+* [`utils_packages`](#utils_packages)
+* [`includes`](#includes)
+* [`install_dev_packages`](#install_dev_packages)
+* [`install_doc_packages`](#install_doc_packages)
+* [`install_utils_packages`](#install_utils_packages)
+* [`logging`](#logging)
+* [`options`](#options)
+* [`package_manage`](#package_manage)
+* [`service_manage`](#service_manage)
+* [`package_backport`](#package_backport)
+* [`package_name`](#package_name)
+* [`package_ensure`](#package_ensure)
+* [`resolvconf_package_name`](#resolvconf_package_name)
+* [`resolvconf_service_enable`](#resolvconf_service_enable)
+* [`service_config_file`](#service_config_file)
+* [`service_enable`](#service_enable)
+* [`service_ensure`](#service_ensure)
+* [`service_group`](#service_group)
+* [`service_name`](#service_name)
+* [`service_user`](#service_user)
+* [`service_options`](#service_options)
+* [`zones`](#zones)
+* [`zone_default_expire`](#zone_default_expire)
+* [`zone_default_mname`](#zone_default_mname)
+* [`zone_default_negative_caching_ttl`](#zone_default_negative_caching_ttl)
+* [`zone_default_refresh`](#zone_default_refresh)
+* [`zone_default_retry`](#zone_default_retry)
+* [`zone_default_rname`](#zone_default_rname)
+* [`zone_default_serial`](#zone_default_serial)
+* [`zone_default_ttl`](#zone_default_ttl)
+
+##### <a name="config_dir"></a>`config_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -72,7 +108,7 @@ Directory for BIND configuration files.
 
 Default value: `'/etc/bind'`
 
-##### `default_options`
+##### <a name="default_options"></a>`default_options`
 
 Data type: `Bind::Options`
 
@@ -86,7 +122,7 @@ Default value: `{
     'directory' => '/var/cache/bind',
   }`
 
-##### `default_zones`
+##### <a name="default_zones"></a>`default_zones`
 
 Data type: `Boolean`
 
@@ -94,7 +130,7 @@ Whether to include the default zones in the BIND configuration.
 
 Default value: ``true``
 
-##### `dev_packages`
+##### <a name="dev_packages"></a>`dev_packages`
 
 Data type: `Array[String[1]]`
 
@@ -102,7 +138,7 @@ List of BIND development packages.
 
 Default value: `['bind9-dev']`
 
-##### `doc_packages`
+##### <a name="doc_packages"></a>`doc_packages`
 
 Data type: `Array[String[1]]`
 
@@ -110,7 +146,7 @@ List of BIND documentation packages.
 
 Default value: `['bind9-doc']`
 
-##### `utils_packages`
+##### <a name="utils_packages"></a>`utils_packages`
 
 Data type: `Array[String[1]]`
 
@@ -118,7 +154,7 @@ List of BIND utilities packages.
 
 Default value: `['bind9-dnsutils']`
 
-##### `includes`
+##### <a name="includes"></a>`includes`
 
 Data type: `Optional[Variant[Array[Bind::Include], Bind::Include]]`
 
@@ -128,7 +164,7 @@ statement.
 
 Default value: ``undef``
 
-##### `install_dev_packages`
+##### <a name="install_dev_packages"></a>`install_dev_packages`
 
 Data type: `Boolean`
 
@@ -136,7 +172,7 @@ Whether to install the BIND development packages (libraries and header files).
 
 Default value: ``false``
 
-##### `install_doc_packages`
+##### <a name="install_doc_packages"></a>`install_doc_packages`
 
 Data type: `Boolean`
 
@@ -144,7 +180,7 @@ Whether to install the BIND documentation packages.
 
 Default value: ``false``
 
-##### `install_utils_packages`
+##### <a name="install_utils_packages"></a>`install_utils_packages`
 
 Data type: `Boolean`
 
@@ -152,7 +188,7 @@ Whether to install the BIND utilities packages.
 
 Default value: ``true``
 
-##### `logging`
+##### <a name="logging"></a>`logging`
 
 Data type: `Optional[Bind::Logging]`
 
@@ -161,7 +197,7 @@ statement](https://bind9.readthedocs.io/en/latest/reference.html#logging-stateme
 
 Default value: ``undef``
 
-##### `options`
+##### <a name="options"></a>`options`
 
 Data type: `Optional[Bind::Options]`
 
@@ -171,7 +207,7 @@ Merged with, and overrides, the `default_options` parameter.
 
 Default value: ``undef``
 
-##### `package_manage`
+##### <a name="package_manage"></a>`package_manage`
 
 Data type: `Boolean`
 
@@ -179,7 +215,7 @@ Whether to have this module manage the BIND package.
 
 Default value: ``true``
 
-##### `service_manage`
+##### <a name="service_manage"></a>`service_manage`
 
 Data type: `Boolean`
 
@@ -187,7 +223,7 @@ Whether to have this module manage the BIND service.
 
 Default value: ``true``
 
-##### `package_backport`
+##### <a name="package_backport"></a>`package_backport`
 
 Data type: `Boolean`
 
@@ -195,7 +231,7 @@ Whether to install the BIND package from Debian backports.
 
 Default value: ``false``
 
-##### `package_name`
+##### <a name="package_name"></a>`package_name`
 
 Data type: `String[1]`
 
@@ -203,7 +239,7 @@ The name of the BIND package.
 
 Default value: `'bind9'`
 
-##### `package_ensure`
+##### <a name="package_ensure"></a>`package_ensure`
 
 Data type: `String[1]`
 
@@ -211,7 +247,7 @@ The `ensure` parameter for the BIND package.
 
 Default value: `installed`
 
-##### `resolvconf_package_name`
+##### <a name="resolvconf_package_name"></a>`resolvconf_package_name`
 
 Data type: `String[1]`
 
@@ -219,7 +255,7 @@ The name of the resolvconf package to use if `resolvconf_service_enable` is `tru
 
 Default value: `'openresolv'`
 
-##### `resolvconf_service_enable`
+##### <a name="resolvconf_service_enable"></a>`resolvconf_service_enable`
 
 Data type: `Boolean`
 
@@ -228,7 +264,7 @@ Whether to enable the named-resolvconf service so that localhost's BIND resolver
 
 Default value: ``false``
 
-##### `service_config_file`
+##### <a name="service_config_file"></a>`service_config_file`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -236,7 +272,7 @@ The path to the BIND config file.
 
 Default value: `extlib::path_join([$config_dir, 'named.conf'])`
 
-##### `service_enable`
+##### <a name="service_enable"></a>`service_enable`
 
 Data type: `Variant[Boolean, String[1]]`
 
@@ -244,7 +280,7 @@ The `enable` parameter for the BIND service.
 
 Default value: ``true``
 
-##### `service_ensure`
+##### <a name="service_ensure"></a>`service_ensure`
 
 Data type: `Stdlib::Ensure::Service`
 
@@ -252,7 +288,7 @@ The `ensure` parameter for the BIND service.
 
 Default value: `running`
 
-##### `service_group`
+##### <a name="service_group"></a>`service_group`
 
 Data type: `String[1]`
 
@@ -260,7 +296,7 @@ The primary group of `$service_user`. Used for directory permissions.
 
 Default value: `$service_user`
 
-##### `service_name`
+##### <a name="service_name"></a>`service_name`
 
 Data type: `String[1]`
 
@@ -268,7 +304,7 @@ The name of the BIND service.
 
 Default value: `'named'`
 
-##### `service_user`
+##### <a name="service_user"></a>`service_user`
 
 Data type: `String[1]`
 
@@ -276,7 +312,7 @@ The user to run BIND as (for the `-u` command line option).
 
 Default value: `'bind'`
 
-##### `service_options`
+##### <a name="service_options"></a>`service_options`
 
 Data type: `Optional[String[1]]`
 
@@ -286,7 +322,7 @@ for the BIND service.
 
 Default value: ``undef``
 
-##### `zones`
+##### <a name="zones"></a>`zones`
 
 Data type: `Hash`
 
@@ -294,7 +330,7 @@ Hash for creating Bind::Zone resources.
 
 Default value: `{}`
 
-##### `zone_default_expire`
+##### <a name="zone_default_expire"></a>`zone_default_expire`
 
 Data type: `String[1]`
 
@@ -306,7 +342,7 @@ of the `$zones` parameter. Reference: [RFC
 
 Default value: `'1000h'`
 
-##### `zone_default_mname`
+##### <a name="zone_default_mname"></a>`zone_default_mname`
 
 Data type: `String[1]`
 
@@ -316,7 +352,7 @@ parameter. Reference: [RFC 1035](https://tools.ietf.org/html/rfc1035#section-3.3
 
 Default value: `$facts['networking']['hostname']`
 
-##### `zone_default_negative_caching_ttl`
+##### <a name="zone_default_negative_caching_ttl"></a>`zone_default_negative_caching_ttl`
 
 Data type: `String[1]`
 
@@ -326,7 +362,7 @@ Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308)
 
 Default value: `'1h'`
 
-##### `zone_default_refresh`
+##### <a name="zone_default_refresh"></a>`zone_default_refresh`
 
 Data type: `String[1]`
 
@@ -336,7 +372,7 @@ the zone's hash of the `$zones` parameter. Reference: [RFC
 
 Default value: `'24h'`
 
-##### `zone_default_retry`
+##### <a name="zone_default_retry"></a>`zone_default_retry`
 
 Data type: `String[1]`
 
@@ -346,7 +382,7 @@ the zone's hash of the `$zones` parameter. Reference: [RFC
 
 Default value: `'2h'`
 
-##### `zone_default_rname`
+##### <a name="zone_default_rname"></a>`zone_default_rname`
 
 Data type: `String[1]`
 
@@ -357,7 +393,7 @@ of the `$zones` parameter. Reference: [RFC
 
 Default value: `'hostmaster'`
 
-##### `zone_default_serial`
+##### <a name="zone_default_serial"></a>`zone_default_serial`
 
 Data type: `Integer[0]`
 
@@ -366,7 +402,7 @@ providing a SOA record in the zone's hash of the `$zones` parameter.
 
 Default value: `1`
 
-##### `zone_default_ttl`
+##### <a name="zone_default_ttl"></a>`zone_default_ttl`
 
 Data type: `String[1]`
 
@@ -379,7 +415,7 @@ Default value: `'2d'`
 
 ## Defined types
 
-### `bind::zone`
+### <a name="bindzone"></a>`bind::zone`
 
 A DNS zone
 
@@ -393,9 +429,30 @@ bind::zone { 'example.com.': }
 
 #### Parameters
 
-The following parameters are available in the `bind::zone` defined type.
+The following parameters are available in the `bind::zone` defined type:
 
-##### `zone_name`
+* [`zone_name`](#zone_name)
+* [`allow_transfer`](#allow_transfer)
+* [`allow_update`](#allow_update)
+* [`also_notify`](#also_notify)
+* [`auto_dnssec`](#auto_dnssec)
+* [`class`](#class)
+* [`file`](#file)
+* [`forward`](#forward)
+* [`forwarders`](#forwarders)
+* [`in_view`](#in_view)
+* [`inline_signing`](#inline_signing)
+* [`key_directory`](#key_directory)
+* [`masters`](#masters)
+* [`primaries`](#primaries)
+* [`purge`](#purge)
+* [`resource_records`](#resource_records)
+* [`serial_update_method`](#serial_update_method)
+* [`ttl`](#ttl)
+* [`type`](#type)
+* [`update_policy`](#update_policy)
+
+##### <a name="zone_name"></a>`zone_name`
 
 Data type: `Pattern[/\.$/]`
 
@@ -403,7 +460,7 @@ The name of the zone.
 
 Default value: `$title`
 
-##### `allow_transfer`
+##### <a name="allow_transfer"></a>`allow_transfer`
 
 Data type: `Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]]`
 
@@ -412,7 +469,7 @@ https://bind9.readthedocs.io/en/latest/reference.html#allow-transfer-access
 
 Default value: ``undef``
 
-##### `allow_update`
+##### <a name="allow_update"></a>`allow_update`
 
 Data type: `Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]]`
 
@@ -420,7 +477,7 @@ Which hosts are allowed to submit Dynamic DNS updates to the zone.
 
 Default value: ``undef``
 
-##### `also_notify`
+##### <a name="also_notify"></a>`also_notify`
 
 Data type: `Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]]`
 
@@ -430,7 +487,7 @@ records.
 
 Default value: ``undef``
 
-##### `auto_dnssec`
+##### <a name="auto_dnssec"></a>`auto_dnssec`
 
 Data type: `Optional[Enum['allow', 'maintain', 'off']]`
 
@@ -438,7 +495,7 @@ The automatic DNSSEC key management mode.
 
 Default value: ``undef``
 
-##### `class`
+##### <a name="class"></a>`class`
 
 Data type: `Optional[Enum['IN', 'HS', 'hesiod', 'CHAOS']]`
 
@@ -447,7 +504,7 @@ https://bind9.readthedocs.io/en/latest/reference.html#class
 
 Default value: ``undef``
 
-##### `file`
+##### <a name="file"></a>`file`
 
 Data type: `Optional[String[1]]`
 
@@ -455,7 +512,7 @@ The zone's filename.
 
 Default value: ``undef``
 
-##### `forward`
+##### <a name="forward"></a>`forward`
 
 Data type: `Optional[Enum['first', 'only']]`
 
@@ -465,7 +522,7 @@ a normal lookup to be tried. https://bind9.readthedocs.io/en/latest/reference.ht
 
 Default value: ``undef``
 
-##### `forwarders`
+##### <a name="forwarders"></a>`forwarders`
 
 Data type: `Optional[Array[Stdlib::Host]]`
 
@@ -474,7 +531,7 @@ https://bind9.readthedocs.io/en/latest/reference.html#forwarding
 
 Default value: ``undef``
 
-##### `in_view`
+##### <a name="in_view"></a>`in_view`
 
 Data type: `Optional[String[1]]`
 
@@ -482,7 +539,7 @@ Allows for referencing the zone in another view.
 
 Default value: ``undef``
 
-##### `inline_signing`
+##### <a name="inline_signing"></a>`inline_signing`
 
 Data type: `Optional[Variant[Boolean, Stdlib::Yes_no]]`
 
@@ -490,7 +547,7 @@ Allows BIND to automatically sign zones.
 
 Default value: ``undef``
 
-##### `key_directory`
+##### <a name="key_directory"></a>`key_directory`
 
 Data type: `Optional[String[1]]`
 
@@ -500,7 +557,7 @@ directory.
 
 Default value: ``undef``
 
-##### `masters`
+##### <a name="masters"></a>`masters`
 
 Data type: `Optional[Array[Stdlib::Host]]`
 
@@ -508,7 +565,7 @@ Synonym for `primaries`.
 
 Default value: ``undef``
 
-##### `primaries`
+##### <a name="primaries"></a>`primaries`
 
 Data type: `Optional[Array[Stdlib::Host]]`
 
@@ -517,7 +574,7 @@ primaries or also-notify lists.
 
 Default value: ``undef``
 
-##### `purge`
+##### <a name="purge"></a>`purge`
 
 Data type: `Boolean`
 
@@ -525,7 +582,7 @@ Whether to purge unmanaged resource records from the zone.
 
 Default value: ``true``
 
-##### `resource_records`
+##### <a name="resource_records"></a>`resource_records`
 
 Data type: `Hash`
 
@@ -533,7 +590,7 @@ Hash for creating `resource_record` resources.
 
 Default value: `{}`
 
-##### `serial_update_method`
+##### <a name="serial_update_method"></a>`serial_update_method`
 
 Data type: `Optional[Enum['date', 'increment', 'unixtime']]`
 
@@ -541,7 +598,7 @@ Method for incrementing the zone's serial number.
 
 Default value: ``undef``
 
-##### `ttl`
+##### <a name="ttl"></a>`ttl`
 
 Data type: `Optional[String[1]]`
 
@@ -550,7 +607,7 @@ zone.
 
 Default value: ``undef``
 
-##### `type`
+##### <a name="type"></a>`type`
 
 Data type: `Optional[Enum[
     'primary',
@@ -570,7 +627,7 @@ The zone type. https://bind9.readthedocs.io/en/latest/reference.html#zone-types
 
 Default value: ``undef``
 
-##### `update_policy`
+##### <a name="update_policy"></a>`update_policy`
 
 Data type: `Optional[Array[Bind::ZoneConfig::UpdatePolicy]]`
 
@@ -581,7 +638,7 @@ Default value: ``undef``
 
 ## Resource types
 
-### `resource_record`
+### <a name="resource_record"></a>`resource_record`
 
 This type provides Puppet with the capabilities to manage DNS resource records.
 
@@ -604,70 +661,111 @@ resource_record { 'foo.example.com.':
 
 The following properties are available in the `resource_record` type.
 
+##### `data`
+
+Data type: `String`
+
+The data for the resource record.
+
 ##### `ensure`
 
 Data type: `Enum[present, absent]`
 
-Whether this resource should be present or absent on the target system.
+Whether this resource record should be present or absent on the target system.
 
 Default value: `present`
 
-#### Parameters
-
-The following parameters are available in the `resource_record` type.
-
 ##### `name`
-
-namevar
 
 Data type: `String`
 
-The name of the resource record.
+The name of the resource record, also known as the owner or label.
+
+##### `ttl`
+
+Data type: `String`
+
+The TTL for the resource record.
+
+##### `type`
+
+Data type: `String`
+
+The type of the resource record.
+
+##### `zone`
+
+Data type: `String`
+
+The zone the resource record belongs to.
 
 ## Functions
 
 ## Data types
 
-### `Bind::Include`
+### <a name="bindinclude"></a>`Bind::Include`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar
 
-Alias of `Stdlib::Absolutepath`
+Alias of
 
-### `Bind::Logging`
+```puppet
+Stdlib::Absolutepath
+```
+
+### <a name="bindlogging"></a>`Bind::Logging`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Struct[{
   Optional['channels'] => Hash[Bind::Logging::ChannelName, Bind::Logging::ChannelPhrase],
   Optional['categories'] => Hash[Bind::Logging::Category, Bind::Logging::CategoryPhrase],
-}]`
+}]
+```
 
-### `Bind::Logging::Category`
-
-Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-category-phrase
-
-Alias of `Enum['client', 'cname', 'config', 'database', 'default', 'delegation-only', 'dispatch', 'dnssec', 'dnstap', 'edns-disabled', 'general', 'lame-servers', 'network', 'notify', 'nsid', 'queries', 'query-errors', 'rate-limit', 'resolver', 'rpz', 'rpz-passthru', 'security', 'serve-stale', 'spill', 'trust-anchor-telemetry', 'unmatched', 'update', 'update-security', 'xfer-in', 'xfer-out', 'zoneload']`
-
-### `Bind::Logging::CategoryPhrase`
+### <a name="bindloggingcategory"></a>`Bind::Logging::Category`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-category-phrase
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Enum['client', 'cname', 'config', 'database', 'default', 'delegation-only', 'dispatch', 'dnssec', 'dnstap', 'edns-disabled', 'general', 'lame-servers', 'network', 'notify', 'nsid', 'queries', 'query-errors', 'rate-limit', 'resolver', 'rpz', 'rpz-passthru', 'security', 'serve-stale', 'spill', 'trust-anchor-telemetry', 'unmatched', 'update', 'update-security', 'xfer-in', 'xfer-out', 'zoneload']
+```
+
+### <a name="bindloggingcategoryphrase"></a>`Bind::Logging::CategoryPhrase`
+
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-category-phrase
+
+Alias of
+
+```puppet
+Struct[{
   Optional['channels'] => Array[String[1]],
-}]`
+}]
+```
 
-### `Bind::Logging::ChannelName`
-
-Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-channel-phrase
-
-Alias of `Pattern[/\A\w+\Z/]`
-
-### `Bind::Logging::ChannelPhrase`
+### <a name="bindloggingchannelname"></a>`Bind::Logging::ChannelName`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-channel-phrase
 
-Alias of `Variant[Enum['null', 'stderr', 'syslog'], Struct[{
+Alias of
+
+```puppet
+Pattern[/\A\w+\Z/]
+```
+
+### <a name="bindloggingchannelphrase"></a>`Bind::Logging::ChannelPhrase`
+
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#the-channel-phrase
+
+Alias of
+
+```puppet
+Variant[Enum['null', 'stderr', 'syslog'], Struct[{
   Optional['buffered'] => Boolean,
   Optional['file'] => Struct[{
     'name' => String[1],
@@ -680,13 +778,17 @@ Alias of `Variant[Enum['null', 'stderr', 'syslog'], Struct[{
   Optional['print-time'] => Variant[Boolean, Stdlib::Yes_no, Enum['iso8601', 'iso8601-utc', 'local']],
   Optional['severity'] => String[1],
   Optional['syslog'] => Stdlib::Syslogfacility,
-}]]`
+}]]
+```
 
-### `Bind::Options`
+### <a name="bindoptions"></a>`Bind::Options`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#options-statement-grammar
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Struct[{
   Optional['allow-transfer'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-update'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
   Optional['allow-query'] => Array[Variant[Stdlib::Host, Stdlib::IP::Address]],
@@ -697,25 +799,37 @@ Alias of `Struct[{
   Optional['key-directory'] => String[1],
   Optional['serial-update-method'] => Enum['date', 'increment', 'unixtime'],
   Optional['zone-statistics'] => Variant[Boolean, Stdlib::Yes_no, Enum['full', 'terse', 'none']],
-}]`
+}]
+```
 
-### `Bind::Size`
+### <a name="bindsize"></a>`Bind::Size`
 
 Reference: `size_spec` under https://bind9.readthedocs.io/en/latest/reference.html#configuration-file-elements
 
-Alias of `Variant[Enum['unlimited', 'default'], Integer[0], Pattern[/\A\d+(?i:k|m|g)\Z/]]`
+Alias of
 
-### `Bind::ZoneConfig::UpdatePolicy`
+```puppet
+Variant[Enum['unlimited', 'default'], Integer[0], Pattern[/\A\d+(?i:k|m|g)\Z/]]
+```
 
-Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
-
-Alias of `Variant[Enum['local'], Bind::ZoneConfig::UpdatePolicy::Rule]`
-
-### `Bind::ZoneConfig::UpdatePolicy::Rule`
+### <a name="bindzoneconfigupdatepolicy"></a>`Bind::ZoneConfig::UpdatePolicy`
 
 Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Variant[Enum['local'], Bind::ZoneConfig::UpdatePolicy::Rule]
+```
+
+### <a name="bindzoneconfigupdatepolicyrule"></a>`Bind::ZoneConfig::UpdatePolicy::Rule`
+
+Reference: https://bind9.readthedocs.io/en/latest/reference.html#dynamic-update-policies
+
+Alias of
+
+```puppet
+Struct[{
   'permission' => Enum['deny', 'grant'],
   'identity'   => String[1],
   'ruletype'   => Enum[
@@ -738,5 +852,6 @@ Alias of `Struct[{
   ],
   Optional['name'] => String[1],
   Optional['types'] => String[1],
-}]`
+}]
+```
 
