@@ -4,8 +4,8 @@
   "author": "Kenyon Ralph",
   "summary": "Manage the BIND name server and DNS zones",
   "license": "AGPL-3.0-or-later",
-  "source": "https://gitlab.com/kenyon/puppet-bind/",
-  "issues_url": "https://gitlab.com/kenyon/puppet-bind/-/issues",
+  "source": "https://github.com/kenyon/puppet-bind/",
+  "issues_url": "https://github.com/kenyon/puppet-bind/issues",
   "dependencies": [
     {
       "name": "camptocamp/systemd",
