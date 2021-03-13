@@ -46,7 +46,7 @@ Puppet::ResourceApi.register_type(
       behavior: :namevar,
     },
     ttl: {
-      type: 'String',
+      type: 'Optional[String]',
       desc: 'The TTL for the resource record.',
     },
   },

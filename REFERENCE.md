@@ -683,7 +683,7 @@ The name of the resource record, also known as the owner or label.
 
 ##### `ttl`
 
-Data type: `String`
+Data type: `Optional[String]`
 
 The TTL for the resource record.
 
