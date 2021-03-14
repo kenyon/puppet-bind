@@ -6,8 +6,10 @@ All notable changes to this project will be documented in this file.
 
 ## Release 0.1.0
 
-**Features**
+### Features
 
-**Bugfixes**
+* Recursive server management
 
-**Known Issues**
+### Known Issues
+
+* Types and providers needed to manage DNS zones not complete
