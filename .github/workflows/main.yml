@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: action-pdk-validate
+        uses: puppets-epic-show-theatre/action-pdk-validate@v1.0.0
+
+      - name: action-pdk-test-unit
+        uses: puppets-epic-show-theatre/action-pdk-test-unit@v1.0.0
