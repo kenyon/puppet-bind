@@ -5,6 +5,7 @@
   "summary": "Manage the BIND name server and DNS zones",
   "license": "AGPL-3.0-or-later",
   "source": "https://github.com/kenyon/puppet-bind/",
+  "project_page": "https://github.com/kenyon/puppet-bind",
   "issues_url": "https://github.com/kenyon/puppet-bind/issues",
   "dependencies": [
     {
