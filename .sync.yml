@@ -6,6 +6,11 @@ Gemfile:
   optional:
     ':development':
       - gem: puppet-resource_api
+      - gem: github_changelog_generator
+
+.pdkignore:
+  paths:
+    - /run_tests
 
 spec/spec_helper.rb:
   mock_with: ':rspec'

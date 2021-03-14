@@ -42,3 +42,4 @@
 /spec/
 /.vscode/
 /.sync.yml
+/run_tests
