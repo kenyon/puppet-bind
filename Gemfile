@@ -72,3 +72,5 @@ extra_gemfiles.each do |gemfile|
   end
 end
 # vim: syntax=ruby
+
+gem "github_changelog_generator", "~> 1.15"
