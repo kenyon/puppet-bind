@@ -10,31 +10,32 @@ default_zone_filenames_to_names = {
   'db.255' => '255.in-addr.arpa',
   'db.local' => 'localhost',
 }
-default_zones = %r<zone "." \{
-    type hint;
-    file "/usr/share/dns/root\.hints";
-\};
+default_zones = Regexp.new(Regexp.escape(<<~DEFAULT_ZONES))
+  zone "." {
+      type hint;
+      file "/usr/share/dns/root.hints";
+  };
 
-zone "localhost" \{
-    type master;
-    file "/etc/bind/db\.local";
-\};
+  zone "localhost" {
+      type master;
+      file "/etc/bind/db.local";
+  };
 
-zone "127\.in-addr\.arpa" \{
-    type master;
-    file "/etc/bind/db\.127";
-\};
+  zone "127.in-addr.arpa" {
+      type master;
+      file "/etc/bind/db.127";
+  };
 
-zone "0\.in-addr\.arpa" \{
-    type master;
-    file "/etc/bind/db\.0";
-\};
+  zone "0.in-addr.arpa" {
+      type master;
+      file "/etc/bind/db.0";
+  };
 
-zone "255\.in-addr\.arpa" \{
-    type master;
-    file "/etc/bind/db\.255";
-\};
->
+  zone "255.in-addr.arpa" {
+      type master;
+      file "/etc/bind/db.255";
+  };
+  DEFAULT_ZONES
 group = 'bind'
 package_name = 'bind9'
 # key 20326
