@@ -5,6 +5,9 @@
 # @example Caching nameserver with default configuration
 #   include bind
 #
+# @param authoritative
+#   Whether to enable features needed for authoritative server operation.
+#
 # @param config_dir
 #   Directory for BIND configuration files.
 #
@@ -32,14 +35,14 @@
 #   [include](https://bind9.readthedocs.io/en/latest/reference.html#include-statement-grammar)
 #   statement.
 #
-# @param install_dev_packages
-#   Whether to install the BIND development packages (libraries and header files).
+# @param dev_packages_ensure
+#   The `ensure` value for the BIND development packages (libraries and header files).
 #
-# @param install_doc_packages
-#   Whether to install the BIND documentation packages.
+# @param doc_packages_ensure
+#   The `ensure` value for the BIND documentation packages.
 #
-# @param install_utils_packages
-#   Whether to install the BIND utilities packages.
+# @param utils_packages_ensure
+#   The `ensure` value for the BIND utilities packages.
 #
 # @param logging
 #   Configuration of the [logging
@@ -142,6 +145,7 @@
 #   `ttl` key in their hashes. Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308#section-4)
 #
 class bind (
+  Boolean $authoritative = false,
   Stdlib::Absolutepath $config_dir = '/etc/bind',
   Bind::Options $default_options = {
     'directory' => '/var/cache/bind',
@@ -150,9 +154,9 @@ class bind (
   Array[String[1]] $dev_packages = ['bind9-dev'],
   Array[String[1]] $doc_packages = ['bind9-doc'],
   Optional[Variant[Array[Bind::Include], Bind::Include]] $includes = undef,
-  Boolean $install_dev_packages = false,
-  Boolean $install_doc_packages = false,
-  Boolean $install_utils_packages = true,
+  Optional[String[1]] $dev_packages_ensure = undef,
+  Optional[String[1]] $doc_packages_ensure = undef,
+  String[1] $utils_packages_ensure = 'installed',
   Optional[Bind::Logging] $logging = undef,
   Optional[Bind::Options] $options = undef,
   Boolean $package_backport = false,

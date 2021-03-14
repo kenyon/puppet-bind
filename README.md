@@ -99,11 +99,24 @@ if no NS records are provided for the zone's origin. You should specify your own
 records unless you happen to want those defaults. Note that if you want to provide your own NS
 records at the zone origin, you also have to provide your own SOA record.
 
-TODO: provide examples.
+```puppet
+class { 'bind':
+  authoritative => true,
+  # TODO: add settings to disable recursive query support
+}
+```
+
+TODO: provide more examples.
 
 ### Authoritative and caching
 
-TODO: provide examples.
+```puppet
+class { 'bind':
+  authoritative => true,
+}
+```
+
+TODO: provide more examples.
 
 ## Limitations
 

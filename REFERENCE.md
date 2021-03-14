@@ -64,6 +64,7 @@ include bind
 
 The following parameters are available in the `bind` class:
 
+* [`authoritative`](#authoritative)
 * [`config_dir`](#config_dir)
 * [`default_options`](#default_options)
 * [`default_zones`](#default_zones)
@@ -71,9 +72,9 @@ The following parameters are available in the `bind` class:
 * [`doc_packages`](#doc_packages)
 * [`utils_packages`](#utils_packages)
 * [`includes`](#includes)
-* [`install_dev_packages`](#install_dev_packages)
-* [`install_doc_packages`](#install_doc_packages)
-* [`install_utils_packages`](#install_utils_packages)
+* [`dev_packages_ensure`](#dev_packages_ensure)
+* [`doc_packages_ensure`](#doc_packages_ensure)
+* [`utils_packages_ensure`](#utils_packages_ensure)
 * [`logging`](#logging)
 * [`options`](#options)
 * [`package_manage`](#package_manage)
@@ -99,6 +100,14 @@ The following parameters are available in the `bind` class:
 * [`zone_default_rname`](#zone_default_rname)
 * [`zone_default_serial`](#zone_default_serial)
 * [`zone_default_ttl`](#zone_default_ttl)
+
+##### <a name="authoritative"></a>`authoritative`
+
+Data type: `Boolean`
+
+Whether to enable features needed for authoritative server operation.
+
+Default value: ``false``
 
 ##### <a name="config_dir"></a>`config_dir`
 
@@ -164,29 +173,29 @@ statement.
 
 Default value: ``undef``
 
-##### <a name="install_dev_packages"></a>`install_dev_packages`
+##### <a name="dev_packages_ensure"></a>`dev_packages_ensure`
 
-Data type: `Boolean`
+Data type: `Optional[String[1]]`
 
-Whether to install the BIND development packages (libraries and header files).
+The `ensure` value for the BIND development packages (libraries and header files).
 
-Default value: ``false``
+Default value: ``undef``
 
-##### <a name="install_doc_packages"></a>`install_doc_packages`
+##### <a name="doc_packages_ensure"></a>`doc_packages_ensure`
 
-Data type: `Boolean`
+Data type: `Optional[String[1]]`
 
-Whether to install the BIND documentation packages.
+The `ensure` value for the BIND documentation packages.
 
-Default value: ``false``
+Default value: ``undef``
 
-##### <a name="install_utils_packages"></a>`install_utils_packages`
+##### <a name="utils_packages_ensure"></a>`utils_packages_ensure`
 
-Data type: `Boolean`
+Data type: `String[1]`
 
-Whether to install the BIND utilities packages.
+The `ensure` value for the BIND utilities packages.
 
-Default value: ``true``
+Default value: `'installed'`
 
 ##### <a name="logging"></a>`logging`
 

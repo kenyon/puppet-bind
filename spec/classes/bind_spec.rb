@@ -69,37 +69,6 @@ describe 'bind' do
         it { is_expected.to contain_class('bind::config').that_notifies('Class[bind::service]') }
         it { is_expected.to contain_package(package_name).with_ensure('installed') }
 
-        # dnsruby build dependencies
-        if os_facts[:os]['name'] == 'Debian'
-          [
-            'g++',
-            'make',
-          ].each do |pkg|
-            it do
-              is_expected.to contain_package(pkg).with(
-                ensure: 'present',
-                before: 'Package[dnsruby]',
-              )
-            end
-          end
-        end
-
-        # workaround for https://github.com/rvm/rvm/issues/4975
-        it do
-          is_expected.to contain_file('/usr/bin/mkdir').with(
-            ensure: 'link',
-            target: '/bin/mkdir',
-            before: 'Package[dnsruby]',
-          )
-        end
-
-        it do
-          is_expected.to contain_package('dnsruby').with(
-            ensure: 'present',
-            provider: 'puppet_gem',
-          )
-        end
-
         if os_facts[:os]['name'] == 'Debian'
           if os_facts[:os]['release']['major'] == '10'
             it { is_expected.to contain_package('dnsutils').with_ensure('present') }
@@ -234,10 +203,51 @@ describe 'bind' do
         end
       end
 
+      context 'authoritative server' do
+        let(:params) do
+          {
+            authoritative: true,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        # dnsruby build dependencies
+        if os_facts[:os]['name'] == 'Debian'
+          [
+            'g++',
+            'make',
+          ].each do |pkg|
+            it do
+              is_expected.to contain_package(pkg).with(
+                ensure: 'present',
+                before: 'Package[dnsruby]',
+              )
+            end
+          end
+        end
+
+        # workaround for https://github.com/rvm/rvm/issues/4975
+        it do
+          is_expected.to contain_file('/usr/bin/mkdir').with(
+            ensure: 'link',
+            target: '/bin/mkdir',
+            before: 'Package[dnsruby]',
+          )
+        end
+
+        it do
+          is_expected.to contain_package('dnsruby').with(
+            ensure: 'present',
+            provider: 'puppet_gem',
+          )
+        end
+      end
+
       context 'with dev packages' do
         let(:params) do
           {
-            install_dev_packages: true,
+            dev_packages_ensure: 'installed',
           }
         end
 
@@ -255,7 +265,7 @@ describe 'bind' do
       context 'with doc packages' do
         let(:params) do
           {
-            install_doc_packages: true,
+            doc_packages_ensure: 'installed',
           }
         end
 
@@ -268,7 +278,7 @@ describe 'bind' do
         let(:params) do
           {
             dev_packages: ['pkg1', 'pkg2'],
-            install_dev_packages: true,
+            dev_packages_ensure: 'installed',
           }
         end
 
@@ -281,7 +291,7 @@ describe 'bind' do
         let(:params) do
           {
             doc_packages: ['pkg1', 'pkg2'],
-            install_doc_packages: true,
+            doc_packages_ensure: 'installed',
           }
         end
 
@@ -305,18 +315,20 @@ describe 'bind' do
       context 'without utils packages' do
         let(:params) do
           {
-            install_utils_packages: false,
+            utils_packages_ensure: 'absent',
           }
         end
 
         raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+
         it { is_expected.to compile.with_all_deps }
 
-        [
-          'dnsutils',
-          'bind9-dnsutils',
-        ].each do |pkg|
-          it { is_expected.not_to contain_package(pkg) }
+        if os_facts[:os]['name'] == 'Debian'
+          if os_facts[:os]['release']['major'] == '10'
+            it { is_expected.to contain_package('dnsutils').with_ensure('absent') }
+          else
+            it { is_expected.to contain_package('bind9-dnsutils').with_ensure('absent') }
+          end
         end
       end
 
@@ -910,7 +922,7 @@ describe 'bind' do
 
         context 'with dev packages' do
           let(:params) do
-            super().merge(install_dev_packages: true)
+            super().merge(dev_packages_ensure: 'installed')
           end
 
           it { is_expected.to compile.with_all_deps }

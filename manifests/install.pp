@@ -7,34 +7,36 @@
 class bind::install {
   assert_private()
 
-  ensure_packages(
-    [
-      'g++',
-      'make',
-    ],
-    {
-      ensure => installed,
+  if $bind::authoritative {
+    ensure_packages(
+      [
+        'g++',
+        'make',
+      ],
+      {
+        ensure => installed,
+        before => Package['dnsruby'],
+      },
+    )
+
+    # workaround for https://github.com/rvm/rvm/issues/4975
+    # The dnsruby build fails with the Ruby 2.7.1 build included with Puppet 7.1.0 if /usr/bin/mkdir
+    # is missing.
+    # FIXME: remove this when Puppet's Ruby is fixed.
+    file { '/usr/bin/mkdir':
+      ensure => link,
+      target => '/bin/mkdir',
       before => Package['dnsruby'],
-    },
-  )
+    }
 
-  # workaround for https://github.com/rvm/rvm/issues/4975
-  # The dnsruby build fails with the Ruby 2.7.1 build included with Puppet 7.1.0 if /usr/bin/mkdir
-  # is missing.
-  # FIXME: remove this when Puppet's Ruby is fixed.
-  file { '/usr/bin/mkdir':
-    ensure => link,
-    target => '/bin/mkdir',
-    before => Package['dnsruby'],
+    ensure_packages(
+      'dnsruby',
+      {
+        ensure   => installed,
+        provider => puppet_gem,
+      },
+    )
   }
-
-  ensure_packages(
-    'dnsruby',
-    {
-      ensure   => installed,
-      provider => puppet_gem,
-    },
-  )
 
   if $bind::package_backport {
     require apt::backports
@@ -46,8 +48,7 @@ class bind::install {
   }
 
   if $bind::resolvconf_service_enable {
-    ensure_packages($bind::resolvconf_package_name,
-                    {before => Package[$bind::package_name]})
+    ensure_packages($bind::resolvconf_package_name, {before => Package[$bind::package_name]})
   }
 
   if $bind::package_manage {
@@ -57,23 +58,23 @@ class bind::install {
     }
   }
 
-  if $bind::install_dev_packages {
+  if $bind::dev_packages_ensure {
     if $bind::package_backport {
-      ensure_packages('bind9-dev')
+      ensure_packages('bind9-dev', {ensure => $bind::dev_packages_ensure})
     } else {
-      ensure_packages($bind::dev_packages)
+      ensure_packages($bind::dev_packages, {ensure => $bind::dev_packages_ensure})
     }
   }
 
-  if $bind::install_doc_packages {
-    ensure_packages($bind::doc_packages)
+  if $bind::doc_packages_ensure {
+    ensure_packages($bind::doc_packages, {ensure => $bind::doc_packages_ensure})
   }
 
-  if $bind::install_utils_packages {
+  if $bind::utils_packages_ensure {
     if $bind::package_backport {
-      ensure_packages('bind9-dnsutils')
+      ensure_packages('bind9-dnsutils', {ensure => $bind::utils_packages_ensure})
     } else {
-      ensure_packages($bind::utils_packages)
+      ensure_packages($bind::utils_packages, {ensure => $bind::utils_packages_ensure})
     }
   }
 }
