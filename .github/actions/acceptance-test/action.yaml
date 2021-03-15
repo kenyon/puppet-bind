@@ -1,0 +1,27 @@
+name: acceptance test
+description: Run specified acceptance test
+inputs:
+  filename:
+    description: filename in spec/acceptance, without .rb extension
+    required: true
+runs:
+  using: composite
+  steps:
+    - run: wget --quiet https://apt.puppet.com/puppet-tools-release-focal.deb
+      shell: sh
+    - run: sudo apt-get --quiet --assume-yes install ./puppet-tools-release-focal.deb
+      shell: sh
+    - run: sudo apt-get --quiet update
+      shell: sh
+    - run: sudo apt-get --quiet --assume-yes install pdk
+      shell: sh
+    - run: pdk bundle update
+      shell: sh
+    - run: pdk bundle exec rake 'litmus:provision[docker, litmusimage/debian:10]'
+      shell: sh
+    - run: pdk bundle exec rake litmus:install_agent
+      shell: sh
+    - run: pdk bundle exec rake litmus:install_module
+      shell: sh
+    - run: TARGET_HOST=localhost:2222 pdk bundle exec rspec spec/acceptance/${{ inputs.filename }}.rb
+      shell: sh

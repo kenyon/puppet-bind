@@ -8,13 +8,43 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  validate_and_unit_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
-      - name: action-pdk-validate
+      - name: pdk validate
         uses: puppets-epic-show-theatre/action-pdk-validate@31b5407676af16b690b2b8c54c0767af72fcc34f
-
-      - name: action-pdk-test-unit
+      - name: pdk test unit
         uses: puppets-epic-show-theatre/action-pdk-test-unit@193987acba9977d1825fefbcbaf8d02d6af78106
+
+  acceptance_bind_spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/acceptance-test
+        with:
+          filename: bind_spec
+
+  acceptance_bind_backport_spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/acceptance-test
+        with:
+          filename: bind_backport_spec
+
+  acceptance_bind_resolvconf_service_spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/acceptance-test
+        with:
+          filename: bind_resolvconf_service_spec
+
+  acceptance_bind_authoritative_spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/acceptance-test
+        with:
+          filename: bind_authoritative_spec
