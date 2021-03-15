@@ -2,6 +2,10 @@
 
 # Changelog
 
+## Release v0.2.1
+
+* Correctly update `metadata.json` and publish to Puppet Forge
+
 ## Release v0.2.0
 
 ### Features
