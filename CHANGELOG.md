@@ -2,9 +2,18 @@
 
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## Release v0.2.0
 
-## Release 0.1.0
+### Features
+
+* Rework package management parameters
+* Add GitHub Actions workflows
+
+### Known Issues
+
+* Types and providers needed to manage DNS zones not complete
+
+## Release v0.1.0
 
 ### Features
 
