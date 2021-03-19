@@ -60,7 +60,10 @@ class bind::install {
 
   if $bind::dev_packages_ensure {
     if $bind::package_backport {
-      ensure_packages('bind9-dev', {ensure => $bind::dev_packages_ensure})
+      ensure_packages('bind9-dev', {
+        ensure          => $bind::dev_packages_ensure,
+        install_options => $package_install_options,
+      })
     } else {
       ensure_packages($bind::dev_packages, {ensure => $bind::dev_packages_ensure})
     }
@@ -72,7 +75,10 @@ class bind::install {
 
   if $bind::utils_packages_ensure {
     if $bind::package_backport {
-      ensure_packages('bind9-dnsutils', {ensure => $bind::utils_packages_ensure})
+      ensure_packages('bind9-dnsutils', {
+        ensure          => $bind::utils_packages_ensure,
+        install_options => $package_install_options,
+      })
     } else {
       ensure_packages($bind::utils_packages, {ensure => $bind::utils_packages_ensure})
     }

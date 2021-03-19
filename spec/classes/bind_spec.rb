@@ -939,7 +939,13 @@ describe 'bind' do
           ).with_ensure('installed')
         end
 
-        it { is_expected.to contain_package('bind9-dnsutils').with_ensure('present') }
+        it do
+          is_expected.to contain_package('bind9-dnsutils').with_install_options(
+            ['--target-release', "#{facts[:os]['distro']['codename']}-backports"]
+          ).with_ensure('present')
+        end
+
+        it { is_expected.not_to contain_package('dnsutils') }
         it { is_expected.to contain_file(File.join(CONFIG_DIR, 'bind.keys')).with_content(%r{trust-anchors}) }
 
         context 'with dev packages' do
@@ -948,7 +954,13 @@ describe 'bind' do
           end
 
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_package('bind9-dev').with_ensure('present') }
+          it { is_expected.not_to contain_package('libbind-dev') }
+
+          it do
+            is_expected.to contain_package('bind9-dev').with_install_options(
+              ['--target-release', "#{facts[:os]['distro']['codename']}-backports"]
+            ).with_ensure('present')
+          end
         end
       end
 
