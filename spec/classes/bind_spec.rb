@@ -338,6 +338,21 @@ describe 'bind' do
         end
       end
 
+      context 'without root hint zone' do
+        let(:params) do
+          {
+            root_hint_zone: false,
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it do
+          is_expected.to contain_concat__fragment('named.conf base')
+            .without_content(root_hint_zone)
+        end
+      end
+
       context 'without default zones' do
         let(:params) do
           {

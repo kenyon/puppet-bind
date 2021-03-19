@@ -109,12 +109,14 @@ options {
 };
 <%- } -%>
 
-<% if $bind::default_zones { %>
+<% if $bind::root_hint_zone { %>
 zone "." {
     type hint;
     file "/usr/share/dns/root.hints";
 };
+<%- } -%>
 
+<% if $bind::default_zones { %>
 zone "localhost" {
     type master;
     file "<%= extlib::path_join([$bind::config_dir, 'db.local']) %>";
