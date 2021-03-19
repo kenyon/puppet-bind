@@ -75,6 +75,10 @@
 #   Whether to enable the named-resolvconf service so that localhost's BIND resolver is used in
 #   `/etc/resolv.conf`.
 #
+# @param root_hint_zone
+#   Whether to include the root zone "." in the BIND configuration with [type
+#   `hint`](https://bind9.readthedocs.io/en/latest/reference.html#zone-types).
+#
 # @param service_config_file
 #   The path to the BIND config file.
 #
@@ -165,6 +169,7 @@ class bind (
   String[1] $package_name = 'bind9',
   String[1] $resolvconf_package_name = 'openresolv',
   Boolean $resolvconf_service_enable = false,
+  Boolean $root_hint_zone = true,
   Stdlib::Absolutepath $service_config_file = extlib::path_join([$config_dir, 'named.conf']),
   Variant[Boolean, String[1]] $service_enable = true,
   Stdlib::Ensure::Service $service_ensure = running,

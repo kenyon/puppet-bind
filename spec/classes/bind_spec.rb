@@ -10,12 +10,8 @@ default_zone_filenames_to_names = {
   'db.255' => '255.in-addr.arpa',
   'db.local' => 'localhost',
 }
-default_zones = Regexp.new(Regexp.escape(<<~DEFAULT_ZONES))
-  zone "." {
-      type hint;
-      file "/usr/share/dns/root.hints";
-  };
 
+default_zones = Regexp.new(Regexp.escape(<<~DEFAULT_ZONES))
   zone "localhost" {
       type master;
       file "/etc/bind/db.local";
@@ -36,8 +32,17 @@ default_zones = Regexp.new(Regexp.escape(<<~DEFAULT_ZONES))
       file "/etc/bind/db.255";
   };
   DEFAULT_ZONES
+
 group = 'bind'
 package_name = 'bind9'
+
+root_hint_zone = Regexp.new(Regexp.escape(<<~ROOT_HINT_ZONE))
+  zone "." {
+      type hint;
+      file "/usr/share/dns/root.hints";
+  };
+  ROOT_HINT_ZONE
+
 # key 20326
 root_key = Regexp.new(Regexp.escape('AwEAAaz/tAm8yTn4Mfeh5eyI96WSVexTBAvkMgJzkKTOiW1vkIbzxeF3
                 +/4RgWOq7HrxRixHlFlExOLAJr5emLvN7SWXgnLh4+B5xQlNVz8Og8kv
@@ -157,6 +162,7 @@ describe 'bind' do
             is_expected.to contain_concat__fragment('named.conf base')
               .with_content(%r{# Managed by Puppet})
               .with_content(default_zones)
+              .with_content(root_hint_zone)
               .without_content(%r{include ".*";})
           end
 
@@ -336,6 +342,7 @@ describe 'bind' do
         let(:params) do
           {
             default_zones: false,
+            root_hint_zone: false,
           }
         end
 

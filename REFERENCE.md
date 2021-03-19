@@ -84,6 +84,7 @@ The following parameters are available in the `bind` class:
 * [`package_ensure`](#package_ensure)
 * [`resolvconf_package_name`](#resolvconf_package_name)
 * [`resolvconf_service_enable`](#resolvconf_service_enable)
+* [`root_hint_zone`](#root_hint_zone)
 * [`service_config_file`](#service_config_file)
 * [`service_enable`](#service_enable)
 * [`service_ensure`](#service_ensure)
@@ -272,6 +273,15 @@ Whether to enable the named-resolvconf service so that localhost's BIND resolver
 `/etc/resolv.conf`.
 
 Default value: ``false``
+
+##### <a name="root_hint_zone"></a>`root_hint_zone`
+
+Data type: `Boolean`
+
+Whether to include the root zone "." in the BIND configuration with [type
+`hint`](https://bind9.readthedocs.io/en/latest/reference.html#zone-types).
+
+Default value: ``true``
 
 ##### <a name="service_config_file"></a>`service_config_file`
 
