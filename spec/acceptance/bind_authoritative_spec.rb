@@ -15,8 +15,7 @@ describe 'authoritative BIND with zones configured' do
             'type' => 'master',
             'update_policy' => ['local'],
             'resource_records' => {
-              'www' => {
-                'type' => 'AAAA',
+              'www aaaa' => {
                 'data' => '2001:db8::1',
               },
             },

@@ -333,8 +333,7 @@ describe 'bind::zone' do
           let(:params) do
             super().merge(
               resource_records: {
-                www: {
-                  type: 'AAAA',
+                'www AAAA': {
                   data: '2001:db8::2',
                 },
               },
@@ -358,10 +357,10 @@ describe 'bind::zone' do
           end
 
           it do
-            is_expected.to contain_resource_record('www').with(
+            is_expected.to contain_resource_record('www AAAA').with(
               zone: title,
-              type: params[:resource_records][:www][:type],
-              data: params[:resource_records][:www][:data],
+              type: 'AAAA',
+              data: params[:resource_records][:'www AAAA'][:data],
             )
           end
         end

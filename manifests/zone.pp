@@ -125,11 +125,11 @@ define bind::zone (
       fail("zone ${zone_name}: must be updatable locally via allow-update or update-policy")
     }
 
-    if length($resource_records.filter |$rr| { $rr[1]['type'].upcase == 'SOA' }) > 1 {
+    if length($resource_records.filter |$rr| { $rr[1]['type'] and $rr[1]['type'].upcase == 'SOA' }) > 1 {
       fail('only one SOA record allowed per zone')
     }
 
-    $soa_key = $resource_records.index |$rr| { $rr['type'].upcase == 'SOA' }
+    $soa_key = $resource_records.index |$rr| { $rr['type'] and $rr['type'].upcase == 'SOA' }
 
     if $soa_key {
       $soa_ttl = $resource_records.dig($soa_key, 'ttl')

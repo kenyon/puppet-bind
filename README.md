@@ -118,6 +118,26 @@ class { 'bind':
 
 TODO: provide more examples.
 
+### The `resource_record` type
+
+DNS resource records can be created with the `resource_record` Puppet type.
+
+Example:
+
+```puppet
+resource_record { 'www.example.com. AAAA':
+  data => '2001:db8::1',
+}
+```
+
+The title of `resource_record` resources can be in one of the following formats:
+
+1. Name, zone, type: `www.example.com. AAAA` (AAAA record `www` in the `example.com.` zone)
+1. Name and zone: `www.example.com.` (record `www` in the `example.com.` zone with type specified as a parameter)
+1. Name and type: `www AAAA` (AAAA record `www` in a zone specified as a parameter)
+1. Name: `www` (record `www` with zone and type specified as parameters)
+1. Any other format means all of the required parameters need to be specified in the resource definition.
+
 ## Limitations
 
 See [`metadata.json`](metadata.json) for supported operating systems, supported Puppet versions,
@@ -191,8 +211,8 @@ License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+along with this program. If not, see <https://www.gnu.org/licenses/>.

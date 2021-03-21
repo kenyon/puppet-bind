@@ -19,6 +19,24 @@ Puppet::ResourceApi.register_type(
           the resource record will autorequire the zone.
         EOS
   features: ['canonicalize'],
+  title_patterns: [
+    {
+      desc: 'name, zone (everything after the first dot), space, type',
+      pattern: %r{^(?<name>.*?[^.])\.(?<zone>.*[^ ]\.) +(?<type>.*)$},
+    },
+    {
+      desc: 'name and zone (everything after the first dot)',
+      pattern: %r{^(?<name>.*?[^.])\.(?<zone>.*\.)$},
+    },
+    {
+      desc: 'short name (not FQDN), space, type',
+      pattern: %r{^(?<name>.*[^ ]) +(?<type>.*)$},
+    },
+    {
+      desc: 'name only',
+      pattern: %r{^(?<name>.*)$},
+    },
+  ],
   attributes: {
     ensure: {
       type: 'Enum[present, absent]',
