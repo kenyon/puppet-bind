@@ -35,6 +35,7 @@ class bind::config {
     target  => $bind::service_config_file,
     content => epp("${module_name}/etc/bind/named.conf.epp",
                         {'options' => $merged_options}),
+    order   => '01',
   }
 
   file { extlib::path_join([$bind::config_dir, 'bind.keys']):

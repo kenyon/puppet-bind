@@ -164,6 +164,7 @@ describe 'bind' do
               .with_content(default_zones)
               .with_content(root_hint_zone)
               .without_content(%r{include ".*";})
+              .with_order('01')
           end
 
           it do
