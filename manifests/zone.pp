@@ -144,11 +144,11 @@ define bind::zone (
       $negative_caching_ttl = $soa_fields[6]
 
       $ns_key = $resource_records.index |$rr| {
-        $rr['type'].upcase == 'AAAA' and $rr['name'] == $mname
+        $rr['type'].upcase == 'AAAA' and $rr['record'] == $mname
       }
 
       $ns_legacy_key = $resource_records.index |$rr| {
-        $rr['type'].upcase == 'A' and $rr['name'] == $mname
+        $rr['type'].upcase == 'A' and $rr['record'] == $mname
       }
 
       if $ns_key {

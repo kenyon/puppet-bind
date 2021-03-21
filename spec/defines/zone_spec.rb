@@ -415,7 +415,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      name: 'my-ns',
+                      record: 'my-ns',
                       type: 'AAAA',
                       data: '2001:db8::ffff',
                     },
@@ -448,7 +448,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      name: 'my-ns',
+                      record: 'my-ns',
                       type: 'AAAA',
                       data: [
                         '2001:db8::eeee',
@@ -495,7 +495,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      name: 'my-ns',
+                      record: 'my-ns',
                       type: 'A',
                       data: '192.0.2.254',
                     },
@@ -528,7 +528,7 @@ describe 'bind::zone' do
                       data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                     },
                     ns: {
-                      name: 'my-ns',
+                      record: 'my-ns',
                       type: 'A',
                       data: [
                         '192.0.2.253',
@@ -566,12 +566,12 @@ describe 'bind::zone' do
                     data: 'my-ns hostmaster 2021010301 48h 6h 1500h 30m',
                   },
                   ns: {
-                    name: 'my-ns',
+                    record: 'my-ns',
                     type: 'AAAA',
                     data: '2001:db8::ffff',
                   },
                   ns_legacy: {
-                    name: 'my-ns',
+                    record: 'my-ns',
                     type: 'A',
                     data: '192.0.2.254',
                   },

@@ -22,19 +22,19 @@ Puppet::ResourceApi.register_type(
   title_patterns: [
     {
       desc: 'name, zone (everything after the first dot), space, type',
-      pattern: %r{^(?<name>.*?[^.])\.(?<zone>.*[^ ]\.) +(?<type>.*)$},
+      pattern: %r{^(?<record>.*?[^.])\.(?<zone>.*[^ ]\.) +(?<type>.*)$},
     },
     {
       desc: 'name and zone (everything after the first dot)',
-      pattern: %r{^(?<name>.*?[^.])\.(?<zone>.*\.)$},
+      pattern: %r{^(?<record>.*?[^.])\.(?<zone>.*\.)$},
     },
     {
       desc: 'short name (not FQDN), space, type',
-      pattern: %r{^(?<name>.*[^ ]) +(?<type>.*)$},
+      pattern: %r{^(?<record>.*[^ ]) +(?<type>.*)$},
     },
     {
       desc: 'name only',
-      pattern: %r{^(?<name>.*)$},
+      pattern: %r{^(?<record>.*)$},
     },
   ],
   attributes: {
@@ -43,7 +43,7 @@ Puppet::ResourceApi.register_type(
       desc: 'Whether this resource record should be present or absent on the target system.',
       default: 'present',
     },
-    name: {
+    record: {
       type: 'String',
       desc: 'The name of the resource record, also known as the owner or label.',
       behavior: :namevar,

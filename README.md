@@ -133,10 +133,10 @@ resource_record { 'www.example.com. AAAA':
 
 ```puppet
 resource_record { 'my record':
-  zone => 'example.com.',
-  name => 'www',
-  type => 'AAAA',
-  data => '2001:db8::1',
+  zone   => 'example.com.',
+  record => 'www',
+  type   => 'AAAA',
+  data   => '2001:db8::1',
 }
 ```
 
