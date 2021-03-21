@@ -941,7 +941,7 @@ describe 'bind' do
 
         it do
           is_expected.to contain_package('bind9-dnsutils').with_install_options(
-            ['--target-release', "#{facts[:os]['distro']['codename']}-backports"]
+            ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
           ).with_ensure('present')
         end
 
@@ -958,7 +958,7 @@ describe 'bind' do
 
           it do
             is_expected.to contain_package('bind9-dev').with_install_options(
-              ['--target-release', "#{facts[:os]['distro']['codename']}-backports"]
+              ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
             ).with_ensure('present')
           end
         end
