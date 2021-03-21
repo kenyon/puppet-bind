@@ -123,10 +123,19 @@ TODO: provide more examples.
 
 DNS resource records can be created with the `resource_record` Puppet type.
 
-Example:
+Equivalent examples:
 
 ```puppet
 resource_record { 'www.example.com. AAAA':
+  data => '2001:db8::1',
+}
+```
+
+```puppet
+resource_record { 'my record':
+  zone => 'example.com.',
+  name => 'www',
+  type => 'AAAA',
   data => '2001:db8::1',
 }
 ```
