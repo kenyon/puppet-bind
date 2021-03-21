@@ -13,6 +13,7 @@
    - [Recursive, caching only](#recursive-caching-only)
    - [Authoritative only](#authoritative-only)
    - [Authoritative and caching](#authoritative-and-caching)
+   - [The `resource_record` type](#the-resource_record-type)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
    - [Running tests](#running-tests)
