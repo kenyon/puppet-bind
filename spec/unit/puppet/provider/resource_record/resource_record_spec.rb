@@ -49,4 +49,22 @@ RSpec.describe Puppet::Provider::ResourceRecord::ResourceRecord do
       provider.delete(context, 'foo')
     end
   end
+
+  describe 'canonicalize(_context, resources)' do
+    it 'upcases/downcases resource attributes' do
+      expect(provider.canonicalize(context, [{
+        ensure: 'present',
+        record: 'wWw',
+        zone: 'EXAMPLE.com.',
+        type: 'aaaa',
+        data: '2001:db8::1',
+      }])).to eq([{
+        ensure: 'present',
+        record: 'www',
+        zone: 'example.com.',
+        type: 'AAAA',
+        data: '2001:db8::1',
+      }])
+    end
+  end
 end
