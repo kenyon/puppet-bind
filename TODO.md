@@ -10,7 +10,7 @@
 - update [`metadata.json`](metadata.json) with new URLs after moving to GitHub
 - publish on Forge
 - be able to collect and export resource records, and have an example in the docs, like the
-example here: https://github.com/inkblot/puppet-bind/issues/12#issuecomment-57109768
+  example here: https://github.com/inkblot/puppet-bind/issues/12#issuecomment-57109768
 
 ## Zones
 
@@ -37,3 +37,5 @@ example here: https://github.com/inkblot/puppet-bind/issues/12#issuecomment-5710
   - leave zone-default `$TTL` directive to two days, but specify RR-specific TTLs for home
     stuff that can change
   - use relative names in the SOA for primary server and contact email
+- zone transfer in parseable format:
+  `dig +onesoa +noall +nocomments +norecurse +noclass +answer @localhost -c IN -q test0.example. -t AXFR`
