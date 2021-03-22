@@ -694,7 +694,7 @@ Whether this resource record should be present or absent on the target system.
 
 Default value: `present`
 
-##### `name`
+##### `record`
 
 Data type: `String`
 
