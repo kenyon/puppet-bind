@@ -12,15 +12,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: pdk validate
-        uses: puppets-epic-show-theatre/action-pdk-validate@31b5407676af16b690b2b8c54c0767af72fcc34f
-      - name: pdk test unit
-        uses: puppets-epic-show-theatre/action-pdk-test-unit@193987acba9977d1825fefbcbaf8d02d6af78106
+      - uses: ./.github/actions/install-pdk
+      - run: pdk validate --parallel
+      - run: pdk test unit --parallel
 
   acceptance_bind_spec:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ./.github/actions/install-pdk
       - uses: ./.github/actions/acceptance-test
         with:
           filename: bind_spec
@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ./.github/actions/install-pdk
       - uses: ./.github/actions/acceptance-test
         with:
           filename: bind_backport_spec
@@ -37,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ./.github/actions/install-pdk
       - uses: ./.github/actions/acceptance-test
         with:
           filename: bind_resolvconf_service_spec
@@ -45,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: ./.github/actions/install-pdk
       - uses: ./.github/actions/acceptance-test
         with:
           filename: bind_authoritative_spec

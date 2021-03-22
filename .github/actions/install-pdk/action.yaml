@@ -1,0 +1,13 @@
+name: install PDK
+description: Install Puppet Development Kit (PDK)
+runs:
+  using: composite
+  steps:
+    - run: wget --quiet https://apt.puppet.com/puppet-tools-release-focal.deb
+      shell: sh
+    - run: sudo apt-get --quiet --assume-yes install ./puppet-tools-release-focal.deb
+      shell: sh
+    - run: sudo apt-get --quiet update
+      shell: sh
+    - run: sudo apt-get --quiet --assume-yes install pdk
+      shell: sh
