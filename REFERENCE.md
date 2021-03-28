@@ -599,7 +599,7 @@ Data type: `Boolean`
 
 Whether to purge unmanaged resource records from the zone.
 
-Default value: ``true``
+Default value: ``false``
 
 ##### <a name="resource_records"></a>`resource_records`
 

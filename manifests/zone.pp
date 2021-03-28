@@ -70,7 +70,7 @@ define bind::zone (
   Optional[String[1]] $key_directory = undef,
   Optional[Array[Stdlib::Host]] $masters = undef,
   Optional[Array[Stdlib::Host]] $primaries = undef,
-  Boolean $purge = true,
+  Boolean $purge = false,
   Hash $resource_records = {},
   Optional[Enum['date', 'increment', 'unixtime']] $serial_update_method = undef,
   Optional[String[1]] $ttl = undef,
