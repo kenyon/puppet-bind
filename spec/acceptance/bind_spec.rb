@@ -7,7 +7,7 @@ require 'spec_helper_acceptance'
 describe 'bind' do
   context 'when using defaults' do
     let(:pp) do
-      <<-MANIFEST
+      <<~MANIFEST
         include bind
       MANIFEST
     end

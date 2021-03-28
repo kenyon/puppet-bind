@@ -8,7 +8,7 @@ describe 'authoritative BIND with zones configured' do
   domain_name = 'test0.example.'
 
   let(:pp) do
-    <<-MANIFEST
+    <<~MANIFEST
       class { 'bind':
         authoritative => true,
         zones         => {

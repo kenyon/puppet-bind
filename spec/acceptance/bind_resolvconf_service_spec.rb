@@ -6,7 +6,7 @@ require 'spec_helper_acceptance'
 
 describe 'bind with resolvconf_service_enable => true', if: os[:family] == 'debian' do
   let(:pp) do
-    <<-MANIFEST
+    <<~MANIFEST
       class { 'bind':
         resolvconf_service_enable => true,
       }

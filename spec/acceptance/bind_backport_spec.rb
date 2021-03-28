@@ -6,7 +6,7 @@ require 'spec_helper_acceptance'
 
 describe 'bind with package_backport => true', if: os[:family] == 'debian' do
   let(:pp) do
-    <<-MANIFEST
+    <<~MANIFEST
       class { 'bind':
         package_backport => true,
       }
