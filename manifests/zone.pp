@@ -205,6 +205,7 @@ define bind::zone (
       validate_cmd => "/usr/sbin/named-checkzone -k fail -m fail -M fail -n fail -r fail -S fail '${zone_name}' %",
     }
 
+    # FIXME: remove because creates dependency cycle
     $resource_records.each |$rrname, $attribs| {
       resource_record { $rrname:
         zone => $zone_name,

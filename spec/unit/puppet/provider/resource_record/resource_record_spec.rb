@@ -11,18 +11,8 @@ RSpec.describe Puppet::Provider::ResourceRecord::ResourceRecord do
   let(:context) { instance_double('Puppet::ResourceApi::BaseContext', 'context') }
 
   describe '#get' do
-    it 'processes resources' do
-      expect(context).to receive(:debug).with('Returning pre-canned example data')
-      expect(provider.get(context)).to eq [
-        {
-          name: 'foo',
-          ensure: 'present',
-        },
-        {
-          name: 'bar',
-          ensure: 'present',
-        },
-      ]
+    pending 'processes resources' do
+      fail
     end
   end
 

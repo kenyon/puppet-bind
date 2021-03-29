@@ -13,35 +13,38 @@ describe 'authoritative BIND with zones configured' do
         authoritative => true,
         zones         => {
           '#{domain_name}' => {
-            'type'             => 'master',
-            'update_policy'    => ['local'],
-            'resource_records' => {
-              'www aaaa' => {
-                'data' => '2001:db8::1',
-              },
-            },
+            type          => 'master',
+            update_policy => ['local'],
           },
         },
       }
 
-      # test various title_patterns
-      resource_record { 'mail.#{domain_name} a':
+      resource_record { 'www':
+        zone => '#{domain_name}',
+        type => 'aaaa',
+        data => '2001:db8::1',
+      }
+
+      resource_record { 'mail':
+        zone => '#{domain_name}',
         data => '192.0.2.1',
+        type => 'a',
         ttl  => '12d',
       }
 
-      resource_record { 'mx.#{domain_name}':
+      resource_record { 'mx':
+        zone => '#{domain_name}',
         type => 'mx',
         data => '0 mail',
       }
 
       resource_record { 'test1':
+        zone => '#{domain_name}',
         type => 'aaaa',
         data => '2001:db8::2',
-        zone => '#{domain_name}',
       }
 
-      resource_record { 'test two':
+      resource_record { 'arbitrary resource name':
         record => 'test2',
         zone   => '#{domain_name}',
         type   => 'aaaa',

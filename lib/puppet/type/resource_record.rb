@@ -19,24 +19,6 @@ Puppet::ResourceApi.register_type(
           the resource record will autorequire the zone.
         EOS
   features: ['canonicalize'],
-  title_patterns: [
-    {
-      desc: 'name, zone (everything after the first dot), space, type',
-      pattern: %r{^(?<record>.*?[^.])\.(?<zone>.*[^ ]\.) +(?<type>.*)$},
-    },
-    {
-      desc: 'name and zone (everything after the first dot)',
-      pattern: %r{^(?<record>.*?[^.])\.(?<zone>.*\.)$},
-    },
-    {
-      desc: 'short name (not FQDN), space, type',
-      pattern: %r{^(?<record>.*[^ ]) +(?<type>.*)$},
-    },
-    {
-      desc: 'name only',
-      pattern: %r{^(?<record>.*)$},
-    },
-  ],
   attributes: {
     ensure: {
       type: 'Enum[present, absent]',
@@ -51,23 +33,20 @@ Puppet::ResourceApi.register_type(
     zone: {
       type: 'String',
       desc: 'The zone the resource record belongs to.',
-      behavior: :namevar,
     },
     type: {
       type: 'String',
       desc: 'The type of the resource record.',
-      behavior: :namevar,
     },
     data: {
       type: 'String',
       desc: 'The data for the resource record.',
     },
     ttl: {
-      type: 'Optional[String]',
+      type: 'Optional[Variant[Integer, String]]',
       desc: 'The TTL for the resource record.',
     },
   },
-  # FIXME: seems like this doesn't do anything.
   autorequire: {
     'bind::zone': '$zone',
   },
