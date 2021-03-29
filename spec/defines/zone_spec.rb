@@ -307,6 +307,7 @@ describe 'bind::zone' do
 
         let(:params) do
           {
+            manage: true,
             type: 'primary',
             update_policy: ['local'],
           }

@@ -431,11 +431,13 @@ describe 'bind' do
       context 'with custom zones' do
         let(:params) do
           {
+            authoritative: true,
             zones: {
               '.': {
                 type: 'mirror',
               },
               'example.com.': {
+                manage: true,
                 type: 'primary',
                 update_policy: ['local'],
                 resource_records: {
@@ -461,8 +463,10 @@ describe 'bind' do
           context 'such as zone name not ending with a dot' do
             let(:params) do
               {
+                authoritative: true,
                 zones: {
                   'not-ending-with-dot.example.com': {
+                    manage: true,
                     type: 'primary',
                   },
                 },
@@ -475,8 +479,10 @@ describe 'bind' do
           context 'such as multiple SOA records' do
             let(:params) do
               {
+                authoritative: true,
                 zones: {
                   'multiple-soa-records.example.com.': {
+                    manage: true,
                     type: 'primary',
                     update_policy: ['local'],
                     resource_records: {
@@ -512,8 +518,10 @@ describe 'bind' do
           context 'such as non-updatable primary zones' do
             let(:params) do
               {
+                authoritative: true,
                 zones: {
                   'non-updatable.example.com.': {
+                    manage: true,
                     type: 'primary',
                     resource_records: {
                       '@ SOA': {

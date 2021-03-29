@@ -462,6 +462,7 @@ The following parameters are available in the `bind::zone` defined type:
 * [`in_view`](#in_view)
 * [`inline_signing`](#inline_signing)
 * [`key_directory`](#key_directory)
+* [`manage`](#manage)
 * [`masters`](#masters)
 * [`primaries`](#primaries)
 * [`purge`](#purge)
@@ -575,6 +576,16 @@ when performing a dynamic update of secure zones, if different than the current 
 directory.
 
 Default value: ``undef``
+
+##### <a name="manage"></a>`manage`
+
+Data type: `Boolean`
+
+Whether to manage the contents of this zone with Puppet. If false, only manages the configuration
+of the zone in named.conf. If true, creates and manages the zone file and resource records of the
+zone.
+
+Default value: ``false``
 
 ##### <a name="masters"></a>`masters`
 

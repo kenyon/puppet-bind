@@ -36,6 +36,11 @@
 #   when performing a dynamic update of secure zones, if different than the current working
 #   directory.
 #
+# @param manage
+#   Whether to manage the contents of this zone with Puppet. If false, only manages the configuration
+#   of the zone in named.conf. If true, creates and manages the zone file and resource records of the
+#   zone.
+#
 # @param masters Synonym for `primaries`.
 #
 # @param primaries Defines a named list of servers for inclusion in stub and secondary zones'
@@ -68,6 +73,7 @@ define bind::zone (
   Optional[String[1]] $in_view = undef,
   Optional[Variant[Boolean, Stdlib::Yes_no]] $inline_signing = undef,
   Optional[String[1]] $key_directory = undef,
+  Boolean $manage = false,
   Optional[Array[Stdlib::Host]] $masters = undef,
   Optional[Array[Stdlib::Host]] $primaries = undef,
   Boolean $purge = false,
@@ -120,7 +126,7 @@ define bind::zone (
     }),
   }
 
-  if $type in ['primary', 'master', 'redirect'] and !$resource_records.empty {
+  if $type in ['primary', 'master', 'redirect'] and $manage {
     unless $allow_update or $update_policy {
       fail("zone ${zone_name}: must be updatable locally via allow-update or update-policy")
     }
