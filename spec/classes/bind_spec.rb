@@ -555,15 +555,18 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_concat__fragment('named.conf base').with_content(%r<^logging \{
-    category security \{
-        my_security_channel;
-        default_syslog;
-    \};
-    category notify \{
-        null;
-    \};
-\};>)
+            is_expected.to contain_concat__fragment('named.conf base')
+              .with_content(Regexp.new(Regexp.escape(<<~CONTENT)))
+                logging {
+                    category security {
+                        my_security_channel;
+                        default_syslog;
+                    };
+                    category notify {
+                        null;
+                    };
+                };
+                CONTENT
           end
         end
 
@@ -586,14 +589,17 @@ describe 'bind' do
           it { is_expected.to compile.with_all_deps }
 
           it do
-            is_expected.to contain_concat__fragment('named.conf base').with_content(%r<^logging \{
-    channel chan1 \{
-        null;
-    \};
-    channel chan2 \{
-        file "log"\s*;
-    \};
-\};>)
+            is_expected.to contain_concat__fragment('named.conf base')
+              .with_content(Regexp.new(Regexp.escape(<<~CONTENT)))
+                logging {
+                    channel chan1 {
+                        null;
+                    };
+                    channel chan2 {
+                        file "log";
+                    };
+                };
+                CONTENT
           end
         end
 
@@ -644,29 +650,31 @@ describe 'bind' do
 
           it do
             is_expected.to contain_concat__fragment('named.conf base')
-              .with_content(%r<^logging \{
-    category rpz \{
-    \};
-    category queries \{
-        my_query_channel;
-        default_syslog;
-    \};
-    category query-errors \{
-        null;
-    \};
-    channel an_example_channel \{
-        buffered yes;
-        file "example\.log" versions unlimited size 100M suffix timestamp;
-        print-category yes;
-        print-time iso8601-utc;
-        severity debug 3;
-    \};
-    channel my_query_channel \{
-        file "query\.log" versions 2 size 1m;
-        print-time true;
-        severity info;
-    \};
-\};>)
+              .with_content(Regexp.new(Regexp.escape(<<~CONTENT)))
+                logging {
+                    category rpz {
+                    };
+                    category queries {
+                        my_query_channel;
+                        default_syslog;
+                    };
+                    category query-errors {
+                        null;
+                    };
+                    channel an_example_channel {
+                        buffered yes;
+                        file "example.log" versions unlimited size 100M suffix timestamp;
+                        print-category yes;
+                        print-time iso8601-utc;
+                        severity debug 3;
+                    };
+                    channel my_query_channel {
+                        file "query.log" versions 2 size 1m;
+                        print-time true;
+                        severity info;
+                    };
+                };
+                CONTENT
           end
         end
       end
