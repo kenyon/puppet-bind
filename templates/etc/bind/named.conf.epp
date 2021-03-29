@@ -2,16 +2,8 @@
 <%# SPDX-License-Identifier: AGPL-3.0-or-later -%>
 # Managed by Puppet
 
-<%
-  case $bind::includes {
-    Array[Bind::Include]: {
-      $bind::includes.each |$filename| { -%>include "<%= $filename %>";
-  <%- }
-    }
-    Bind::Include: { -%>include "<%= $bind::includes %>";<% }
-    undef: {}
-  }
-%>
+<%- if $bind::includes { $bind::includes.flatten.each |$filename| { -%>include "<%= $filename %>";
+<%- } } -%>
 
 <%# TODO: not every possibility has been templated yet. -%>
 <%- if $bind::logging { -%>
