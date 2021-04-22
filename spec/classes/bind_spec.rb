@@ -1050,6 +1050,28 @@ describe 'bind' do
           )
         end
       end
+
+      context 'with custom keys' do
+        let(:params) do
+          {
+            keys: {
+              'key1': {
+                algorithm: 'hmac-sha256',
+                secret: 'yHqINVuege3zW3EOebA8pnWzpMkpCpMi0f4RqrV4poU=',
+              },
+              'key2': {
+                algorithm: 'hmac-sha512',
+                secret: '+2BboRCD6wsbAmqXs2lcg7RzkG3gCN6CgP0oI7FRudJh70JSFmyytOUld+jezwH7tyYgv3B89y18A2AMev+HQQ==',
+              },
+            },
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it { is_expected.to contain_bind__key('key1') }
+        it { is_expected.to contain_bind__key('key2') }
+      end
     end
   end
 end

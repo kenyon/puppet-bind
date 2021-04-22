@@ -148,6 +148,23 @@ The title of `resource_record` resources can be in one of the following formats:
 1. Name: `www` (record `www` with zone and type specified as parameters)
 1. Any other format means all of the required parameters need to be specified in the resource definition.
 
+### The `bind::key` defined type
+
+TSIG keys for dynamic zone updates used by clients can be added to the configuration as follows.
+
+```puppet
+bind::key { 'key_name':
+  algorithm => 'hmac-sha512',
+  secret    => 'ZlfCDgP7d3g7LjV4YMLg62EbpLZRCt9BMh3MyqiZfPX5Y2IcTyx/la6PMsfAqLMM9QDadZiNiLVzD4IPoI/4hg==',
+}
+```
+
+The key's secret needs to be generated using the BIND tool `tsig-keygen`; example:
+
+```bash
+tsig-keygen -a $algorithm [$key_name]
+```
+
 ## Limitations
 
 See [`metadata.json`](metadata.json) for supported operating systems, supported Puppet versions,

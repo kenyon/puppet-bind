@@ -1,0 +1,8 @@
+<%- | String[1] $name,
+      String[11] $algorithm,
+      String[44] $secret,
+ | -%>
+key "<%= $name %>" {
+    algorithm <%= $algorithm %>;
+    secret "<%= $secret %>";
+};

@@ -148,6 +148,9 @@
 #   in the `$zones` parameter. Also, individual resource records can override this value with the
 #   `ttl` key in their hashes. Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308#section-4)
 #
+# @param keys
+#   Hash for creating Bind::Key resources.
+#
 class bind (
   Boolean $authoritative = false,
   Stdlib::Absolutepath $config_dir = '/etc/bind',
@@ -188,6 +191,7 @@ class bind (
   String[1] $zone_default_rname = 'hostmaster',
   Integer[0] $zone_default_serial = 1,
   String[1] $zone_default_ttl = '2d',
+  Hash $keys = {},
 ) {
   contain bind::install
   contain bind::config
