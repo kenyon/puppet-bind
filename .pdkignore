@@ -42,4 +42,5 @@
 /spec/
 /.vscode/
 /.sync.yml
+/.devcontainer/
 /run_tests
