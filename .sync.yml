@@ -13,6 +13,9 @@ Gemfile:
   paths:
     - /run_tests
 
+Rakefile:
+  changelog_user: kenyon
+
 spec/spec_helper.rb:
   mock_with: ':rspec'
   strict_level: ':error'
