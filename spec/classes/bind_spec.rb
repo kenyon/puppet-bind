@@ -195,7 +195,6 @@ describe 'bind' do
         it do
           is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
             unit: "#{service_name}.service",
-            daemon_reload: 'eager',
             notify: ["Service[#{service_name}]"],
             # FIXME: why does this fail?
             # content: <<~CONTENT
@@ -764,7 +763,6 @@ describe 'bind' do
         it do
           is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
             unit: "#{service_name}.service",
-            daemon_reload: 'eager',
             notify: ["Service[#{service_name}]"],
             # FIXME: why does this fail?
             # content: <<~CONTENT
@@ -855,7 +853,6 @@ describe 'bind' do
         it do
           is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
             unit: "#{service_name}.service",
-            daemon_reload: 'eager',
             notify: ["Service[#{service_name}]"],
             # FIXME: why does this fail?
             # content: <<~CONTENT
@@ -885,7 +882,6 @@ describe 'bind' do
         it do
           is_expected.to contain_systemd__dropin_file("#{service_name}.conf").with(
             unit: "#{service_name}.service",
-            daemon_reload: 'eager',
             notify: ["Service[#{service_name}]"],
             # FIXME: why does this fail?
             # content: <<~CONTENT
