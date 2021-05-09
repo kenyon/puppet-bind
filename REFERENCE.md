@@ -18,6 +18,7 @@
 
 ### Defined types
 
+* [`bind::key`](#bindkey)
 * [`bind::zone`](#bindzone): A DNS zone
 
 ### Resource types
@@ -101,6 +102,7 @@ The following parameters are available in the `bind` class:
 * [`zone_default_rname`](#zone_default_rname)
 * [`zone_default_serial`](#zone_default_serial)
 * [`zone_default_ttl`](#zone_default_ttl)
+* [`keys`](#keys)
 
 ##### <a name="authoritative"></a>`authoritative`
 
@@ -432,7 +434,38 @@ in the `$zones` parameter. Also, individual resource records can override this v
 
 Default value: `'2d'`
 
+##### <a name="keys"></a>`keys`
+
+Data type: `Hash`
+
+Hash for creating Bind::Key resources.
+
+Default value: `{}`
+
 ## Defined types
+
+### <a name="bindkey"></a>`bind::key`
+
+The bind::key class.
+
+#### Parameters
+
+The following parameters are available in the `bind::key` defined type:
+
+* [`algorithm`](#algorithm)
+* [`secret`](#secret)
+
+##### <a name="algorithm"></a>`algorithm`
+
+Data type: `Enum['hmac-sha256', 'hmac-sha384', 'hmac-sha512']`
+
+
+
+##### <a name="secret"></a>`secret`
+
+Data type: `String[44]`
+
+
 
 ### <a name="bindzone"></a>`bind::zone`
 

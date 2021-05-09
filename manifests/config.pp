@@ -86,4 +86,10 @@ class bind::config {
       * => $zone,
     }
   }
+
+  $bind::keys.each |$k, $v| {
+    bind::key { $k:
+      * => $v,
+    }
+  }
 }
