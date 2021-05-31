@@ -18,7 +18,7 @@
 
 ### Defined types
 
-* [`bind::key`](#bindkey)
+* [`bind::key`](#bindkey): Create TSIG key for zone updates in the configuration file for BIND
 * [`bind::zone`](#bindzone): A DNS zone
 
 ### Resource types
@@ -77,6 +77,7 @@ The following parameters are available in the `bind` class:
 * [`doc_packages_ensure`](#doc_packages_ensure)
 * [`utils_packages_ensure`](#utils_packages_ensure)
 * [`logging`](#logging)
+* [`keys`](#keys)
 * [`options`](#options)
 * [`package_manage`](#package_manage)
 * [`service_manage`](#service_manage)
@@ -102,7 +103,6 @@ The following parameters are available in the `bind` class:
 * [`zone_default_rname`](#zone_default_rname)
 * [`zone_default_serial`](#zone_default_serial)
 * [`zone_default_ttl`](#zone_default_ttl)
-* [`keys`](#keys)
 
 ##### <a name="authoritative"></a>`authoritative`
 
@@ -208,6 +208,14 @@ Configuration of the [logging
 statement](https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar).
 
 Default value: ``undef``
+
+##### <a name="keys"></a>`keys`
+
+Data type: `Hash`
+
+Hash for creating Bind::Key resources.
+
+Default value: `{}`
 
 ##### <a name="options"></a>`options`
 
@@ -434,19 +442,25 @@ in the `$zones` parameter. Also, individual resource records can override this v
 
 Default value: `'2d'`
 
-##### <a name="keys"></a>`keys`
-
-Data type: `Hash`
-
-Hash for creating Bind::Key resources.
-
-Default value: `{}`
-
 ## Defined types
 
 ### <a name="bindkey"></a>`bind::key`
 
-The bind::key class.
+Create TSIG key for zone updates in the configuration file for BIND
+
+* **See also**
+  * https://bind9.readthedocs.io/en/latest/advanced.html#tsig
+
+#### Examples
+
+##### Add a TSIG key to the nameserver
+
+```puppet
+bind::key { 'tsig-client':
+  algorithm => 'hmac-sha512',
+  secret    => 'secret-key-data',
+}
+```
 
 #### Parameters
 
@@ -459,13 +473,15 @@ The following parameters are available in the `bind::key` defined type:
 
 Data type: `Enum['hmac-sha256', 'hmac-sha384', 'hmac-sha512']`
 
-
+Defines the algorithm which was used to generate the key data.
+For security reasons just allow algorithms hmac-sha256 and above:
+https://www.rfc-editor.org/rfc/rfc8945.html#name-algorithms-and-identifiers
 
 ##### <a name="secret"></a>`secret`
 
 Data type: `String[44]`
 
-
+Provide the secret data of the TSIG key, generated using tsig-keygen.
 
 ### <a name="bindzone"></a>`bind::zone`
 
