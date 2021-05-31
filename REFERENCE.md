@@ -77,6 +77,7 @@ The following parameters are available in the `bind` class:
 * [`doc_packages_ensure`](#doc_packages_ensure)
 * [`utils_packages_ensure`](#utils_packages_ensure)
 * [`logging`](#logging)
+* [`keys`](#keys)
 * [`options`](#options)
 * [`package_manage`](#package_manage)
 * [`service_manage`](#service_manage)
@@ -102,7 +103,6 @@ The following parameters are available in the `bind` class:
 * [`zone_default_rname`](#zone_default_rname)
 * [`zone_default_serial`](#zone_default_serial)
 * [`zone_default_ttl`](#zone_default_ttl)
-* [`keys`](#keys)
 
 ##### <a name="authoritative"></a>`authoritative`
 
@@ -208,6 +208,14 @@ Configuration of the [logging
 statement](https://bind9.readthedocs.io/en/latest/reference.html#logging-statement-grammar).
 
 Default value: ``undef``
+
+##### <a name="keys"></a>`keys`
+
+Data type: `Hash`
+
+Hash for creating Bind::Key resources.
+
+Default value: `{}`
 
 ##### <a name="options"></a>`options`
 
@@ -433,14 +441,6 @@ in the `$zones` parameter. Also, individual resource records can override this v
 `ttl` key in their hashes. Reference: [RFC 2308](https://tools.ietf.org/html/rfc2308#section-4)
 
 Default value: `'2d'`
-
-##### <a name="keys"></a>`keys`
-
-Data type: `Hash`
-
-Hash for creating Bind::Key resources.
-
-Default value: `{}`
 
 ## Defined types
 
