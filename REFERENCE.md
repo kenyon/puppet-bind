@@ -18,7 +18,7 @@
 
 ### Defined types
 
-* [`bind::key`](#bindkey)
+* [`bind::key`](#bindkey): Create TSIG key for zone updates in the configuration file for BIND
 * [`bind::zone`](#bindzone): A DNS zone
 
 ### Resource types
@@ -446,7 +446,21 @@ Default value: `'2d'`
 
 ### <a name="bindkey"></a>`bind::key`
 
-The bind::key class.
+Create TSIG key for zone updates in the configuration file for BIND
+
+* **See also**
+  * https://bind9.readthedocs.io/en/latest/advanced.html#tsig
+
+#### Examples
+
+##### Add a TSIG key to the nameserver
+
+```puppet
+bind::key { 'tsig-client':
+  algorithm => 'hmac-sha512',
+  secret    => 'secret-key-data',
+}
+```
 
 #### Parameters
 
@@ -459,13 +473,15 @@ The following parameters are available in the `bind::key` defined type:
 
 Data type: `Enum['hmac-sha256', 'hmac-sha384', 'hmac-sha512']`
 
-
+Defines the algorithm which was used to generate the key data.
+For security reasons just allow algorithms hmac-sha256 and above:
+https://www.rfc-editor.org/rfc/rfc8945.html#name-algorithms-and-identifiers
 
 ##### <a name="secret"></a>`secret`
 
 Data type: `String[44]`
 
-
+Provide the secret data of the TSIG key, generated using tsig-keygen.
 
 ### <a name="bindzone"></a>`bind::zone`
 
