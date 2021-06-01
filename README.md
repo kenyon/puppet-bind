@@ -211,6 +211,7 @@ See also:
 
 ### Release process
 
+1. `git checkout main`
 1. Update the version in `metadata.json` to the to-be-released version.
 1. `pdk bundle exec rake changelog`
 1. `git commit --all`
@@ -219,7 +220,7 @@ See also:
 1. `git push` (I have `git config --global push.followTags true` so that the tag will also be
    pushed. This also causes the `publish.yaml` GitHub workflow to build and publish a release to the
    Puppet Forge.)
-1. `gh release create <version> pkg/*` (using [GitHub CLI](https://cli.github.com/))
+1. `gh release create <version> pkg/kenyon-bind-<version>.tar.gz` (using [GitHub CLI](https://cli.github.com/))
 
 ## Alternatives
 
