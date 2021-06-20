@@ -39,6 +39,8 @@ logging {
         print-time <%= $channel_config['print-time'] %>;
           <%- } if $channel_config['severity'] { -%>
         severity <%= $channel_config['severity'] %>;
+          <%- } if $channel_config['syslog'] { -%>
+        syslog <%= $channel_config['syslog'] %>;
           <%- } -%>
         <%- } -%>
       <%- } -%>
