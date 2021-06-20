@@ -62,9 +62,9 @@
 #
 define bind::zone (
   Pattern[/\.$/] $zone_name = $title,
-  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $allow_transfer = undef,
-  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $allow_update = undef,
-  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $also_notify = undef,
+  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address, Stdlib::Compat::String]]] $allow_transfer = undef,
+  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address, Stdlib::Compat::String]]] $allow_update = undef,
+  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address, Stdlib::Compat::String]]] $also_notify = undef,
   Optional[Enum['allow', 'maintain', 'off']] $auto_dnssec = undef,
   Optional[Enum['IN', 'HS', 'hesiod', 'CHAOS']] $class = undef,
   Optional[String[1]] $file = undef,
