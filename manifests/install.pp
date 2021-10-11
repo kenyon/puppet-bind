@@ -23,11 +23,15 @@ class bind::install {
     # The dnsruby build fails with the Ruby 2.7.1 build included with Puppet 7.1.0 if /usr/bin/mkdir
     # is missing.
     # FIXME: remove this when Puppet's Ruby is fixed.
-    file { '/usr/bin/mkdir':
-      ensure => link,
-      target => '/bin/mkdir',
-      before => Package['dnsruby'],
-    }
+    # focal condition is to prevent overwriting of hardlinked mkdir binary  
+    
+    if $facts['os']['release']['major'] != '20.04' { 
+      file { '/usr/bin/mkdir':
+        ensure => link,
+        target => '/bin/mkdir',
+        before => Package['dnsruby'],
+      }
+    } 
 
     ensure_packages(
       'dnsruby',
