@@ -76,9 +76,9 @@ describe 'bind' do
 
         if os_facts[:os]['name'] == 'Debian'
           if os_facts[:os]['release']['major'] == '10'
-            it { is_expected.to contain_package('dnsutils').with_ensure('present') }
+            it { is_expected.to contain_package('dnsutils').with_ensure('installed') }
           else
-            it { is_expected.to contain_package('bind9-dnsutils').with_ensure('present') }
+            it { is_expected.to contain_package('bind9-dnsutils').with_ensure('installed') }
           end
         end
 
@@ -226,7 +226,7 @@ describe 'bind' do
           ].each do |pkg|
             it do
               is_expected.to contain_package(pkg).with(
-                ensure: 'present',
+                ensure: 'installed',
                 before: 'Package[dnsruby]',
               )
             end
@@ -244,7 +244,7 @@ describe 'bind' do
 
         it do
           is_expected.to contain_package('dnsruby').with(
-            ensure: 'present',
+            ensure: 'installed',
             provider: 'puppet_gem',
           )
         end
@@ -262,9 +262,9 @@ describe 'bind' do
         it { is_expected.to compile.with_all_deps }
 
         if os_facts[:os]['name'] == 'Debian' && os_facts[:os]['release']['major'] == '10'
-          it { is_expected.to contain_package('libbind-dev').with_ensure('present') }
+          it { is_expected.to contain_package('libbind-dev').with_ensure('installed') }
         else
-          it { is_expected.to contain_package('bind9-dev').with_ensure('present') }
+          it { is_expected.to contain_package('bind9-dev').with_ensure('installed') }
         end
       end
 
@@ -277,7 +277,7 @@ describe 'bind' do
 
         raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_package('bind9-doc').with_ensure('present') }
+        it { is_expected.to contain_package('bind9-doc').with_ensure('installed') }
       end
 
       context 'with custom dev_packages' do
@@ -289,8 +289,8 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_package('pkg1').with_ensure('present') }
-        it { is_expected.to contain_package('pkg2').with_ensure('present') }
+        it { is_expected.to contain_package('pkg1').with_ensure('installed') }
+        it { is_expected.to contain_package('pkg2').with_ensure('installed') }
       end
 
       context 'with custom doc_packages' do
@@ -302,8 +302,8 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_package('pkg1').with_ensure('present') }
-        it { is_expected.to contain_package('pkg2').with_ensure('present') }
+        it { is_expected.to contain_package('pkg1').with_ensure('installed') }
+        it { is_expected.to contain_package('pkg2').with_ensure('installed') }
       end
 
       context 'with custom utils_packages' do
@@ -314,8 +314,8 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_package('pkg1').with_ensure('present') }
-        it { is_expected.to contain_package('pkg2').with_ensure('present') }
+        it { is_expected.to contain_package('pkg1').with_ensure('installed') }
+        it { is_expected.to contain_package('pkg2').with_ensure('installed') }
       end
 
       context 'without utils packages' do
@@ -955,7 +955,7 @@ describe 'bind' do
         it do
           is_expected.to contain_package('bind9-dnsutils').with_install_options(
             ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
-          ).with_ensure('present')
+          ).with_ensure('installed')
         end
 
         it { is_expected.not_to contain_package('dnsutils') }
@@ -972,7 +972,7 @@ describe 'bind' do
           it do
             is_expected.to contain_package('bind9-dev').with_install_options(
               ['--target-release', "#{facts[:os]['distro']['codename']}-backports"],
-            ).with_ensure('present')
+            ).with_ensure('installed')
           end
         end
       end
