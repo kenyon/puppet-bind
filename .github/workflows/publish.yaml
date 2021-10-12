@@ -16,7 +16,7 @@ jobs:
         with:
           ref: ${{ steps.vars.outputs.tag }}
       - name: Build and publish module
-        uses: barnumbirr/action-forge-publish@b540819fa37ed3e40eb6c01807fe57721c128a42
+        uses: barnumbirr/action-forge-publish@3202536f45c54199d739d33d32aa00ec8ab61cbd
         env:
           FORGE_API_KEY: ${{ secrets.FORGE_API_KEY }}
           REPOSITORY_URL: https://forgeapi.puppet.com/v3/releases
