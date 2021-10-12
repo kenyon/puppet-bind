@@ -248,7 +248,7 @@ describe 'bind' do
           }
         end
 
-        raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+        raise "test not implemented for #{os}, please update" unless os_facts[:os]['family'] == 'Debian'
 
         it { is_expected.to compile.with_all_deps }
 
@@ -266,7 +266,7 @@ describe 'bind' do
           }
         end
 
-        raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+        raise "test not implemented for #{os}, please update" unless os_facts[:os]['family'] == 'Debian'
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_package('bind9-doc').with_ensure('installed') }
       end
@@ -316,7 +316,7 @@ describe 'bind' do
           }
         end
 
-        raise "test not implemented for #{os}, please update" unless os_facts[:os]['name'] == 'Debian'
+        raise "test not implemented for #{os}, please update" unless os_facts[:os]['family'] == 'Debian'
 
         it { is_expected.to compile.with_all_deps }
 
