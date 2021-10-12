@@ -233,15 +233,6 @@ describe 'bind' do
           end
         end
 
-        # workaround for https://github.com/rvm/rvm/issues/4975
-        it do
-          is_expected.to contain_file('/usr/bin/mkdir').with(
-            ensure: 'link',
-            target: '/bin/mkdir',
-            before: 'Package[dnsruby]',
-          )
-        end
-
         it do
           is_expected.to contain_package('dnsruby').with(
             ensure: 'installed',
