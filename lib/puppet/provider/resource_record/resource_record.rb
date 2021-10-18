@@ -20,9 +20,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
-    cmd = "echo 'zone #{@resource[:zone]}
-    update delete #{@resource[:record]} #{@resource[:type]}
-    update add #{@resource[:record]} #{@resource[:ttl]} #{@resource[:type]} #{@resource[:data]}
+    cmd = "echo 'zone #{should[:zone]}
+    update delete #{should[:record]} #{should[:type]}
+    update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
     ' | nsupdate -l"
     system(cmd)
