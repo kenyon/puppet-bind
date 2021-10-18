@@ -6,6 +6,10 @@ require 'puppet/resource_api/simple_provider'
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def get(context)
     context.debug('Returning pre-canned example data')
+    
+    #Trigger a dumpdb on agent run and destroy on completion.
+    #
+    
     [
       {
         name: 'foo',
@@ -20,6 +24,13 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
+    
+    #Temporary measure to make these "just work". This will regenerate every single manually defined 
+    #record on each agent run, which is...okay? At a certain point scale makes that less than ideal.
+    #I also dislike having to send an individual nsupdate for each record. With the current structure,
+    #it'd be preferable to create a /tmp/ file for each managed zone on run, append all records we
+    #need to act on, then do an nsupdate for each zone file and subsequently destroy them.  
+     
     cmd = "echo 'zone #{should[:zone]}
     update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
@@ -34,6 +45,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def delete(context, name)
     context.notice("Deleting '#{name}'")
+    cmd = "echo 'zone #{should[:zone]}
+    update delete #{should[:record]} #{should[:type]}
+    send
+    ' | nsupdate -l"
+    system(cmd)
   end
 
   def canonicalize(_context, resources)
