@@ -86,16 +86,16 @@ zone "<%= $zone_name %>" {
     serial-update-method <%= $serial_update_method %>;
   <%- } -%>
   <%- if $update_policy {
+        if 'local' in $update_policy { -%>
+    update-policy local;
+    <%- }
+        $update_policy_rules = $update_policy - 'local'
+        unless $update_policy_rules.empty { -%>
     update-policy {
-      <%- if 'local' in $update_policy { -%>
-      local;
-      <%- $update_policy_rules = $update_policy - 'local' -%>
-      <%- } -%> 
-      unless $update_policy_rules.empty { -%>
       <%- $update_policy_rules.each |$rule| { -%>
         <%= $rule['permission'] %> <%= $rule['identity'] %> <%= $rule['ruletype'] %> <%= $rule['name'] %> <%= $rule['types'] %>;
       <%- } -%>
-    <%- } -%>
     };
+    <%- } -%>
   <%- } -%>
 };
