@@ -5,10 +5,11 @@ require 'puppet/resource_api/simple_provider'
 # Implementation for the resource_record type using the Resource API.
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
+    context.notice("Generating fresh zone dump...")
     system('rndc', 'dumpdb', '-zones')
   end
   def get(context)
-    context.debug('Returning pre-canned example data')
+    context.notice("Getting existing resource records...")
     
     #FIXME: Trigger a dumpdb on agent run and destroy on completion instead of every RR operation
     #system('rndc', 'dumpdb', '-zones')
@@ -17,8 +18,10 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 17
         currentzone = line[/(?:.*?')(.*?)\//,1]
+        context.debug("current zone: #{currentzone}") 
       else
         line = line.split(' ', 5)
+        context.debug("get line for parsing: #{line.to_s}")
         rr = {}
         rr[:label] = line[0]
         rr[:ttl] = line[1]
