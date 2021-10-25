@@ -16,6 +16,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 17
+        context.debug("line for zone name: #{line}")
         currentzone = line[/(?:.*?')(.*?)\//,1]
         context.debug("current zone: #{currentzone}") 
       elsif line[0] != ';'
