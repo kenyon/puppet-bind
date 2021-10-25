@@ -10,8 +10,6 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def get(context)
     context.notice("Getting existing resource records...")
     
-    #FIXME: Trigger a dumpdb on agent run and destroy on completion instead of every RR operation
-    #system('rndc', 'dumpdb', '-zones')
     records = []
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
@@ -21,7 +19,6 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         context.debug("current zone: #{currentzone}") 
       elsif line[0] != ';'
         line = line.strip.split(' ', 5)
-        context.debug("get line for parsing: #{line.to_s}")
         rr = {}
         rr[:label] = line[0]
         rr[:ttl] = line[1]
@@ -30,7 +27,6 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         rr[:data] = line[4]
         rr[:zone] = currentzone
         records << {
-          title: "#{rr[:name]} #{rr[:type]} #{rr[:data]}",
           ensure: 'present',
           record: "#{rr[:label]}",
           zone:   "#{rr[:zone]}",
@@ -46,11 +42,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
     
-    #Temporary measure to make these "just work". This will regenerate every single manually defined 
-    #record on each agent run, which is...okay? At a certain point scale makes that less than ideal.
-    #I also dislike having to send an individual nsupdate for each record. With the current structure,
-    #it'd be preferable to create a /tmp/ file for each managed zone on run, append all records we
-    #need to act on, then do an nsupdate for each zone file and subsequently destroy them.  
+    #I dislike having to send an individual nsupdate for each record, it'd be preferable to
+    #build a request for each managed zone on run, append all records we
+    #need to act on, then send a bulk nsupdate for each zone  
      
     cmd = "echo 'zone #{should[:zone]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
