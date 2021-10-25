@@ -4,22 +4,40 @@ require 'puppet/resource_api/simple_provider'
 
 # Implementation for the resource_record type using the Resource API.
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
+  def initialize
+    system('rndc', 'dumpdb', '-zones')
+  end
   def get(context)
     context.debug('Returning pre-canned example data')
     
-    #Trigger a dumpdb on agent run and destroy on completion.
-    #
-    
-    [
-      {
-        name: 'foo',
-        ensure: 'present',
-      },
-      {
-        name: 'bar',
-        ensure: 'present',
-      },
-    ]
+    #FIXME: Trigger a dumpdb on agent run and destroy on completion instead of every RR operation
+    #system('rndc', 'dumpdb', '-zones')
+    records = []
+    #FIXME: location varies based on config/OS
+    File.readlines('/var/cache/bind/named_dump.db').each do |line|
+      if line[0] == ';' && line.length > 17
+        currentzone = line[/(?:.*?')(.*?)\//,1]
+      else
+        line = line.split(' ', 5)
+        rr = {}
+        rr[:label] = line[0]
+        rr[:ttl] = line[1]
+        rr[:scope] = line[2]
+        rr[:type] = line[3]
+        rr[:data] = line[4]
+        rr[:zone] = currentzone
+        records << {
+          title: "#{rr[:name]} #{rr[:type]} #{rr[:data]}",
+          ensure: 'present',
+          record: "#{rr[:label]}",
+          zone:   "#{rr[:zone]}",
+          type:   "#{rr[:type]}",
+          data:   "#{rr[:data]}",
+          ttl:    "#{rr[:ttl]}",
+        }
+      end
+    end
+    records
   end
 
   def create(context, name, should)
@@ -32,7 +50,6 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     #need to act on, then do an nsupdate for each zone file and subsequently destroy them.  
      
     cmd = "echo 'zone #{should[:zone]}
-    update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
     ' | nsupdate -l"
@@ -41,12 +58,18 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def update(context, name, should)
     context.notice("Updating '#{name}' with #{should.inspect}")
-  end
+    cmd = "echo 'zone #{should[:zone]}
+    update delete #{should[:record]} #{should[:type]}
+    update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
+    send
+    ' | nsupdate -l"
+    system(cmd)
+   end
 
   def delete(context, name)
     context.notice("Deleting '#{name}'")
     cmd = "echo 'zone #{should[:zone]}
-    update delete #{should[:record]} #{should[:type]}
+    update delete #{should[:record]} #{should[:type]} #{should[:data]}
     send
     ' | nsupdate -l"
     system(cmd)
