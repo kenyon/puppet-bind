@@ -5,7 +5,6 @@ require 'puppet/resource_api/simple_provider'
 # Implementation for the resource_record type using the Resource API.
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
-    context.notice("Generating fresh zone dump...")
     system('rndc', 'dumpdb', '-zones')
   end
   def get(context)
