@@ -46,7 +46,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     #build a request for each managed zone on run, append all records we
     #need to act on, then send a bulk nsupdate for each zone  
      
+    #the delete line is temporary to prevent duplicate creations while this is in progress
     cmd = "echo 'zone #{should[:zone]}
+    update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
     ' | nsupdate -l"
