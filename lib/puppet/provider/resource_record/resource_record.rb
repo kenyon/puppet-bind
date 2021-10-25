@@ -18,8 +18,8 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       if line[0] == ';' && line.length > 17
         currentzone = line[/(?:.*?')(.*?)\//,1]
         context.debug("current zone: #{currentzone}") 
-      else
-        line = line.split(' ', 5)
+      elsif line[0] != ';'
+        line = line.strip.split(' ', 5)
         context.debug("get line for parsing: #{line.to_s}")
         rr = {}
         rr[:label] = line[0]
