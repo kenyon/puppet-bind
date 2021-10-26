@@ -76,9 +76,12 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def canonicalize(_context, resources)
     resources.each do |r|
-      r[:record] = r[:record].downcase
-      r[:zone] = r[:zone].downcase
-      r[:type] = r[:type].upcase
+      _context.notice("Record: #{r[:record]}")
+      #r[:record] = r[:record].downcase
+      _context.notice("Zone: #{r[:zone]}")
+      #r[:zone] = r[:zone].downcase
+      _context.notice("Type: #{r[:type]}")
+      #r[:type] = r[:type].upcase
     end
   end
 end
