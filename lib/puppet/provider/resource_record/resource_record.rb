@@ -34,6 +34,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         rr[:zone] = currentzone + '.'
         context.debug("RR zone: #{rr[:zone]}")
         records << {
+          title: "#{rr[:label]}",
           ensure: 'present',
           record: "#{rr[:label]}",
           zone:   "#{rr[:zone]}",
@@ -84,11 +85,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def canonicalize(_context, resources)
     resources.each do |r|
-      _context.notice("Record: #{r[:record]}")
+      _context.debug("Record: #{r[:record]}")
       #r[:record] = r[:record].downcase
-      _context.notice("Zone: #{r[:zone]}")
+      _context.debug("Zone: #{r[:zone]}")
       #r[:zone] = r[:zone].downcase
-      _context.notice("Type: #{r[:type]}")
+      _context.debug("Type: #{r[:type]}")
       #r[:type] = r[:type].upcase
     end
   end
