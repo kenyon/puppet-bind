@@ -11,6 +11,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     context.notice("Getting existing resource records...")
     
     records = []
+    currentzone = ""
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 18
