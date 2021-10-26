@@ -31,7 +31,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         context.debug("RR type: #{rr[:type]}")
         rr[:data] = line[4]
         context.debug("RR data: #{rr[:data]}")
-        rr[:zone] = currentzone
+        rr[:zone] = currentzone << .
         context.debug("RR zone: #{rr[:zone]}")
         records << {
           ensure: 'present',
