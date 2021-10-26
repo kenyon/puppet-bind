@@ -21,11 +21,17 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         line = line.strip.split(' ', 5)
         rr = {}
         rr[:label] = line[0]
+        context.debug("New RR\nRR label: #{rr[:label]}")
         rr[:ttl] = line[1]
+        context.debug("RR TTL: #{rr[:ttl]}")
         rr[:scope] = line[2]
+        context.debug("RR scope: #{rr[:scope]}")
         rr[:type] = line[3]
+        context.debug("RR type: #{rr[:type]}")
         rr[:data] = line[4]
+        context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone
+        context.debug("RR zone: #{rr[:zone]}")
         records << {
           ensure: 'present',
           record: "#{rr[:label]}",
@@ -36,6 +42,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         }
       end
     end
+    context.debug("#{records.inspect}")
     records
   end
 
