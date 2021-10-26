@@ -59,7 +59,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
-    ' | nsupdate -l"
+    ' | nsupdate -4 -l"
     system(cmd)
   end
 
@@ -69,7 +69,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
-    ' | nsupdate -l"
+    ' | nsupdate -4 -l"
     system(cmd)
    end
 
@@ -78,7 +78,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     cmd = "echo 'zone #{should[:zone]}
     update delete #{should[:record]} #{should[:type]} #{should[:data]}
     send
-    ' | nsupdate -l"
+    ' | nsupdate -4 -l"
     system(cmd)
   end
 
