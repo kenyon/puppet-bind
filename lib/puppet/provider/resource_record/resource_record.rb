@@ -91,6 +91,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       _context.debug("Type: #{r[:type]}")
       r[:type] = r[:type].upcase
       r[:data] = r[:data].tr('"', '')
+      _context.debug("Data: #{r[:zone]}")
     end
   end
 end
