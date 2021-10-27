@@ -75,8 +75,8 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def delete(context, name)
     context.notice("Deleting '#{name}'")
-    cmd = "echo 'zone #{should[:zone]}
-    update delete #{should[:record]} #{should[:type]} #{should[:data]}
+    cmd = "echo 'zone #{name[:zone]}
+    update delete #{name[:record]} #{name[:type]} #{name[:data]}
     send
     ' | nsupdate -4 -l"
     system(cmd)
