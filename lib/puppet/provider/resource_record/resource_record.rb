@@ -90,7 +90,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       r[:zone] = r[:zone].downcase
       _context.debug("Type: #{r[:type]}")
       r[:type] = r[:type].upcase
-      r[:data] = r[:data].tr('"', '')
+      r[:data] = r[:data].tr('\"', '')
       _context.debug("Data: #{r[:zone]}")
     end
   end
