@@ -84,13 +84,24 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def canonicalize(_context, resources)
     resources.each do |r|
+      
       _context.debug("Record: #{r[:record]}")
-      r[:record] = r[:record].downcase.strip
+      if r[:record].respond_to?(:to_str)
+        r[:record] = r[:record].downcase.strip
+      else
+        _context.debug("Record is not a string")
+      end
       _context.debug("Zone: #{r[:zone]}")
-      r[:zone] = r[:zone].downcase
+      if r[:zone].respond_to?(:to_str)
+        r[:zone] = r[:zone].downcase
+      end
       _context.debug("Type: #{r[:type]}")
-      r[:type] = r[:type].upcase
-      r[:data] = r[:data].tr('\"', '')
+      if r[:type].respond_to?(:to_str) 
+        r[:type] = r[:type].upcase
+      end
+      if r[:type].respond_to?(:to_str)
+        r[:data] = r[:data].tr('\"', '')
+      end
       _context.debug("Data: #{r[:zone]}")
     end
   end
