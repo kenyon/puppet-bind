@@ -5,24 +5,24 @@ require 'puppet/resource_api/simple_provider'
 # Implementation for the resource_record type using the Resource API.
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
+    context.debug("Generating zone dump...")
     system('rndc', 'dumpdb', '-zones')
   end
   def get(context)
-    context.notice("Getting existing resource records...")
+    context.debug("Parsing dump for existing resource records...")
     
     records = []
     currentzone = ""
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 18
-        context.debug("line for zone name: #{line}")
         currentzone = line[/(?:.*?')(.*?)\//,1]
-        context.debug("current zone: #{currentzone}") 
+        context.debug("current zone updated: #{currentzone}") 
       elsif line[0] != ';'
         line = line.strip.split(' ', 5)
         rr = {}
         rr[:label] = line[0]
-        context.debug("New RR\nRR label: #{rr[:label]}")
+        context.debug("----New RR---- label: #{rr[:label]}")
         rr[:ttl] = line[1]
         context.debug("RR TTL: #{rr[:ttl]}")
         rr[:scope] = line[2]
@@ -86,11 +86,12 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def canonicalize(_context, resources)
     resources.each do |r|
       _context.debug("Record: #{r[:record]}")
-      #r[:record] = r[:record].downcase
+      r[:record] = r[:record].downcase.strip
       _context.debug("Zone: #{r[:zone]}")
-      #r[:zone] = r[:zone].downcase
+      r[:zone] = r[:zone].downcase
       _context.debug("Type: #{r[:type]}")
-      #r[:type] = r[:type].upcase
+      r[:type] = r[:type].upcase
+      r[:data] = r[:data].tr('"', '')
     end
   end
 end
