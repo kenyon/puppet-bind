@@ -69,11 +69,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     
     #FIXME: This will generate PTR records, but assumes the arpa zones are preexisting. 
     if should[:type] == "A"
-      fqdn = "#{record}"
+      fqdn = should[:record]
       if fqdn[fqdn.length-1] != "."
         fqdn = fqdn + should[:zone]
       end
-      reverse = IPAddr.new("#{should[:data]}").reverse
+      reverse = IPAddr.new(should[:data]).reverse
       cmd = "echo 'update delete #{reverse} PTR
       update add #{reverse} PTR #{fqdn}
       send
@@ -95,12 +95,12 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     ' | nsupdate -4 -l"
     system(cmd)
     if should[:type] == "A"
-      fqdn = "#{should[:record]}"
+      fqdn = should[:record]
       if fqdn[fqdn.length-1] != "."
         fqdn = fqdn + should[:zone]
       end
-      reverse_name = IPAddr.new("#{name[:data]}").reverse
-      reverse_should = IPAddr.new("#{should[:data]}").reverse
+      reverse_name = IPAddr.new(name[:data]).reverse
+      reverse_should = IPAddr.new(should[:data]).reverse
       context.debug("fqdn: #{fqdn}")
       context.debug("reverse_name: #{reverse_name}")
       context.debug("reverse_should: #{reverse_should}")
