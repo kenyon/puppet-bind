@@ -75,7 +75,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       end
       reverse = IPAddr.new(should[:data]).reverse
       cmd = "echo 'update delete #{reverse} PTR
-      update add #{reverse} PTR #{fqdn}
+      update add #{reverse} #{should[:ttl]} PTR #{fqdn}
       send
       quit
       ' | nsupdate -4 -l"
@@ -101,7 +101,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       context.debug("fqdn: #{fqdn}")
       context.debug("reverse: #{reverse}")
       cmd = "echo 'update delete #{reverse} PTR
-      update add #{reverse} PTR #{fqdn}
+      update add #{reverse} #{should[:ttl]} PTR #{fqdn}
       send
       quit
       ' | nsupdate -4 -l"
