@@ -101,6 +101,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       end
       reverse_name = IPAddr.new("#{name[:data]}").reverse
       reverse_should = IPAddr.new("#{should[:data]}").reverse
+      context.debug("fqdn: #{fqdn}")
+      context.debug("reverse_name: #{reverse_name}")
+      context.debug("reverse_should: #{reverse_should}")
       cmd = "echo 'update delete #{reverse_name} PTR
       update add #{reverse_should} PTR #{fqdn}
       send
