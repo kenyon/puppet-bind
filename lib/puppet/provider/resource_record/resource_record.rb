@@ -95,7 +95,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     ' | nsupdate -4 -l"
     system(cmd)
     if should[:type] == "A"
-      fqdn = "#{record}"
+      fqdn = "#{should[:record]}"
       if fqdn[fqdn.length-1] != "."
         fqdn = fqdn + should[:zone]
       end
