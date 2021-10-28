@@ -28,7 +28,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         context.debug("RR scope: #{rr[:scope]}")
         rr[:type] = line[3]
         context.debug("RR type: #{rr[:type]}")
-        rr[:data] = line[4].tr('\"', '')
+        if line[4].respond_to?(:to_str)
+          rr[:data] = line[4].tr('\"', '')
+        else
+          rr[:data] = line[4]
+        end
         context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone + '.'
         context.debug("RR zone: #{rr[:zone]}")
