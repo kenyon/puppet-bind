@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'puppet/resource_api/simple_provider'
-
+require 'ipaddr'
 # Implementation for the resource_record type using the Resource API.
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
@@ -53,7 +53,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def create(context, name, should)
     context.notice("Creating '#{name}' with #{should.inspect}")
-    
+
     #I dislike having to send an individual nsupdate for each record, it'd be preferable to
     #build a request for each managed zone on run, append all records we
     #need to act on, then send a bulk nsupdate for each zone  
@@ -63,8 +63,24 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
+    quit
     ' | nsupdate -4 -l"
     system(cmd)
+    
+    #FIXME: This will generate PTR records, but assumes the arpa zones are preexisting. 
+    if should[:type] == "A"
+      fqdn = "#{record}"
+      if fqdn[fqdn.length-1] != "."
+        fqdn = fqdn + should[:zone]
+      end
+      reverse = IPAddr.new("#{should[:data]}").reverse
+      cmd = "echo 'update delete #{reverse} PTR
+      update add #{reverse} PTR #{fqdn}
+      send
+      quit
+      ' | nsupdate -4 -l"
+      system(cmd)
+    end
   end
 
   def update(context, name, should)
@@ -73,8 +89,23 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     update delete #{name[:record]} #{name[:type]} #{name[:data]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
+    quit
     ' | nsupdate -4 -l"
     system(cmd)
+    if should[:type] == "A"
+      fqdn = "#{record}"
+      if fqdn[fqdn.length-1] != "."
+        fqdn = fqdn + should[:zone]
+      end
+      reverse_name = IPAddr.new("#{name[:data]}").reverse
+      reverse_should = IPAddr.new("#{should[:data]}").reverse
+      cmd = "echo 'update delete #{reverse_name} PTR
+      update add #{reverse_should} PTR #{fqdn}
+      send
+      quit
+      ' | nsupdate -4 -l"
+      system(cmd)
+    end
    end
 
   def delete(context, name)
@@ -82,8 +113,16 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     cmd = "echo 'zone #{name[:zone]}
     update delete #{name[:record]} #{name[:type]} #{name[:data]}
     send
+    quit
     ' | nsupdate -4 -l"
     system(cmd)
+    if name[:type] == "A"
+      reverse = IPAddr.new("#{name[:data]}").reverse
+      cmd = "echo 'update delete #{reverse} PTR
+      send
+      quit
+      ' | nsupdate -4 -l"
+    end
   end
 
   def canonicalize(_context, resources)
