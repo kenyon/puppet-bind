@@ -99,7 +99,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       if fqdn[fqdn.length-1] != "."
         fqdn = fqdn + should[:zone]
       end
-      context.debug("IPs: #{name[:data]} #{should[:data]}")
+      context.debug("IPs: old - #{name[:data]}| new - #{should[:data]}")
       reverse_name = IPAddr.new(name[:data]).reverse
       reverse_should = IPAddr.new(should[:data]).reverse
       context.debug("fqdn: #{fqdn}")
