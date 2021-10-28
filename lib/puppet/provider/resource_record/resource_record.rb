@@ -84,7 +84,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
 
   def update(context, name, should)
-    context.notice("Updating '#{name}' with #{should.inspect}")
+    context.notice("Updating '#{name.inspect}' with #{should.inspect}")
     context.debug("old: #{name[:record]}")
     context.debug("new: #{should[:record]}")
     cmd = "echo 'zone #{should[:zone]}
