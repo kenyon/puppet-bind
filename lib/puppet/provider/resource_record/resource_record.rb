@@ -85,10 +85,8 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def update(context, name, should)
     context.notice("Updating '#{name.inspect}' with #{should.inspect}")
-    context.debug("old: #{name[:record]}")
-    context.debug("new: #{should[:record]}")
     cmd = "echo 'zone #{should[:zone]}
-    update delete #{name[:record]} #{name[:type]} #{name[:data]}
+    update delete #{name[:record]} #{name[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
     quit
@@ -99,14 +97,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       if fqdn[fqdn.length-1] != "."
         fqdn = fqdn + should[:zone]
       end
-      context.debug("IPs: old - #{name[:data]}| new - #{should[:data]}")
-      reverse_name = IPAddr.new(name[:data]).reverse
-      reverse_should = IPAddr.new(should[:data]).reverse
+      reverse = IPAddr.new(should[:data]).reverse
       context.debug("fqdn: #{fqdn}")
-      context.debug("reverse_name: #{reverse_name}")
-      context.debug("reverse_should: #{reverse_should}")
-      cmd = "echo 'update delete #{reverse_name} PTR
-      update add #{reverse_should} PTR #{fqdn}
+      context.debug("reverse: #{reverse}")
+      cmd = "echo 'update delete #{reverse} PTR
+      update add #{reverse} PTR #{fqdn}
       send
       quit
       ' | nsupdate -4 -l"
@@ -117,18 +112,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def delete(context, name)
     context.notice("Deleting '#{name}'")
     cmd = "echo 'zone #{name[:zone]}
-    update delete #{name[:record]} #{name[:type]} #{name[:data]}
+    update delete #{name[:record]} #{name[:type]}
     send
     quit
     ' | nsupdate -4 -l"
     system(cmd)
-    if name[:type] == "A"
-      reverse = IPAddr.new("#{name[:data]}").reverse
-      cmd = "echo 'update delete #{reverse} PTR
-      send
-      quit
-      ' | nsupdate -4 -l"
-    end
   end
 
   def canonicalize(_context, resources)
