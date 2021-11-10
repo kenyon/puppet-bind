@@ -36,7 +36,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         rr[:zone] = currentzone + '.'
         context.debug("RR zone: #{rr[:zone]}")
         records << {
-          title: "#{rr[:label]} #{rr[:zone]} #{rr[:type]}",
+          title: "#{rr[:label]} #{rr[:zone]} #{rr[:type]} #{rr[:data]}",
           ensure: 'present',
           record: "#{rr[:label]}",
           zone:   "#{rr[:zone]}",
