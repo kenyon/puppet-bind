@@ -9,14 +9,13 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
   def get(context)
     context.debug("Parsing dump for existing resource records...")
-    
     records = []
     currentzone = ""
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 18
         currentzone = line[/(?:.*?')(.*?)\//,1]
-        context.debug("current zone updated: #{currentzone}") 
+        context.debug("current zone updated: #{currentzone}")
       elsif line[0] != ';'
         line = line.strip.split(' ', 5)
         rr = {}
@@ -57,10 +56,8 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     #I dislike having to send an individual nsupdate for each record, it'd be preferable to
     #build a request for each managed zone on run, append all records we
     #need to act on, then send a bulk nsupdate for each zone  
-     
     #the delete line is temporary to prevent duplicate creations while this is in progress
     cmd = "echo 'zone #{should[:zone]}
-    update delete #{should[:record]} #{should[:type]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
     quit
@@ -121,7 +118,6 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def canonicalize(_context, resources)
     resources.each do |r|
-      
       _context.debug("#{r.inspect}")
       if r[:record].respond_to?(:to_str)
         r[:record] = r[:record].downcase.strip
