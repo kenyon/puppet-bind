@@ -21,8 +21,12 @@ Puppet::ResourceApi.register_type(
   features: ['canonicalize'],
   title_patterns: [
     {
+      desc: 'full name, space, zone (explicitly defined), space, type, space, data',
+      pattern: %r{^(?<record>.*?\.) (?<zone>.*[^ ]\.) +(?<type>\w+) (?<data>.*)$},
+    },
+    {
       desc: 'full name, space, zone (explicitly defined), space, type',
-      pattern: %r{^(?<record>.*?\.) (?<zone>.*[^ ]\.) +(?<type>.*)$},
+      pattern: %r{^(?<record>.*?\.) (?<zone>.*[^ ]\.) +(?<type>\w+)$},
     },
     {
       desc: 'name and zone (everything after the first dot)',
@@ -61,6 +65,7 @@ Puppet::ResourceApi.register_type(
     data: {
       type: 'String',
       desc: 'The data for the resource record.',
+      behavior: :namevar,
     },
     ttl: {
       type: 'Optional[String]',

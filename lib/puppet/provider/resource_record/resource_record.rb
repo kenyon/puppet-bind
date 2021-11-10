@@ -86,7 +86,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def update(context, name, should)
     context.notice("Updating '#{name.inspect}' with #{should.inspect}")
     cmd = "echo 'zone #{should[:zone]}
-    update delete #{name[:record]} #{name[:type]}
+    update delete #{name[:record]} #{name[:type]} #{name[:data]}
     update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
     send
     quit
@@ -112,7 +112,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   def delete(context, name)
     context.notice("Deleting '#{name}'")
     cmd = "echo 'zone #{name[:zone]}
-    update delete #{name[:record]} #{name[:type]}
+    update delete #{name[:record]} #{name[:type]} #{name[:data]}
     send
     quit
     ' | nsupdate -4 -l"
