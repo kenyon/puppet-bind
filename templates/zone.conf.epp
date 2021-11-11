@@ -76,7 +76,7 @@ zone "<%= $zone_name %>" {
     };
   <%- } -%>
   <%- if $primaries { -%>
-    primaries {
+    masters {
       <%- $primaries.each |$primary| { -%>
         <%= $primary %>;
       <%- } -%>
