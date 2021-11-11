@@ -14,12 +14,12 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 18
-        currentzone = line[/(?:.*?')(.*?)\//,1]
+        currentzone = line[/(?:.*?')(.*?)\//,1].downcase
         context.debug("current zone updated: #{currentzone}")
       elsif line[0] != ';'
         line = line.strip.split(' ', 5)
         rr = {}
-        rr[:label] = line[0]
+        rr[:label] = line[0].downcase
         context.debug("----New RR---- label: #{rr[:label]}")
         rr[:ttl] = line[1]
         context.debug("RR TTL: #{rr[:ttl]}")
