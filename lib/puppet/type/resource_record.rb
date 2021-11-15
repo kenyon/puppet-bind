@@ -22,11 +22,11 @@ Puppet::ResourceApi.register_type(
   title_patterns: [
     {
       desc: 'full name, space, zone (explicitly defined), space, type, space, data',
-      pattern: %r{^(?<record>.*?\.) (?<zone>.*[^ ]\.) +(?<type>\w+) (?<data>.*)$},
+      pattern: %r{^(?<record>.*?\.) (?<zone>[^ ]*\.) +(?<type>\w+) (?<data>.*)$},
     },
     {
       desc: 'full name, space, zone (explicitly defined), space, type',
-      pattern: %r{^(?<record>.*?\.) (?<zone>.*[^ ]\.) +(?<type>\w+)$},
+      pattern: %r{^(?<record>.*?\.) (?<zone>[^ ]*\.) +(?<type>\w+)$},
     },
     {
       desc: 'name and zone (everything after the first dot)',
