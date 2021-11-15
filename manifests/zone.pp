@@ -210,7 +210,7 @@ define bind::zone (
     }
 
     $resource_records.each |$rrname, $attribs| {
-      resource_record { $rrname:
+      resource_record { "${attribs[record]} ${zone_name} ${attribs[type]} ${attribs[data]}":
         zone => $zone_name,
         *    => $attribs,
       }
