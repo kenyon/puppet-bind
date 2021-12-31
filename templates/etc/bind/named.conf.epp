@@ -103,6 +103,16 @@ options {
   <%- if $options['zone-statistics'] { -%>
     zone-statistics <%= $options['zone-statistics'] %>;
   <%- } -%>
+  <%- if $options['forward'] { -%>
+    forward <%= $options['forward'] %>;
+  <%- } -%>
+  <%- if $options['forwarders'] { -%>
+    allow-query {
+    <%- $options['forwarders'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
 };
 <%- } -%>
 
