@@ -60,9 +60,9 @@ options {
     <%- } -%>
     };
   <%- } -%>
-  <%- if $options['allow-recursion'] { -%>
+  <%- if $options['allow_recursion'] { -%>
     allow-recursion {
-    <%- $options['allow-recursion'].each |$address_match_list_element| { -%>
+    <%- $options['allow_recursion'].each |$address_match_list_element| { -%>
         <%= $address_match_list_element -%>;
     <%- } -%>
     };
