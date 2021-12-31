@@ -107,7 +107,7 @@ options {
     forward <%= $options['forward'] %>;
   <%- } -%>
   <%- if $options['forwarders'] { -%>
-    allow-query {
+    forwarders {
     <%- $options['forwarders'].each |$address_match_list_element| { -%>
         <%= $address_match_list_element -%>;
     <%- } -%>
