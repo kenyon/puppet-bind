@@ -60,6 +60,13 @@ options {
     <%- } -%>
     };
   <%- } -%>
+  <%- if $options['allow-recursion'] { -%>
+    allow-recursion {
+    <%- $options['allow-recursion'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
   <%- if $options['allow-update'] { -%>
     allow-update {
     <%- $options['allow-update'].each |$address_match_list_element| { -%>
