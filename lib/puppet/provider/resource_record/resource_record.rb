@@ -29,11 +29,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         context.debug("RR scope: #{rr[:scope]}")
         rr[:type] = line[3]
         context.debug("RR type: #{rr[:type]}")
-        #if line[4].respond_to?(:to_str)
-        #  rr[:data] = line[4].tr('\"', '')
-        #else
+        if line[4].respond_to?(:to_str)
+          rr[:data] = line[4].tr('\"', '')
+        else
           rr[:data] = line[4]
-        #end
+        end
         context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone + '.'
         context.debug("RR zone: #{rr[:zone]}")
@@ -59,11 +59,19 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     #build a request for each managed zone on run, append all records we
     #need to act on, then send a bulk nsupdate for each zone  
     #the delete line is temporary to prevent duplicate creations while this is in progress
-    cmd = "echo 'zone #{should[:zone]}
-    update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
-    send
-    quit
-    ' | nsupdate -4 -l"
+    if should[:type] == "TXT"
+      cmd = "echo 'zone #{should[:zone]}
+      update add #{should[:record]} #{should[:ttl]} #{should[:type]} \"#{should[:data]}\"
+      send
+      quit
+      ' | nsupdate -4 -l"
+    else
+      cmd = "echo 'zone #{should[:zone]}
+      update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
+      send
+      quit
+      ' | nsupdate -4 -l"
+    end
     system(cmd)
     
     #FIXME: This will generate PTR records, but assumes the arpa zones are preexisting. 
@@ -84,12 +92,21 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
 
   def update(context, name, should)
     context.notice("Updating '#{name.inspect}' with #{should.inspect}")
-    cmd = "echo 'zone #{should[:zone]}
-    update delete #{name[:record]} #{name[:type]} #{name[:data]}
-    update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
-    send
-    quit
-    ' | nsupdate -4 -l"
+    if should[:type] == "TXT"
+      cmd = "echo 'zone #{should[:zone]}
+      update delete #{name[:record]} #{name[:type]} #{name[:data]}
+      update add #{should[:record]} #{should[:ttl]} #{should[:type]} \"#{should[:data]}\"
+      send
+      quit
+      ' | nsupdate -4 -l"
+    else
+      cmd = "echo 'zone #{should[:zone]}
+      update delete #{name[:record]} #{name[:type]} #{name[:data]}
+      update add #{should[:record]} #{should[:ttl]} #{should[:type]} #{should[:data]}
+      send
+      quit
+      ' | nsupdate -4 -l"
+    end
     system(cmd)
     if should[:type] == "A"
       fqdn = should[:record]
@@ -130,9 +147,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       if r[:type].respond_to?(:to_str) 
         r[:type] = r[:type].upcase
       end
-      #if r[:data].respond_to?(:to_str)
-      #  r[:data] = r[:data].tr('\"', '')
-      #end
+      if r[:data].respond_to?(:to_str)
+        r[:data] = r[:data].tr('\"', '')
+      end
     end
   end
 end
