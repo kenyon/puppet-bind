@@ -29,11 +29,11 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         context.debug("RR scope: #{rr[:scope]}")
         rr[:type] = line[3]
         context.debug("RR type: #{rr[:type]}")
-        if line[4].respond_to?(:to_str)
-          rr[:data] = line[4].tr('\"', '')
-        else
+        #if line[4].respond_to?(:to_str)
+        #  rr[:data] = line[4].tr('\"', '')
+        #else
           rr[:data] = line[4]
-        end
+        #end
         context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone + '.'
         context.debug("RR zone: #{rr[:zone]}")
@@ -48,7 +48,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         }
       end
     end
-    context.debug("#{records.inspect}")
+    #context.debug("#{records.inspect}")
     records
   end
 
@@ -130,9 +130,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       if r[:type].respond_to?(:to_str) 
         r[:type] = r[:type].upcase
       end
-      if r[:data].respond_to?(:to_str)
-        r[:data] = r[:data].tr('\"', '')
-      end
+      #if r[:data].respond_to?(:to_str)
+      #  r[:data] = r[:data].tr('\"', '')
+      #end
     end
   end
 end
