@@ -6,7 +6,7 @@ require 'ipaddr'
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
     system('rndc', 'dumpdb', '-zones')
-    context.debug("Parsing dump for existing resource records...")
+    Puppet.debug("Parsing dump for existing resource records...")
     @records = []
     currentzone = ""
     #FIXME: location varies based on config/OS
@@ -14,27 +14,27 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       if line[0] == ';' && line.length > 18
         currentzone = line[/(?:.*?')(.*?)\//,1]
         if currentzone.respond_to?(:to_str); currentzone = currentzone.downcase end
-        context.debug("current zone updated: #{currentzone}")
+        #context.debug("current zone updated: #{currentzone}")
       elsif line[0] != ';'
         line = line.strip.split(' ', 5)
         rr = {}
         rr[:label] = line[0]
         if rr[:label].respond_to?(:to_str); rr[:label] = rr[:label].downcase end
-        context.debug("----New RR---- label: #{rr[:label]}")
+        #context.debug("----New RR---- label: #{rr[:label]}")
         rr[:ttl] = line[1]
-        context.debug("RR TTL: #{rr[:ttl]}")
+        #context.debug("RR TTL: #{rr[:ttl]}")
         rr[:scope] = line[2]
-        context.debug("RR scope: #{rr[:scope]}")
+        #context.debug("RR scope: #{rr[:scope]}")
         rr[:type] = line[3]
-        context.debug("RR type: #{rr[:type]}")
+        #context.debug("RR type: #{rr[:type]}")
         if line[4].respond_to?(:to_str)
           rr[:data] = line[4].tr('\"', '')
         else
           rr[:data] = line[4]
         end
-        context.debug("RR data: #{rr[:data]}")
+        #context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone + '.'
-        context.debug("RR zone: #{rr[:zone]}")
+        #context.debug("RR zone: #{rr[:zone]}")
         @records << {
           title: "#{rr[:label]} #{rr[:zone]} #{rr[:type]} #{rr[:data]}",
           ensure: 'present',
