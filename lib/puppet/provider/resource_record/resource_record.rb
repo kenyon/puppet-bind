@@ -6,38 +6,36 @@ require 'ipaddr'
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
     system('rndc', 'dumpdb', '-zones')
-  end
-  def get(context)
-    context.debug("Parsing dump for existing resource records...")
-    records = []
+    Puppet.debug("Parsing dump for existing resource records...")
+    @records = []
     currentzone = ""
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 18
         currentzone = line[/(?:.*?')(.*?)\//,1]
         if currentzone.respond_to?(:to_str); currentzone = currentzone.downcase end
-        context.debug("current zone updated: #{currentzone}")
+        #context.debug("current zone updated: #{currentzone}")
       elsif line[0] != ';'
         line = line.strip.split(' ', 5)
         rr = {}
         rr[:label] = line[0]
         if rr[:label].respond_to?(:to_str); rr[:label] = rr[:label].downcase end
-        context.debug("----New RR---- label: #{rr[:label]}")
+        #context.debug("----New RR---- label: #{rr[:label]}")
         rr[:ttl] = line[1]
-        context.debug("RR TTL: #{rr[:ttl]}")
+        #context.debug("RR TTL: #{rr[:ttl]}")
         rr[:scope] = line[2]
-        context.debug("RR scope: #{rr[:scope]}")
+        #context.debug("RR scope: #{rr[:scope]}")
         rr[:type] = line[3]
-        context.debug("RR type: #{rr[:type]}")
+        #context.debug("RR type: #{rr[:type]}")
         if line[4].respond_to?(:to_str)
           rr[:data] = line[4].tr('\"', '')
         else
           rr[:data] = line[4]
         end
-        context.debug("RR data: #{rr[:data]}")
+        #context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone + '.'
-        context.debug("RR zone: #{rr[:zone]}")
-        records << {
+        #context.debug("RR zone: #{rr[:zone]}")
+        @records << {
           title: "#{rr[:label]} #{rr[:zone]} #{rr[:type]} #{rr[:data]}",
           ensure: 'present',
           record: "#{rr[:label]}",
@@ -49,7 +47,10 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       end
     end
     #context.debug("#{records.inspect}")
-    records
+    
+  end
+  def get(context)
+    @records
   end
 
   def create(context, name, should)
@@ -88,6 +89,15 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       ' | nsupdate -4 -l"
       system(cmd)
     end
+    @records << {
+      title: "#{should[:record]} #{should[:zone]} #{should[:type]} #{should[:data]}",
+      ensure: 'present',
+      record: "#{should[:record]}",
+      zone: "#{should[:zone]}",
+      type: "#{should[:type]}",
+      data: "#{should[:data]}",
+      ttl:  "#{should[:ttl]}",
+    }
   end
 
   def update(context, name, should)
@@ -123,6 +133,16 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       ' | nsupdate -4 -l"
       system(cmd)
     end
+    @records.reject! {|rr| rr[:title] == "#{name[:record]} #{name[:zone]} #{name[:type]} #{name[:data]}"} 
+    @records << {
+      title: "#{should[:record]} #{should[:zone]} #{should[:type]} #{should[:data]}",
+      ensure: 'present',
+      record: "#{should[:record]}",
+      zone: "#{should[:zone]}",
+      type: "#{should[:type]}",
+      data: "#{should[:data]}",
+      ttl:  "#{should[:ttl]}",
+    }
    end
 
   def delete(context, name)
@@ -133,6 +153,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     quit
     ' | nsupdate -4 -l"
     system(cmd)
+    @records.reject! {|rr| rr[:title] == "#{name[:record]} #{name[:zone]} #{name[:type]} #{name[:data]}"}
   end
 
   def canonicalize(_context, resources)
