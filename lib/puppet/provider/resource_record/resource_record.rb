@@ -6,10 +6,8 @@ require 'ipaddr'
 class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::SimpleProvider
   def initialize
     system('rndc', 'dumpdb', '-zones')
-  end
-  def get(context)
     context.debug("Parsing dump for existing resource records...")
-    records = []
+    @records = []
     currentzone = ""
     #FIXME: location varies based on config/OS
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
@@ -37,7 +35,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
         context.debug("RR data: #{rr[:data]}")
         rr[:zone] = currentzone + '.'
         context.debug("RR zone: #{rr[:zone]}")
-        records << {
+        @records << {
           title: "#{rr[:label]} #{rr[:zone]} #{rr[:type]} #{rr[:data]}",
           ensure: 'present',
           record: "#{rr[:label]}",
@@ -49,7 +47,10 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       end
     end
     #context.debug("#{records.inspect}")
-    records
+    
+  end
+  def get(context)
+    @records
   end
 
   def create(context, name, should)
@@ -88,6 +89,15 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       ' | nsupdate -4 -l"
       system(cmd)
     end
+    @records << {
+      title: "#{should[:record]} #{should[:zone]} #{should[:type]} #{should[:data]}",
+      ensure: 'present',
+      record: "#{should[:record]}",
+      zone: "#{should[:zone]}",
+      type: "#{should[:type]}",
+      data: "#{should[:data]}",
+      ttl:  "#{should[:ttl]}",
+    }
   end
 
   def update(context, name, should)
@@ -123,6 +133,16 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
       ' | nsupdate -4 -l"
       system(cmd)
     end
+    @records.reject! {|rr| rr[:title] == "#{name[:record]} #{name[:zone]} #{name[:type]} #{name[:data]}"} 
+    @records << {
+      title: "#{should[:record]} #{should[:zone]} #{should[:type]} #{should[:data]}",
+      ensure: 'present',
+      record: "#{should[:record]}",
+      zone: "#{should[:zone]}",
+      type: "#{should[:type]}",
+      data: "#{should[:data]}",
+      ttl:  "#{should[:ttl]}",
+    }
    end
 
   def delete(context, name)
@@ -133,6 +153,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     quit
     ' | nsupdate -4 -l"
     system(cmd)
+    @records.reject! {|rr| rr[:title] == "#{name[:record]} #{name[:zone]} #{name[:type]} #{name[:data]}"}
   end
 
   def canonicalize(_context, resources)
