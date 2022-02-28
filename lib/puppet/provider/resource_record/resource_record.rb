@@ -9,6 +9,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     system('rndc', 'dumpdb', '-zones')
     Puppet.debug('Parsing dump for existing resource records...')
     @records = []
+    @heldptr = []
     currentzone = ''
     # FIXME: location varies based on config/OS
     unless File.exist?('/var/cache/bind/named_dump.db')
@@ -79,7 +80,10 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     system(cmd)
 
     # FIXME: This will generate PTR records, but assumes the arpa zones are preexisting.
-    if should[:type] == 'A'
+    if (should[:type] == 'A') && !(@heldptr.key? should[:record])
+      if should[:holdptr]
+        @heldptr[should[:record]] = should[:holdptr]
+      end
       fqdn = should[:record]
       if fqdn[fqdn.length - 1] != '.'
         fqdn += should[:zone]
@@ -121,7 +125,10 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
             ' | nsupdate -4 -l"
           end
     system(cmd)
-    if should[:type] == 'A'
+    if (should[:type] == 'A') && !(@heldptr.key? should[:record])
+      if should[:holdptr]
+        @heldptr[should[:record]] = should[:holdptr]
+      end
       fqdn = should[:record]
       if fqdn[fqdn.length - 1] != '.'
         fqdn += should[:zone]
