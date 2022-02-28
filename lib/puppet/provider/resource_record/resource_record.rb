@@ -11,6 +11,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     @records = []
     currentzone = ''
     # FIXME: location varies based on config/OS
+    unless File.exist?('/var/cache/bind/named_dump.db')
+      raise Puppet::Error, 'The named dump file does not exist in the expected location, cannot continue.'
+    end
     File.readlines('/var/cache/bind/named_dump.db').each do |line|
       if line[0] == ';' && line.length > 18
         currentzone = line[%r{(?:.*?')(.*?)\/}, 1]
