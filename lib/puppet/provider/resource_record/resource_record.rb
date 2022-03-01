@@ -9,7 +9,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     system('rndc', 'dumpdb', '-zones')
     Puppet.debug('Parsing dump for existing resource records...')
     @records = []
-    @heldptr = []
+    @heldptr = {}
     currentzone = ''
     # FIXME: location varies based on config/OS
     unless File.exist?('/var/cache/bind/named_dump.db')
