@@ -50,6 +50,7 @@ Puppet::ResourceApi.register_type(
     ptrhold: {
       type: 'Boolean',
       desc: 'Make this record the only one used for an accompanying reverse record.',
+      behavior: :parameter,
       default: false,
     },
     record: {
