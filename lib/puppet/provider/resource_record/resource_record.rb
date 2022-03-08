@@ -54,7 +54,8 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
     # context.debug("#{records.inspect}")
   end
 
-  def get(_context)
+  def get(context)
+    Puppet.debug("get called, context: #{context}")
     if @records.empty?
       initialize
     end
@@ -62,6 +63,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
 
   def create(context, name, should)
+    Puppet.debug("create called, context: #{context}")
     context.notice("Creating '#{name}' with #{should.inspect}")
 
     # I dislike having to send an individual nsupdate for each record, it'd be preferable to
@@ -111,6 +113,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
 
   def update(context, name, should)
+    Puppet.debug("update called, context: #{context}")
     context.notice("Updating '#{name.inspect}' with #{should.inspect}")
     cmd = if should[:type] == 'TXT'
             "echo 'zone #{should[:zone]}
@@ -159,6 +162,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
 
   def delete(context, name)
+    Puppet.debug("delete called, context: #{context}")
     context.notice("Deleting '#{name}'")
     cmd = "echo 'zone #{name[:zone]}
     update delete #{name[:record]} #{name[:type]} #{name[:data]}
@@ -170,6 +174,7 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
 
   def canonicalize(context, resources)
+    Puppet.debug("canonicalize called, context: #{context}")
     resources.each do |r|
       context.debug(r.inspect)
       if r[:record].respond_to?(:to_str)
