@@ -55,6 +55,9 @@ class Puppet::Provider::ResourceRecord::ResourceRecord < Puppet::ResourceApi::Si
   end
 
   def get(_context)
+    if @records.empty?
+      initialize
+    end
     @records
   end
 
