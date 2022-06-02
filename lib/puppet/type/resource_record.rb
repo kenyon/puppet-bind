@@ -47,6 +47,12 @@ Puppet::ResourceApi.register_type(
       desc: 'Whether this resource record should be present or absent on the target system.',
       default: 'present',
     },
+    ptrhold: {
+      type: 'Boolean',
+      desc: 'Make this record the only one used for an accompanying reverse record.',
+      behavior: :parameter,
+      default: false,
+    },
     record: {
       type: 'String',
       desc: 'The name of the resource record, also known as the owner or label.',

@@ -217,28 +217,6 @@ describe 'bind' do
         end
 
         it { is_expected.to compile.with_all_deps }
-
-        # dnsruby build dependencies
-        if os_facts[:os]['name'] == 'Debian'
-          [
-            'g++',
-            'make',
-          ].each do |pkg|
-            it do
-              is_expected.to contain_package(pkg).with(
-                ensure: 'installed',
-                before: 'Package[dnsruby]',
-              )
-            end
-          end
-        end
-
-        it do
-          is_expected.to contain_package('dnsruby').with(
-            ensure: 'installed',
-            provider: 'puppet_gem',
-          )
-        end
       end
 
       context 'with dev packages' do

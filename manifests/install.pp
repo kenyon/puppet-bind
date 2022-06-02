@@ -7,27 +7,6 @@
 class bind::install {
   assert_private()
 
-  if $bind::authoritative {
-    ensure_packages(
-      [
-        'g++',
-        'make',
-      ],
-      {
-        ensure => installed,
-        before => Package['dnsruby'],
-      },
-    )
-
-    ensure_packages(
-      'dnsruby',
-      {
-        ensure   => installed,
-        provider => puppet_gem,
-      },
-    )
-  }
-
   if $bind::package_backport {
     require apt::backports
   }
