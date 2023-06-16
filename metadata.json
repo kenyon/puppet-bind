@@ -50,9 +50,9 @@
       "version_requirement": ">= 6.1.0 < 8.0.0"
     }
   ],
-  "pdk-version": "2.3.0",
-  "template-url": "pdk-default#2.3.0",
-  "template-ref": "tags/2.3.0-0-g8aaceff",
+  "pdk-version": "2.7.1",
+  "template-url": "pdk-default#2.7.4",
+  "template-ref": "tags/2.7.4-0-g58edf57",
   "tags": [
     "bind",
     "bind9",
