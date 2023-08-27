@@ -80,19 +80,7 @@ define bind::zone (
   Hash $resource_records = {},
   Optional[Enum['date', 'increment', 'unixtime']] $serial_update_method = undef,
   Optional[String[1]] $ttl = undef,
-  Optional[Enum[
-    'primary',
-    'master',
-    'secondary',
-    'slave',
-    'mirror',
-    'hint',
-    'stub',
-    'static-stub',
-    'forward',
-    'redirect',
-    'delegation-only',
-  ]] $type = undef,
+  Optional[Enum['primary', 'master', 'secondary', 'slave', 'mirror', 'hint', 'stub', 'static-stub', 'forward', 'redirect', 'delegation-only']] $type = undef, # lint:ignore:140chars
   Optional[Array[Bind::ZoneConfig::UpdatePolicy]] $update_policy = undef,
 ) {
   include bind
@@ -103,27 +91,29 @@ define bind::zone (
 
   concat::fragment { $zone_name:
     target  => $bind::service_config_file,
-    content => epp("${module_name}/zone.conf.epp", {
-      'zone_name'            => $zone_name,
-      'allow_transfer'       => $allow_transfer,
-      'allow_update'         => $allow_update,
-      'also_notify'          => $also_notify,
-      'auto_dnssec'          => $auto_dnssec,
-      'class'                => $class,
-      'file'                 => $file,
-      'forward'              => $forward,
-      'forwarders'           => $forwarders,
-      'in_view'              => $in_view,
-      'inline_signing'       => $inline_signing,
-      'key_directory'        => $key_directory,
-      'masters'              => $masters,
-      'primaries'            => $primaries,
-      'purge'                => $purge,
-      'serial_update_method' => $serial_update_method,
-      'ttl'                  => $ttl,
-      'type'                 => $type,
-      'update_policy'        => $update_policy,
-    }),
+    content => epp("${module_name}/zone.conf.epp",
+      {
+        'zone_name'            => $zone_name,
+        'allow_transfer'       => $allow_transfer,
+        'allow_update'         => $allow_update,
+        'also_notify'          => $also_notify,
+        'auto_dnssec'          => $auto_dnssec,
+        'class'                => $class,
+        'file'                 => $file,
+        'forward'              => $forward,
+        'forwarders'           => $forwarders,
+        'in_view'              => $in_view,
+        'inline_signing'       => $inline_signing,
+        'key_directory'        => $key_directory,
+        'masters'              => $masters,
+        'primaries'            => $primaries,
+        'purge'                => $purge,
+        'serial_update_method' => $serial_update_method,
+        'ttl'                  => $ttl,
+        'type'                 => $type,
+        'update_policy'        => $update_policy,
+      }
+    ),
   }
 
   if $type in ['primary', 'master', 'redirect'] and $manage {
@@ -169,17 +159,16 @@ define bind::zone (
         $ns_legacy_address = undef
       }
     } else {
-      $soa_ttl =
-      $mname =
-      $rname =
-      $serial =
-      $refresh =
-      $retry =
-      $expire =
-      $negative_caching_ttl =
-      $ns_address =
-      $ns_legacy_address =
-      undef
+      $soa_ttl = undef
+      $mname = undef
+      $rname = undef
+      $serial = undef
+      $refresh = undef
+      $retry = undef
+      $expire = undef
+      $negative_caching_ttl = undef
+      $ns_address = undef
+      $ns_legacy_address = undef
     }
 
     file { extlib::path_join([$bind::config::merged_options['directory'], "db.${zone_name}"]):

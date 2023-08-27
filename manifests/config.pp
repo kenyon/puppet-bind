@@ -34,7 +34,10 @@ class bind::config {
   concat::fragment { 'named.conf base':
     target  => $bind::service_config_file,
     content => epp("${module_name}/etc/bind/named.conf.epp",
-                        {'options' => $merged_options}),
+      {
+        'options' => $merged_options,
+      }
+    ),
     order   => '01',
   }
 

@@ -38,7 +38,11 @@ class bind::install {
   }
 
   if $bind::resolvconf_service_enable {
-    ensure_packages($bind::resolvconf_package_name, {before => Package[$bind::package_name]})
+    ensure_packages($bind::resolvconf_package_name,
+      {
+        before => Package[$bind::package_name],
+      },
+    )
   }
 
   if $bind::package_manage {
@@ -50,27 +54,43 @@ class bind::install {
 
   if $bind::dev_packages_ensure {
     if $bind::package_backport {
-      ensure_packages('bind9-dev', {
-        ensure          => $bind::dev_packages_ensure,
-        install_options => $package_install_options,
-      })
+      ensure_packages('bind9-dev',
+        {
+          ensure          => $bind::dev_packages_ensure,
+          install_options => $package_install_options,
+        },
+      )
     } else {
-      ensure_packages($bind::dev_packages, {ensure => $bind::dev_packages_ensure})
+      ensure_packages($bind::dev_packages,
+        {
+          ensure => $bind::dev_packages_ensure,
+        },
+      )
     }
   }
 
   if $bind::doc_packages_ensure {
-    ensure_packages($bind::doc_packages, {ensure => $bind::doc_packages_ensure})
+    ensure_packages($bind::doc_packages,
+      {
+        ensure => $bind::doc_packages_ensure,
+      },
+    )
   }
 
   if $bind::utils_packages_ensure {
     if $bind::package_backport {
-      ensure_packages('bind9-dnsutils', {
-        ensure          => $bind::utils_packages_ensure,
-        install_options => $package_install_options,
-      })
+      ensure_packages('bind9-dnsutils',
+        {
+          ensure          => $bind::utils_packages_ensure,
+          install_options => $package_install_options,
+        },
+      )
     } else {
-      ensure_packages($bind::utils_packages, {ensure => $bind::utils_packages_ensure})
+      ensure_packages($bind::utils_packages,
+        {
+          ensure => $bind::utils_packages_ensure,
+        },
+      )
     }
   }
 }

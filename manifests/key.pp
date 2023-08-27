@@ -25,10 +25,12 @@ define bind::key (
 
   concat::fragment { "key-${name}":
     target  => $bind::service_config_file,
-    content => epp("${module_name}/key.epp", {
-      name      => $name,
-      algorithm => $algorithm,
-      secret    => $secret,
-    }),
+    content => epp("${module_name}/key.epp",
+      {
+        name      => $name,
+        algorithm => $algorithm,
+        secret    => $secret,
+      }
+    ),
   }
 }
