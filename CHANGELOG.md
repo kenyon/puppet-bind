@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v0.5.1](https://github.com/kenyon/puppet-bind/tree/v0.5.1) (2021-05-31)
+## [v0.6.0](https://github.com/kenyon/puppet-bind/tree/v0.6.0) (2023-08-27)
+
+[Full Changelog](https://github.com/kenyon/puppet-bind/compare/v0.5.1...v0.6.0)
+
+### UNCATEGORIZED PRS; LABEL THEM ON GITHUB
+
+- pdk update 3.0.0, add Ubuntu 22.04 support, bump module and Puppet versions, drop Puppet 6 support, fix puppet-lint complaints [\#16](https://github.com/kenyon/puppet-bind/pull/16) ([kenyon](https://github.com/kenyon))
+- Add Ubuntu 20.04 support [\#13](https://github.com/kenyon/puppet-bind/pull/13) ([kenyon](https://github.com/kenyon))
+- install: remove workaround for mkdir command not found [\#12](https://github.com/kenyon/puppet-bind/pull/12) ([kenyon](https://github.com/kenyon))
+- metadata: support Debian 11, stdlib 8, update systemd name, fix tests [\#9](https://github.com/kenyon/puppet-bind/pull/9) ([kenyon](https://github.com/kenyon))
+- pdk update 2.2.0 [\#8](https://github.com/kenyon/puppet-bind/pull/8) ([kenyon](https://github.com/kenyon))
+
+## [v0.5.1](https://github.com/kenyon/puppet-bind/tree/v0.5.1) (2021-06-01)
 
 [Full Changelog](https://github.com/kenyon/puppet-bind/compare/v0.5.0...v0.5.1)
 

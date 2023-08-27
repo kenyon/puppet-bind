@@ -1,6 +1,6 @@
 {
   "name": "kenyon-bind",
-  "version": "0.5.2-rc0",
+  "version": "0.6.0",
   "author": "Kenyon Ralph",
   "summary": "Manage the BIND name server and DNS zones",
   "license": "AGPL-3.0-or-later",
