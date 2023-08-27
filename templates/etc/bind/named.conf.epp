@@ -60,6 +60,13 @@ options {
     <%- } -%>
     };
   <%- } -%>
+  <%- if $options['allow_recursion'] { -%>
+    allow-recursion {
+    <%- $options['allow_recursion'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
   <%- if $options['allow-update'] { -%>
     allow-update {
     <%- $options['allow-update'].each |$address_match_list_element| { -%>
@@ -95,6 +102,16 @@ options {
   <%- } -%>
   <%- if $options['zone-statistics'] { -%>
     zone-statistics <%= $options['zone-statistics'] %>;
+  <%- } -%>
+  <%- if $options['forward'] { -%>
+    forward <%= $options['forward'] %>;
+  <%- } -%>
+  <%- if $options['forwarders'] { -%>
+    forwarders {
+    <%- $options['forwarders'].each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
   <%- } -%>
 };
 <%- } -%>

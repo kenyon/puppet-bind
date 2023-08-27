@@ -10,6 +10,8 @@
 #
 # @param allow_update Which hosts are allowed to submit Dynamic DNS updates to the zone.
 #
+# @param allow_query Hosts allowed to query the zone
+#
 # @param also_notify list of IP addresses of name servers that are also sent NOTIFY messages
 #   whenever a fresh copy of the zone is loaded, in addition to the servers listed in the zone’s NS
 #   records.
@@ -64,6 +66,7 @@ define bind::zone (
   Pattern[/\.$/] $zone_name = $title,
   Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $allow_transfer = undef,
   Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $allow_update = undef,
+  Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $allow_query = undef,
   Optional[Array[Variant[Stdlib::Host, Stdlib::IP::Address]]] $also_notify = undef,
   Optional[Enum['allow', 'maintain', 'off']] $auto_dnssec = undef,
   Optional[Enum['IN', 'HS', 'hesiod', 'CHAOS']] $class = undef,
@@ -107,6 +110,7 @@ define bind::zone (
       'zone_name'            => $zone_name,
       'allow_transfer'       => $allow_transfer,
       'allow_update'         => $allow_update,
+      'allow_query'          => $allow_query,
       'also_notify'          => $also_notify,
       'auto_dnssec'          => $auto_dnssec,
       'class'                => $class,
@@ -206,7 +210,7 @@ define bind::zone (
     }
 
     $resource_records.each |$rrname, $attribs| {
-      resource_record { $rrname:
+      resource_record { "${attribs['record']} ${zone_name} ${attribs['type']} ${attribs['data']}":
         zone => $zone_name,
         *    => $attribs,
       }

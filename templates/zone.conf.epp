@@ -42,6 +42,13 @@ zone "<%= $zone_name %>" {
     <%- } -%>
     };
   <%- } -%>
+  <%- if $allow_query { -%>
+    allow-query {
+    <%- $allow_query.each |$address_match_list_element| { -%>
+        <%= $address_match_list_element -%>;
+    <%- } -%>
+    };
+  <%- } -%>
   <%- if $also_notify { -%>
     also-notify {
     <%- $also_notify.each |$address_match_list_element| { -%>
@@ -69,7 +76,7 @@ zone "<%= $zone_name %>" {
     };
   <%- } -%>
   <%- if $primaries { -%>
-    primaries {
+    masters {
       <%- $primaries.each |$primary| { -%>
         <%= $primary %>;
       <%- } -%>
